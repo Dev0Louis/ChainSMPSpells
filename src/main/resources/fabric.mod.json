@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "css",
+  "version": "${version}",
+  "name": "ChainSMPSpells",
+  "description": "Cool Spells",
+  "authors": [
+    "D1p4k"
+  ],
+  "contact": {
+    "website": "smpmc.eu"
+  },
+  "license": "MIT",
+  "icon": "assets/ChainSMPSpells/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "org.d1p4k.chainsmpspells.ChainSMPSpells"
+    ],
+    "nebula": [
+      "org.d1p4k.chainsmpspells.spell.SpellRegisterer"
+    ]
+  },
+  "mixins": [
+    "ChainSMPSpells.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}
