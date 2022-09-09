@@ -9,6 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.d1p4k.chainsmpspells.packet.AbstractC2SPacket;
 import org.d1p4k.chainsmpspells.spell.spells.SuicideSpell;
+import org.d1p4k.chainsmpspells.spell.spells.TeleportSpell;
 
 public class SpellUseS2CPacket extends AbstractC2SPacket {
     public static Identifier packetId = new Identifier("css", "usespell");
@@ -20,10 +21,11 @@ public class SpellUseS2CPacket extends AbstractC2SPacket {
     }
 
     public void handle() {
+        //TODO: Make a SpellManager.
         this.spellId = buf.readByte();
         switch (spellId) {
             case 1 -> new SuicideSpell(player, SuicideSpell.spellId, 1).cast();
-            //case 2 -> new
+            case 2 -> new TeleportSpell(player, TeleportSpell.spellId, 0).cast();
         }
     }
 
