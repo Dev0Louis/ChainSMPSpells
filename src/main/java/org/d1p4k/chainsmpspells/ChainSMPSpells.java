@@ -1,17 +1,26 @@
 package org.d1p4k.chainsmpspells;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.potion.Potion;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.registry.Registry;
 import org.d1p4k.chainsmpspells.packet.c2s.SpellUseS2CPacket;
+import org.d1p4k.chainsmpspells.test.command.testcommand;
 
 public class ChainSMPSpells implements ModInitializer {
+
+    public static MinecraftServer server;
+
     @Override
     public void onInitialize() {
         SpellUseS2CPacket.register();
-    }
-
-    private static Potion register(String name, Potion potion) {
-        return Registry.register(Registry.POTION, name, potion);
+        CommandRegistrationCallback.EVENT.register((dispatcher, commandRegistryAccess, registrationEnvironment) -> {
+            testcommand.register(dispatcher);
+        });
+        ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
+            ChainSMPSpells.server = server;
+        });
     }
 }

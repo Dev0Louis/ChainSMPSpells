@@ -24,8 +24,11 @@ public class SpellUseS2CPacket extends AbstractC2SPacket {
         //TODO: Make a SpellManager.
         this.spellId = buf.readByte();
         switch (spellId) {
-            case 1 -> new SuicideSpell(player, SuicideSpell.spellId, 1).cast();
-            case 2 -> new TeleportSpell(player, TeleportSpell.spellId, 0).cast();
+            case 1 -> new SuicideSpell(player, SuicideSpell.spellId).cast();
+            case 2 -> {
+
+                new TeleportSpell(player, buf.readUuid(), TeleportSpell.spellId).cast();
+            }
         }
     }
 

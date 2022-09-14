@@ -10,7 +10,9 @@ public class SuicideSpell extends AbstractSpell {
     public SuicideSpell(PlayerEntity player, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
     }
-
+    public SuicideSpell(PlayerEntity player, Identifier spellIdentifier) {
+        super(player, spellIdentifier, 1);
+    }
     @Override
     public void cast() {
         if(check()) {
