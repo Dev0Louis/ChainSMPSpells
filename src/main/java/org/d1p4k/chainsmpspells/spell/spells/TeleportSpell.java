@@ -1,12 +1,7 @@
 package org.d1p4k.chainsmpspells.spell.spells;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.d1p4k.chainsmpspells.ChainSMPSpells;
-import org.d1p4k.nebula.Nebula;
 import org.d1p4k.nebula.api.NebulaPlayer;
 import org.d1p4k.nebula.spell.AbstractSpell;
 
