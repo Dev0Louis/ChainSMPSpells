@@ -4,14 +4,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import org.d1p4k.chainsmpspells.spell.spells.ArrowSpell;
 import org.d1p4k.chainsmpspells.spell.spells.SuicideSpell;
 import org.d1p4k.chainsmpspells.spell.spells.TeleportSpell;
-import org.d1p4k.nebula.Nebula;
 import org.d1p4k.nebula.api.NebulaPlayer;
 
 public class testcommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        Nebula.LOGGER.info("Test");
         dispatcher.register(
                 CommandManager.literal("csstest").executes(context -> {
                     NebulaPlayer nebulaPlayer = (NebulaPlayer) context.getSource().getPlayer();
@@ -33,6 +32,11 @@ public class testcommand {
                         Nebulaplayer.getCastableSpells().add(TeleportSpell.spellId);
                     }
                     return 1;
-                })
-        ));
+                })).then(CommandManager.literal("arrow").executes((context -> {
+                    NebulaPlayer Nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if(!Nebulaplayer.getCastableSpells().contains(ArrowSpell.spellId)) {
+                        Nebulaplayer.getCastableSpells().add(ArrowSpell.spellId);
+                    }
+                    return 1;})))
+        );
 }}

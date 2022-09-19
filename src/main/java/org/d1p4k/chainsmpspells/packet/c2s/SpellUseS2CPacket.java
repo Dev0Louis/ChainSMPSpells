@@ -8,6 +8,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.d1p4k.chainsmpspells.packet.AbstractC2SPacket;
+import org.d1p4k.chainsmpspells.spell.spells.ArrowSpell;
 import org.d1p4k.chainsmpspells.spell.spells.SuicideSpell;
 import org.d1p4k.chainsmpspells.spell.spells.TeleportSpell;
 
@@ -25,10 +26,8 @@ public class SpellUseS2CPacket extends AbstractC2SPacket {
         this.spellId = buf.readByte();
         switch (spellId) {
             case 1 -> new SuicideSpell(player, SuicideSpell.spellId).cast();
-            case 2 -> {
-
-                new TeleportSpell(player, buf.readUuid(), TeleportSpell.spellId).cast();
-            }
+            case 2 -> new TeleportSpell(player, buf.readUuid(), TeleportSpell.spellId).cast();
+            case 3 -> new ArrowSpell(player, ArrowSpell.spellId).cast();
         }
     }
 
