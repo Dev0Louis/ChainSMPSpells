@@ -4,7 +4,11 @@
   "package": "org.d1p4k.chainsmpspells.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PersistentProjectileEntityMixin"
+    "ItemStackMixin",
+    "PersistentProjectileEntityMixin",
+    "ServerPlayerEntityJuggernautSpellMixin",
+    "ServerPlayerEntityRewindSpellOnDeathRemoveMixin",
+    "ServerWorldAccessor"
   ],
   "client": [
   ],

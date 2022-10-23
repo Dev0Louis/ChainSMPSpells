@@ -2,6 +2,7 @@ package org.d1p4k.chainsmpspells.spell.spells;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
@@ -13,12 +14,12 @@ import org.d1p4k.nebula.spell.AbstractSpell;
 public class ArrowSpell extends AbstractSpell {
     public static Identifier spellId = new Identifier("css" , "arrow");
 
-    public ArrowSpell(PlayerEntity player, Identifier spellIdentifier, int cost) {
+    public ArrowSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
     }
 
-    public ArrowSpell(PlayerEntity player, Identifier spellIdentifier) {
-        super(player, spellIdentifier, 2);
+    public ArrowSpell(ServerPlayerEntity player, Identifier spellIdentifier) {
+        this(player, spellIdentifier, 2);
     }
 
     @Override

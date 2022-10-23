@@ -4,9 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import org.d1p4k.chainsmpspells.spell.spells.ArrowSpell;
-import org.d1p4k.chainsmpspells.spell.spells.SuicideSpell;
-import org.d1p4k.chainsmpspells.spell.spells.TeleportSpell;
+import org.d1p4k.chainsmpspells.spell.spells.*;
 import org.d1p4k.nebula.api.NebulaPlayer;
 
 public class testcommand {
@@ -14,29 +12,49 @@ public class testcommand {
         dispatcher.register(
                 CommandManager.literal("csstest").executes(context -> {
                     NebulaPlayer nebulaPlayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if(nebulaPlayer == null)return 0;
                     context.getSource().getPlayer().sendMessage(Text.of(
-                            nebulaPlayer.getCastableSpells().toString()
+                            nebulaPlayer.getSpellKnowledge().getCastableSpells().toString()
                     ));
                     return 1;
                 }).then(CommandManager.literal("suicide").executes((context) -> {
-                    NebulaPlayer Nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
-                    if(!Nebulaplayer.getCastableSpells().contains(SuicideSpell.spellId)) {
-                        Nebulaplayer.getCastableSpells().add(SuicideSpell.spellId);
+                    NebulaPlayer nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if(!nebulaplayer.getSpellKnowledge().getCastableSpells().contains(SuicideSpell.spellId)) {
+                        nebulaplayer.getSpellKnowledge().addCastableSpell(SuicideSpell.spellId);
                     }
                     return 1;
 
-                        })
-                ).then(CommandManager.literal("teleport").executes((context) -> {
-                    NebulaPlayer Nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
-                    if(!Nebulaplayer.getCastableSpells().contains(TeleportSpell.spellId)) {
-                        Nebulaplayer.getCastableSpells().add(TeleportSpell.spellId);
+                })).then(CommandManager.literal("teleport").executes((context) -> {
+                    NebulaPlayer nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if(!nebulaplayer.getSpellKnowledge().getCastableSpells().contains(TeleportSpell.spellId)) {
+                        nebulaplayer.getSpellKnowledge().addCastableSpell(TeleportSpell.spellId);
                     }
                     return 1;
                 })).then(CommandManager.literal("arrow").executes((context -> {
-                    NebulaPlayer Nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
-                    if(!Nebulaplayer.getCastableSpells().contains(ArrowSpell.spellId)) {
-                        Nebulaplayer.getCastableSpells().add(ArrowSpell.spellId);
+                    NebulaPlayer nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if(!nebulaplayer.getSpellKnowledge().getCastableSpells().contains(ArrowSpell.spellId)) {
+                        nebulaplayer.getSpellKnowledge().addCastableSpell(ArrowSpell.spellId);
                     }
-                    return 1;})))
+                    return 1;
+                }))).then(CommandManager.literal("pull").executes((context -> {
+                    NebulaPlayer nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if(!nebulaplayer.getSpellKnowledge().getCastableSpells().contains(PullSpell.spellId)) {
+                        nebulaplayer.getSpellKnowledge().addCastableSpell(PullSpell.spellId);
+                    }
+                    return 1;
+                }))).then(CommandManager.literal("rewind").executes((context -> {
+                    NebulaPlayer nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if (!nebulaplayer.getSpellKnowledge().getCastableSpells().contains(RewindSpell.spellId)) {
+                        nebulaplayer.getSpellKnowledge().addCastableSpell(RewindSpell.spellId);
+                    }
+                    return 1;
+                }))).then(CommandManager.literal("juggernaut").executes((context -> {
+
+                    NebulaPlayer nebulaplayer = (NebulaPlayer) context.getSource().getPlayer();
+                    if (!nebulaplayer.getSpellKnowledge().getCastableSpells().contains(JuggernautSpell.spellId)) {
+                        nebulaplayer.getSpellKnowledge().addCastableSpell(JuggernautSpell.spellId);
+                    }
+                    return 1;
+                })))
         );
 }}
