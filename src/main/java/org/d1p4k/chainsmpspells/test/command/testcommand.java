@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import org.d1p4k.chainsmpspells.ChainSMPSpells;
 import org.d1p4k.chainsmpspells.spell.spells.*;
 import org.d1p4k.nebula.api.NebulaPlayer;
 
