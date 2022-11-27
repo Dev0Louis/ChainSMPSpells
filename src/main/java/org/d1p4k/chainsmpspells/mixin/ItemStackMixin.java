@@ -33,6 +33,8 @@ public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor 
 
     @Shadow public abstract void setCount(int count);
 
+    @Shadow public abstract void inventoryTick(World world, Entity entity, int slot, boolean selected);
+
     @Inject(method = "postHit", at = @At("HEAD"))
     public void noDamageMixin(LivingEntity target, PlayerEntity attacker, CallbackInfo ci) {
         attacker.sendMessage(Text.of(getJuggernautTick() + ""));
@@ -42,7 +44,7 @@ public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor 
     @Inject(method = "inventoryTick", at = @At("TAIL"))
     public void removeAfterExperation(World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
         if(world instanceof ServerWorld serverWorld) {
-            if(isInValid(serverWorld)) {
+            if(isJuggernautItem() && isInValid(serverWorld)) {
                 this.setCount(0);
             }
         }
@@ -59,11 +61,19 @@ public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor 
         return this.getNbt().getLong("JuggernautTicks");
     }
 
+    @Override
+    public boolean isJuggernautItem() {
+        if(this.getNbt() == null)return false;
+        return this.getNbt().contains("JuggernautTicks");
+    }
+
     public boolean isInValid(ServerWorld world) {
         return !isValid(world);
     }
     public boolean isValid(ServerWorld world) {
-        return getJuggernautTick() == 0L || (((ServerWorldAccessor) world).getWorldProperties().getTime()-getJuggernautTick())<20*90;
+        long juggernautTicks = getJuggernautTick();
+        if(juggernautTicks == 0L)return false;
+        return (((ServerWorldAccessor) world).getWorldProperties().getTime()-getJuggernautTick())<20*90;
     }
 
 
