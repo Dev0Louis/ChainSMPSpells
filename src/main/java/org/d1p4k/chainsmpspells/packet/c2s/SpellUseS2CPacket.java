@@ -26,8 +26,8 @@ public class SpellUseS2CPacket extends AbstractC2SPacket {
             case 1 -> new SuicideSpell(player, SuicideSpell.spellId).cast();
             case 2 -> new TeleportSpell(player, buf.readUuid(), TeleportSpell.spellId).cast();
             case 3 -> new ArrowSpell(player, ArrowSpell.spellId).cast();
-            case 4 -> new PullSpell(player, PullSpell.spellId).cast();
-            case 5 -> new PushSpell(player, PushSpell.spellId).cast();
+            case 4 -> new PullSpell(player, buf.readUuid(), PullSpell.spellId).cast();
+            case 5 -> new PushSpell(player, buf.readUuid(), PushSpell.spellId).cast();
             case 6 -> new RewindSpell(player, RewindSpell.spellId).cast();
             case 7 -> new JuggernautSpell(player, JuggernautSpell.spellId).cast();
         }
