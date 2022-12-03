@@ -10,7 +10,6 @@ public interface ServerPlayerEntityJuggernautModeAccessor {
     public void setJuggernautModeTick(long ticks);
     public long getJuggernautTick();
 
-    public void setInJuggernautMode(boolean inJuggernautMode);
     public boolean isInJuggernautMode();
     public boolean isNotInJuggernautMode();
     public ServerPlayerEntity getPlayer();
