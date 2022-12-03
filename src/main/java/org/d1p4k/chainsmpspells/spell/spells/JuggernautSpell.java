@@ -2,11 +2,15 @@ package org.d1p4k.chainsmpspells.spell.spells;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.registry.Registry;
 import org.d1p4k.chainsmpspells.accessor.ItemStackJuggernautModeAccessor;
 import org.d1p4k.chainsmpspells.accessor.ServerPlayerEntityJuggernautModeAccessor;
 import org.d1p4k.chainsmpspells.mixin.ServerWorldAccessor;
@@ -14,6 +18,8 @@ import org.d1p4k.chainsmpspells.packet.s2c.SpellS2CPacket;
 import org.d1p4k.chainsmpspells.scheduler.RepeatingTask;
 import org.d1p4k.nebula.spell.AbstractSpell;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,27 +35,34 @@ public class JuggernautSpell extends AbstractSpell {
 
     @Override
     public void cast() {
-        var tick = ((ServerWorldAccessor)player.getWorld()).getWorldProperties().getTime();
-        var test = new ItemStack(Items.DIAMOND_SWORD);
-        ItemStackJuggernautModeAccessor.access(test).setJuggernautModeTick(tick);
-        player.getInventory().setStack(0, test);
-        if(true)return;
 
 
         ServerPlayerEntityJuggernautModeAccessor accessor = ServerPlayerEntityJuggernautModeAccessor.access(player);
-        if (check() && !accessor.isInJuggernautMode()) {
-            accessor.setInJuggernautMode(true);
+        System.out.print(accessor.getJuggernautTick());
+        if (check() && accessor.isNotInJuggernautMode()) {
             player.getInventory().dropAll();
-            startCounter();
+            accessor.setJuggernautModeTick(20*90);
+
+            var tick = ((ServerWorldAccessor)player.getWorld()).getWorldProperties().getTime();
+
+            player.getInventory().setStack(0, generateJuggernautItem(Items.NETHERITE_SWORD, tick));
+            player.getInventory().setStack(1, generateJuggernautItem(Items.NETHERITE_AXE, tick));
+            player.getInventory().setStack(2, generateJuggernautItem(Items.BOW, tick));
+
+            ItemStack golden_apple = generateJuggernautItem(Items.GOLDEN_APPLE, tick);
+            golden_apple.setCount(26);
+            player.getInventory().setStack(3, golden_apple);
+
+
+            ItemStack arrow = generateJuggernautItem(Items.ARROW, tick);
+            arrow.setCount(1);
+            player.getInventory().setStack(10, arrow);
+
+            player.getInventory().armor.set(0, generateJuggernautItem(Items.NETHERITE_BOOTS, tick));
+
+
 
         }
-    }
-    public ItemStack addItemWithEnchant(ItemStack itemStack, long tick, Enchantment... enchantments) {
-        for(Enchantment enchantment : enchantments) {
-            itemStack.addEnchantment(enchantment, enchantment.getMaxLevel());
-        }
-        ItemStackJuggernautModeAccessor.access(itemStack).setJuggernautModeTick(tick);
-        return itemStack;
     }
 
 
@@ -90,6 +103,34 @@ public class JuggernautSpell extends AbstractSpell {
         packet.getBuf().writeInt(count);
         packet.send();
     }
+
+    private static ItemStack generateJuggernautItem(Item item, long tickWorldtime) {
+        return generateJuggernautItem(new ItemStack(item), tickWorldtime);
+    }
+
+    private static ItemStack generateJuggernautItem(ItemStack itemStack, long tickWorldtime) {
+        if(itemStack.isEnchantable()) {
+            enchantMax(itemStack);
+        }
+        ItemStackJuggernautModeAccessor.access(itemStack).setJuggernautModeTick(tickWorldtime);
+        return itemStack;
+    }
+
+    private static void enchantMax(ItemStack itemStack) {
+        enchantMax(itemStack, List.of(Enchantments.BANE_OF_ARTHROPODS, Enchantments.SMITE, Enchantments.KNOCKBACK, Enchantments.MENDING, Enchantments.FROST_WALKER, Enchantments.FIRE_PROTECTION, Enchantments.PROJECTILE_PROTECTION, Enchantments.BLAST_PROTECTION));
+    }
+
+    private static void enchantMax(ItemStack itemStack, List<Enchantment> excludedSpells) {
+        var enchantments = new ArrayList<>(Registry.ENCHANTMENT.stream().toList());
+        enchantments.removeAll(excludedSpells);
+        for(Enchantment enchantment : enchantments) {
+            if(enchantment.isAcceptableItem(itemStack)) {
+                itemStack.addEnchantment(enchantment, enchantment.getMaxLevel());
+            }
+        }
+    }
+
+
     public static void clearJuggernautItems(ServerPlayerEntity player) {
         List<DefaultedList<ItemStack>> combinedInventory = ImmutableList.of(player.getInventory().main, player.getInventory().armor, player.getInventory().offHand);
         for (List<ItemStack> list : combinedInventory) {
