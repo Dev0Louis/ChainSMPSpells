@@ -1,6 +1,7 @@
 package org.d1p4k.chainsmpspells.mixin;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -10,16 +11,15 @@ import org.d1p4k.chainsmpspells.accessor.ServerPlayerEntityJuggernautModeAccesso
 import org.d1p4k.chainsmpspells.packet.s2c.SpellS2CPacket;
 import org.d1p4k.chainsmpspells.spell.spells.JuggernautSpell;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityJuggernautSpellMixin implements ServerPlayerEntityJuggernautModeAccessor  {
-    @Shadow public abstract boolean damage(DamageSource source, float amount);
 
     long juggernautTick = 0L;
     @Inject(method = "onDeath", at = @At("RETURN"))
@@ -42,23 +42,33 @@ public abstract class ServerPlayerEntityJuggernautSpellMixin implements ServerPl
 
     @Inject(method = "tick", at = @At("RETURN"))
     public void decrementJuggernautTick(CallbackInfo ci) {
+        if(juggernautTick == 1) {
+            getPlayer().damage(DamageSource.magic(getPlayer(), getPlayer()), 100f);
+            getPlayer().setHealth(0);
+            clearJuggernautItems();
+            juggernautTick = 0;
+            return;
+        }
+
         long second = juggernautTick % 20;
         if(juggernautTick > 0) {
-            if(second == 0) {
-                System.out.println(juggernautTick + " | " + second);
-                ServerPlayerEntity player = getPlayer();
+            if(second > 0) {
                 sendPacket(Math.round(juggernautTick / 20f));
-                if(ServerPlayerEntityJuggernautModeAccessor.access(player).isNotInJuggernautMode()) {
-                    clearJuggernautItems();
-                    juggernautTick = 0;
-                    return;
-                }
             }
             juggernautTick--;
 
         }
 
 
+    }
+
+    @Inject(method = "dropItem", at = @At("HEAD"), cancellable = true)
+    public void noJuggernautItemDrop(ItemStack stack, boolean throwRandomly, boolean retainOwnership, CallbackInfoReturnable<ItemEntity> cir) {
+        //TODO: Keep Item in Inventory of Player.
+        if(ItemStackJuggernautModeAccessor.access(stack).isJuggernautItem()) {
+            cir.setReturnValue(null);
+            cir.cancel();
+        }
     }
 
     public void sendPacket(int count) {
