@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor {
     @Shadow public abstract @Nullable NbtCompound getNbt();
     @Shadow public abstract void setCount(int count);
-
+    @Shadow public abstract NbtCompound getOrCreateNbt();
 
     @Inject(method = "inventoryTick", at = @At("TAIL"))
     public void removeAfterExperation(World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
@@ -29,8 +29,9 @@ public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor 
     }
     @Override
     public void setJuggernautModeTick(long ticks) {
-        if(this.getNbt() == null)return;
-        this.getNbt().putLong("JuggernautTicks", ticks);
+        NbtCompound nbt = this.getOrCreateNbt();
+        if(nbt == null)return;
+        nbt.putLong("JuggernautTicks", ticks);
     }
 
     @Override
