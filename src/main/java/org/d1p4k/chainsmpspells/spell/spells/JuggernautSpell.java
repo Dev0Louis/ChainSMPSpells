@@ -59,6 +59,9 @@ public class JuggernautSpell extends AbstractSpell {
             player.getInventory().setStack(10, arrow);
 
             player.getInventory().armor.set(0, generateJuggernautItem(Items.NETHERITE_BOOTS, tick));
+            player.getInventory().armor.set(1, generateJuggernautItem(Items.NETHERITE_LEGGINGS, tick));
+            player.getInventory().armor.set(2, generateJuggernautItem(Items.NETHERITE_CHESTPLATE, tick));
+            player.getInventory().armor.set(3, generateJuggernautItem(Items.NETHERITE_HELMET, tick));
 
 
 
