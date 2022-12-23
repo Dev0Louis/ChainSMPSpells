@@ -12,7 +12,7 @@ import static org.d1p4k.chainsmpspells.ChainSMPSpells.server;
 
 public class TeleportSpell extends AbstractSpell {
     public UUID uuid;
-    public static Identifier spellId = new Identifier("css" , "teleport");
+    public static Identifier spellId = new Identifier("chainsmpspells" , "teleport");
 
     public TeleportSpell(ServerPlayerEntity player, UUID uuid, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
@@ -36,6 +36,12 @@ public class TeleportSpell extends AbstractSpell {
 
 
     }
+
+    @Override
+    public Identifier getID() {
+        return new Identifier("chainsmpspells", "teleport");
+    }
+
     @Override
     public boolean checkMana() {
         return ((NebulaPlayer) player).getManaManager().get() >= cost;

@@ -16,7 +16,7 @@ import java.util.*;
 public class RewindSpell extends AbstractSpell {
 
     public static List<RewindSpell> activeRewindSpells = new ArrayList<>();
-    public static Identifier spellId = new Identifier("css" , "rewind");
+    public static Identifier spellId = new Identifier("chainsmpspells" , "rewind");
 
 
     public RewindSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
@@ -102,6 +102,11 @@ public class RewindSpell extends AbstractSpell {
                 }
             };
         }
+    }
+
+    @Override
+    public Identifier getID() {
+        return new Identifier("chainsmpspells", "rewind");
     }
 
     public boolean check() {

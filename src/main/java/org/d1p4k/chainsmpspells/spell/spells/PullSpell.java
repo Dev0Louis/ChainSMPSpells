@@ -11,7 +11,7 @@ import static org.d1p4k.chainsmpspells.ChainSMPSpells.server;
 
 public class PullSpell extends AbstractSpell {
     public UUID uuid;
-    public static Identifier spellId = new Identifier("css" , "pull");
+    public static Identifier spellId = new Identifier("chainsmpspells" , "pull");
 
     public PullSpell(ServerPlayerEntity player, UUID uuid, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
@@ -32,6 +32,12 @@ public class PullSpell extends AbstractSpell {
             pulledPlayer.velocityModified = true;
         }
     }
+
+    @Override
+    public Identifier getID() {
+        return new Identifier("chainsmpspells", "pull");
+    }
+
     public boolean check() {
         return checkKnowledge() && checkMana();
     }
