@@ -7,7 +7,7 @@ import org.d1p4k.nebula.spell.AbstractSpell;
 
 public class SuicideSpell extends AbstractSpell {
 
-    public static Identifier spellId = new Identifier("css" , "suicide");
+    public static Identifier spellId = new Identifier("chainsmpspells" , "suicide");
     public SuicideSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
     }
@@ -20,6 +20,11 @@ public class SuicideSpell extends AbstractSpell {
             PlayerEntity playerEntity = (PlayerEntity) player;
             playerEntity.kill();
         }
+    }
+
+    @Override
+    public Identifier getID() {
+        return new Identifier("chainsmpspells", "suicide");
     }
 
     public boolean check() {

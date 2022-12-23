@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class JuggernautSpell extends AbstractSpell {
-    public static Identifier spellId = new Identifier("css" , "juggernaut");
+    public static Identifier spellId = new Identifier("chainsmpspells" , "juggernaut");
     public JuggernautSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
     }
@@ -67,6 +67,11 @@ public class JuggernautSpell extends AbstractSpell {
 
 
         }
+    }
+
+    @Override
+    public Identifier getID() {
+        return new Identifier("chainsmpspells", "juggernaut");
     }
 
 

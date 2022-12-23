@@ -13,7 +13,7 @@ import org.d1p4k.nebula.spell.AbstractSpell;
 import org.joml.Vector3f;
 
 public class ArrowSpell extends AbstractSpell {
-    public static Identifier spellId = new Identifier("css" , "arrow");
+    public static Identifier spellId = new Identifier("chainsmpspells" , "arrow");
 
     public ArrowSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
         super(player, spellIdentifier, cost);
@@ -48,6 +48,11 @@ public class ArrowSpell extends AbstractSpell {
                 }
             }
         }
+    }
+
+    @Override
+    public Identifier getID() {
+        return new Identifier("chainsmpspells", "arrow");
     }
 
     public boolean check() {
