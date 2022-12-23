@@ -24,7 +24,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation('org.d1p4k:Nebula:1.7.1')
+    modImplementation('org.d1p4k:Nebula:1.7.2')
 
 }
 
