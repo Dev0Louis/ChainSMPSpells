@@ -6,7 +6,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.recipe.BrewingRecipeRegistry;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import org.d1p4k.chainsmpspells.ChainSMPSpellItems;
 
 public class ManaEffects {
@@ -47,12 +48,12 @@ public class ManaEffects {
 
 
     private static Potion register(String name, Potion potion) {
-        return Registry.register(Registry.POTION, name, potion);
+        return Registry.register(Registries.POTION, name, potion);
     }
 
 
 
     private static StatusEffect register(String id, StatusEffect entry) {
-        return Registry.register(Registry.STATUS_EFFECT, id, entry);
+        return Registry.register(Registries.STATUS_EFFECT, id, entry);
     }
 }

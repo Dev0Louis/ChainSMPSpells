@@ -7,10 +7,11 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import org.d1p4k.chainsmpspells.accessor.ItemStackJuggernautModeAccessor;
 import org.d1p4k.chainsmpspells.accessor.ServerPlayerEntityJuggernautModeAccessor;
 import org.d1p4k.chainsmpspells.mixin.ServerWorldAccessor;
@@ -124,7 +125,7 @@ public class JuggernautSpell extends AbstractSpell {
     }
 
     private static void enchantMax(ItemStack itemStack, List<Enchantment> excludedSpells) {
-        var enchantments = new ArrayList<>(Registry.ENCHANTMENT.stream().toList());
+        var enchantments = new ArrayList<>(Registries.ENCHANTMENT.stream().toList());
         enchantments.removeAll(excludedSpells);
         for(Enchantment enchantment : enchantments) {
             if(enchantment.isAcceptableItem(itemStack)) {

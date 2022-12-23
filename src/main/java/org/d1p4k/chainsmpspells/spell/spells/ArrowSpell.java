@@ -4,12 +4,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Quaternion;
+import org.joml.Quaterniond;
+import org.joml.Quaternionf;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import org.d1p4k.chainsmpspells.ChainSMPSpells;
 import org.d1p4k.chainsmpspells.accessor.ArrowEntityAccessor;
 import org.d1p4k.nebula.spell.AbstractSpell;
+import org.joml.Vector3f;
 
 public class ArrowSpell extends AbstractSpell {
     public static Identifier spellId = new Identifier("css" , "arrow");
@@ -34,11 +35,11 @@ public class ArrowSpell extends AbstractSpell {
                         ArrowEntity arrow = new ArrowEntity(world, player);
                         ((ArrowEntityAccessor) arrow).shouldDamageOwner(false);
                         Vec3d vec3d = player.getOppositeRotationVector(1.0f);
-                        Quaternion quaternion = new Quaternion(new Vec3f(vec3d), 0.0f, true);
+                        Quaternionf quaternion = new Quaternionf(vec3d.getX(), vec3d.getY(), vec3d.getZ(), 1.0f);
                         Vec3d vec3d2 = player.getRotationVec(1.0f);
-                        Vec3f vec3f = new Vec3f(vec3d2);
+                        Vector3f vec3f = vec3d2.toVector3f();
                         vec3f.rotate(quaternion);
-                        arrow.setVelocity(vec3f.getX(), vec3f.getY(), vec3f.getZ(), 1.7f, 100.0f);
+                        arrow.setVelocity(vec3f.x(), vec3f.y(), vec3f.z(), 1.7f, 100.0f);
                         arrow.setPosition(loc);
                         world.spawnEntity(arrow);
                     });
