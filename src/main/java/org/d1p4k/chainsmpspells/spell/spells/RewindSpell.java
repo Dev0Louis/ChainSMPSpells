@@ -4,7 +4,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.d1p4k.chainsmpspells.ChainSMPSpells;
 import org.d1p4k.chainsmpspells.packet.s2c.SpellS2CPacket;

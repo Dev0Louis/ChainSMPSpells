@@ -1,8 +1,9 @@
 package org.d1p4k.chainsmpspells;
 
 import net.minecraft.block.*;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import org.d1p4k.chainsmpspells.block.ManaFlowerBlock;
 import org.d1p4k.chainsmpspells.block.ManaPlantBlock;
 
@@ -16,7 +17,7 @@ public class ChainSMPSpellBlocks {
         }
 
         private static Block register(String id, Block block) {
-                return Registry.register(Registry.BLOCK, id, block);
+                return Registry.register(Registries.BLOCK, id, block);
         }
 
         public static void init(){}
