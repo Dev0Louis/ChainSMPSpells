@@ -1,20 +1,19 @@
 package org.d1p4k.chainsmpspells.spell;
 
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.d1p4k.chainsmpspells.spell.spells.*;
-import org.d1p4k.nebula.api.NebulaSpellRegisterEntrypoint;
+import org.d1p4k.nebula.Nebula;
 import org.d1p4k.nebula.knowledge.SpellKnowledge;
+import org.d1p4k.nebula.registry.NebulaRegistries;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class SpellRegisterer implements NebulaSpellRegisterEntrypoint {
-    @Override
+public class SpellRegisterer {
     public void registerSpells() {
         Collection<Identifier> spells = new ArrayList<>() {
             {
-                add(SuicideSpell.spellId);
-                add(TeleportSpell.spellId);
                 add(ArrowSpell.spellId);
                 add(PullSpell.spellId);
                 add(PushSpell.spellId);
@@ -22,7 +21,11 @@ public class SpellRegisterer implements NebulaSpellRegisterEntrypoint {
                 add(JuggernautSpell.spellId);
             }
         };
-        SpellKnowledge.Registry.addAll(spells);
+
+        Registry.register(NebulaRegistries.SPELLS, new Identifier("chainsmpspells", "suicide"), new SuicideSpell());
+        Registry.register(NebulaRegistries.SPELLS, new Identifier("chainsmpspells", "teleport"), new TeleportSpell());
+        //Registry.register(NebulaRegistries.SPELLS, new Identifier("chainsmpspells", "arrow"), new ArrowSpell());
+
 
     }
 }

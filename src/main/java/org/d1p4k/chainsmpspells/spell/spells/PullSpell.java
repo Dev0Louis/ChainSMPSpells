@@ -10,20 +10,21 @@ import java.util.UUID;
 import static org.d1p4k.chainsmpspells.ChainSMPSpells.server;
 
 public class PullSpell extends AbstractSpell {
-    public UUID uuid;
-    public static Identifier spellId = new Identifier("chainsmpspells" , "pull");
 
-    public PullSpell(ServerPlayerEntity player, UUID uuid, Identifier spellIdentifier, int cost) {
-        super(player, spellIdentifier, cost);
-        this.uuid = uuid;
+    public PullSpell(int cost) {
+        super(cost);
     }
-    public PullSpell(ServerPlayerEntity player, UUID uuid, Identifier spellIdentifier) {
-        this(player, uuid, spellIdentifier, 3);
+    public PullSpell() {
+        this(3);
     }
 
 
     @Override
-    public void cast() {
+    public void cast(ServerPlayerEntity player) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void cast(ServerPlayerEntity player, UUID uuid) {
         if(check()) {
             var pulledPlayer = server.getPlayerManager().getPlayer(uuid);
             if(pulledPlayer == null)return;

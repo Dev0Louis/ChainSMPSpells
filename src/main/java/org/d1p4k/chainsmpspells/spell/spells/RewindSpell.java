@@ -19,14 +19,12 @@ public class RewindSpell extends AbstractSpell {
     public static Identifier spellId = new Identifier("chainsmpspells" , "rewind");
 
 
-    public RewindSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
-        super(player, spellIdentifier, cost);
-        activeRewindSpells.add(this);
+    public RewindSpell(int cost) {
+        super(cost);
     }
 
     public RewindSpell(ServerPlayerEntity player, Identifier spellIdentifier) {
-        this(player, spellIdentifier,7);
-        activeRewindSpells.add(this);
+        this(7);
     }
     public boolean canceled = false;
     public static Set<UUID> rewindingPlayer = new HashSet<>();
@@ -50,10 +48,11 @@ public class RewindSpell extends AbstractSpell {
     public Vec3d velocity;
 
     @Override
-    public void cast() {
+    public void cast(ServerPlayerEntity player) {
         if(rewindingPlayer.contains(player.getUuid()))return;
 
         if(check()) {
+            activeRewindSpells.add(this);
             rewindingPlayer.add(player.getUuid());
             velocity = player.getVelocity().negate();
             new RepeatingTask(5) {

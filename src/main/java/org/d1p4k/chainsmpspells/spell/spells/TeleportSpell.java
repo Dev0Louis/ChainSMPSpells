@@ -11,26 +11,27 @@ import java.util.UUID;
 import static org.d1p4k.chainsmpspells.ChainSMPSpells.server;
 
 public class TeleportSpell extends AbstractSpell {
-    public UUID uuid;
-    public static Identifier spellId = new Identifier("chainsmpspells" , "teleport");
-
-    public TeleportSpell(ServerPlayerEntity player, UUID uuid, Identifier spellIdentifier, int cost) {
-        super(player, spellIdentifier, cost);
-        this.uuid = uuid;
+    private UUID uuid;
+    public TeleportSpell(int cost) {
+        super(cost);
     }
-    public TeleportSpell(ServerPlayerEntity player, UUID uuid, Identifier spellIdentifier) {
-        this(player, uuid, spellIdentifier, 5);
+    public TeleportSpell() {
+        this(5);
+    }
+
+    public TeleportSpell setUuid(UUID uuid) {
         this.uuid = uuid;
+        return this;
     }
 
     @Override
-    public void cast() {
+    public void cast(ServerPlayerEntity player) {
         //TODO: Refactoring!
-        if(checkKnowledge() && checkMana()) {
+        if(checkKnowledge(player) && checkMana(player)) {
             var teleportPlayer = server.getPlayerManager().getPlayer(uuid);
             if(teleportPlayer == null)return;
             if(teleportPlayer.distanceTo(player) > 25)return;
-            decreaseMana();
+            decreaseMana(player);
             player.teleport(teleportPlayer.getX(), teleportPlayer.getY(), teleportPlayer.getZ(), true);
         }
 
@@ -43,11 +44,11 @@ public class TeleportSpell extends AbstractSpell {
     }
 
     @Override
-    public boolean checkMana() {
+    public boolean checkMana(ServerPlayerEntity player) {
         return ((NebulaPlayer) player).getManaManager().get() >= cost;
     }
 
-    private void decreaseMana() {
+    private void decreaseMana(ServerPlayerEntity player) {
         ((NebulaPlayer) player).getManaManager().decrease(cost);
     }
 }

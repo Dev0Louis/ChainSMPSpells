@@ -1,18 +1,18 @@
 package org.d1p4k.chainsmpspells.spell.spells;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.d1p4k.nebula.registry.NebulaRegistries;
 import org.d1p4k.nebula.spell.AbstractSpell;
 
 public class SuicideSpell extends AbstractSpell {
-
-    public static Identifier spellId = new Identifier("chainsmpspells" , "suicide");
-    public SuicideSpell(ServerPlayerEntity player, Identifier spellIdentifier, int cost) {
-        super(player, spellIdentifier, cost);
+    public SuicideSpell(int cost) {
+        super(cost);
     }
-    public SuicideSpell(ServerPlayerEntity player, Identifier spellIdentifier) {
-        this(player, spellIdentifier, 1);
+    public SuicideSpell() {
+        this(1);
     }
     @Override
     public void cast() {
@@ -24,7 +24,7 @@ public class SuicideSpell extends AbstractSpell {
 
     @Override
     public Identifier getID() {
-        return new Identifier("chainsmpspells", "suicide");
+        return NebulaRegistries.SPELLS.getId(this);
     }
 
     public boolean check() {

@@ -13,11 +13,6 @@ public abstract class ServerPlayerEntityRewindSpellOnDeathRemoveMixin {
 
     @Inject(method = "onDeath", at = @At("TAIL"))
     public void removeRewindOnDeath(DamageSource damageSource, CallbackInfo ci) {
-        var player = ((ServerPlayerEntity) (Object) this);
-        RewindSpell.activeRewindSpells.forEach((rewindSpell) -> {
-            if(rewindSpell.player.getUuid().equals(player.getUuid())) {
-                rewindSpell.canceled = true;
-            }
-        });
+
     }
 }
