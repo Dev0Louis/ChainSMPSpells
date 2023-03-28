@@ -1,0 +1,19 @@
+{
+  "category.chainsmpspells.spells": "Spells",
+  "key.chainsmpspells.spell.arrow": "Arrow Spell",
+  "key.chainsmpspells.spell.push": "Push Spell",
+  "key.chainsmpspells.spell.juggernaut": "Juggernaut Spell",
+  "key.chainsmpspells.spell.pull": "Pull Spell",
+  "key.chainsmpspells.spell.rewind": "Rewind Spell",
+  "key.chainsmpspells.spell.suicide": "Suicide Spell",
+  "key.chainsmpspells.spell.teleport": "Teleport Spell",
+  "key.chainsmpspells.spell.supernova": "Supernova Spell",
+  "item.chainsmpspells.supernova_spell_book": "Supernova Spellbook",
+
+  "message.chainsmpspells.mana.success": "You have %s Mana",
+  "message.chainsmpspells.mana.fail": "You have %s Mana",
+
+  "text.autoconfig.chainsmpspells.title": "ChainSMPClient Settings",
+  "text.autoconfig.chainsmpspells.option.spellCooldown":"Spell cooldown"
+
+}

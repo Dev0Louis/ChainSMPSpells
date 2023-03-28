@@ -1,0 +1,18 @@
+{
+  "category.chainsmpspells.spells": "Заклинания",
+  "key.chainsmpspells.spell.arrow": "Заклинание стрелы",
+  "key.chainsmpspells.spell.push": "Заклинание толчка",
+  "key.chainsmpspells.spell.juggernaut": "Заклинание джаггернаута",
+  "key.chainsmpspells.spell.pull": "Заклинание вытягивания",
+  "key.chainsmpspells.spell.rewind": "Заклинание перемотки",
+  "key.chainsmpspells.spell.suicide": "Заклятие самоубийцы",
+  "key.chainsmpspells.spell.teleport": "Заклинание телепортации",
+  "key.chainsmpspells.spell.supernova": "Заклинание сверхновой",
+
+  "message.chainsmpspells.mana.success": "У вас есть %s мана",
+  "message.chainsmpspells.mana.fail": "У вас есть %s мана",
+
+  "text.autoconfig.chainsmpspells.title": "Настройки ChainSMPClient",
+  "text.autoconfig.chainsmpspells.option.spellCooldown":"Время остывания заклинаний"
+
+}

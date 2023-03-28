@@ -12,7 +12,8 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
-    flatDir {dirs "${project.projectDir}/libs"}
+    maven { url "https://maven.shedaniel.me/" }
+
 }
 
 dependencies {
@@ -24,8 +25,16 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation('org.d1p4k:Nebula:1.7.2')
+    modImplementation(files("libs/Nebula-2.0.0.jar"))
+    modApi("me.shedaniel.cloth:cloth-config-fabric:8.0.75") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 
+
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/chainsmpspells.accesswidener")
 }
 
 processResources {

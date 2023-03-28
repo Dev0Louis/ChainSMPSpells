@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.d1p4k.chainsmpspells.mixin",
+  "package": "dev.louis.chainsmpspells.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ItemStackMixin",
@@ -12,6 +12,10 @@
     "ServerWorldAccessor"
   ],
   "client": [
+    "client.InGameHudMixin",
+    "client.ItemStackNameMixin",
+    "client.MinecraftClientMixin",
+    "client.PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
