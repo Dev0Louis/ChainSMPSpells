@@ -25,7 +25,7 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation(files("libs/Nebula-2.0.0.jar"))
+    modImplementation(files("libs/Nebula-2.1.0.jar"))
     modApi("me.shedaniel.cloth:cloth-config-fabric:8.0.75") {
         exclude(group: "net.fabricmc.fabric-api")
     }

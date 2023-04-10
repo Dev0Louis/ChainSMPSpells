@@ -1,7 +1,8 @@
 package dev.louis.chainsmpspells;
 
+import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
 import dev.louis.chainsmpspells.command.LearnCommand;
-import dev.louis.chainsmpspells.items.SpellBookItem;
+import dev.louis.chainsmpspells.items.ChainSMPSpellsItems;
 import dev.louis.chainsmpspells.mana.effect.ManaEffects;
 import dev.louis.chainsmpspells.scheduler.TaskExecutor;
 import dev.louis.chainsmpspells.spell.*;
@@ -9,10 +10,8 @@ import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 
 import java.util.logging.Logger;
 
@@ -30,7 +29,8 @@ public class ChainSMPSpells implements ModInitializer {
             ChainSMPSpells.server = server;
         });
         Spells.init();
-        Items.init();
+        ChainSMPSpellsItems.init();
+        ChainSMPSpellsBlocks.init();
         TaskExecutor.init();
         ManaEffects.init();
     }
@@ -55,10 +55,4 @@ public class ChainSMPSpells implements ModInitializer {
         }
     }
 
-    public static class Items {
-        public static final Item SPELL_BOOK = net.minecraft.item.Items.register(new Identifier("chainsmpspells:spell_book"), new SpellBookItem(new Item.Settings().fireproof().rarity(Rarity.RARE)));
-        public static void init() {
-
-        }
-    }
 }

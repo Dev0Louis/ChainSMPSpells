@@ -31,7 +31,9 @@ public abstract class MinecraftClientMixin {
                         resetSpellCooldown();
                         Spell spell = spellType.create(player);
                         if(!spell.isCastable())return;
-                        ClientPlayNetworking.send(SpellCastC2SPacket.ID, new SpellCastC2SPacket(spell).write(PacketByteBufs.create()));
+                        var buf = PacketByteBufs.create();
+                        new SpellCastC2SPacket(spell).write(buf);
+                        ClientPlayNetworking.send(SpellCastC2SPacket.getId(), buf);
                     }
                 });
             });

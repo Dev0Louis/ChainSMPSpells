@@ -44,9 +44,15 @@ public class RewindSpell extends Spell {
 
     @Override
     public boolean isCastable() {
-        return !RewindPlayer.access((ServerPlayerEntity) getCaster()).isRemembering() && super.isCastable();
+        return isCasterRemembering() && super.isCastable();
     }
 
+    private boolean isCasterRemembering() {
+        if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
+            return !RewindPlayer.access(serverPlayer).isRemembering();
+        }
+        return true;
+    }
     public void sendActionBarUpdate(int time) {
         getCaster().sendMessage(Text.translatable("message.chainsmpspells.cooldown", time), true);
     }

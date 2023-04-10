@@ -1,6 +1,5 @@
 package dev.louis.chainsmpspells.items;
 
-import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.nebula.api.NebulaPlayer;
 import dev.louis.nebula.spell.SpellType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,7 +48,7 @@ public class SpellBookItem extends Item {
     }
 
     public static ItemStack createSpellBook(SpellType<?> spellType) {
-        ItemStack itemStack = new ItemStack(ChainSMPSpells.Items.SPELL_BOOK);
+        ItemStack itemStack = new ItemStack(ChainSMPSpellsItems.SPELL_BOOK);
         itemStack.getNbt().putString("spell", SpellType.getId(spellType).toString());
         return itemStack;
     }
