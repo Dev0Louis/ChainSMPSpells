@@ -13,7 +13,7 @@ public class LearnCommand {
         Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
             executer.then(CommandManager.literal(SpellType.getId(spellType).toString()).executes(context -> {
                 if(context.getSource().isExecutedByPlayer()) {
-                    NebulaPlayer.access(context.getSource().getPlayer()).getSpellKnowledge().addCastableSpell(spellType);
+                    NebulaPlayer.access(context.getSource().getPlayer()).getSpellKnowledgeManager().addCastableSpell(spellType);
                 }
                 return 0;
             }));

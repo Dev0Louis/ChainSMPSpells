@@ -10,7 +10,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -49,7 +48,7 @@ public class JuggernautSpell extends Spell {
     }
 
     public static void generateJuggernautItemAndSetToSlot(ServerPlayerEntity player, int slot, Item item, long tick) {
-        player.getInventory().setStack(0, generateJuggernautItem(Items.NETHERITE_SWORD, tick));
+        player.getInventory().setStack(slot, generateJuggernautItem(item, tick));
 
     }
 

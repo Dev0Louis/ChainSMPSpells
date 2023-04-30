@@ -1,11 +1,11 @@
 
 package dev.louis.chainsmpspells.keybind;
 
+import dev.louis.nebula.spell.Spell;
+import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.option.KeyBinding;
-import dev.louis.nebula.spell.Spell;
-import dev.louis.nebula.spell.SpellType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

@@ -50,6 +50,8 @@ public class ChainSMPSpells implements ModInitializer {
                 SpellType.register(new Identifier("chainsmpspells", "suicide"), SpellType.Builder.create(SuicideSpell::new, 1));
         public static SpellType<TeleportSpell> TELEPORT =
                 SpellType.register(new Identifier("chainsmpspells", "teleport"), SpellType.Builder.create(TeleportSpell::new, 5));
+        public static SpellType<SupernovaSpell> SUPERNOVA =
+                SpellType.register(new Identifier("chainsmpspells", "supernova"), SpellType.Builder.create(SupernovaSpell::new, 20));
         public static void init() {
 
         }

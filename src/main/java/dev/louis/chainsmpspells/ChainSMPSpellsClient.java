@@ -39,17 +39,18 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         }
         registerTickCallbacks();
         spellKeybindManager = getSpellKeybindManager();
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ARROW, createKeyBind("arrow", GLFW.GLFW_KEY_G));
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.JUGGERNAUT, createKeyBind("juggernaut", -1));
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.PULL, createKeyBind("pull", GLFW.GLFW_KEY_B));
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.PUSH, createKeyBind("push", GLFW.GLFW_KEY_V));
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.REWIND, createKeyBind("rewind", GLFW.GLFW_KEY_8));
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUICIDE, createKeyBind("suicide", -1));
-        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.TELEPORT, createKeyBind("teleport", GLFW.GLFW_KEY_X));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ARROW, createKeyBind("arrow"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.JUGGERNAUT, createKeyBind("juggernaut"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.PULL, createKeyBind("pull"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.PUSH, createKeyBind("push"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.REWIND, createKeyBind("rewind"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUICIDE, createKeyBind("suicide"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.TELEPORT, createKeyBind("teleport"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUPERNOVA, createKeyBind("supernova"));
 
     }
 
-    private static KeyBinding createKeyBind(String name, int glfw){
+    public static KeyBinding createKeyBind(String name, int glfw){
         return KeyBindingHelper.registerKeyBinding(new KeyBinding(
                         "key.chainsmpspells.spell." + name,
                         InputUtil.Type.KEYSYM,
@@ -57,6 +58,10 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
                         "category.chainsmpspells.spells"
                 )
         );
+    }
+
+    public static KeyBinding createKeyBind(String name){
+        return createKeyBind(name, GLFW.GLFW_KEY_UNKNOWN);
     }
 
     private static Collection<AbstractClientPlayerEntity> getPlayersWithoutSelf() {

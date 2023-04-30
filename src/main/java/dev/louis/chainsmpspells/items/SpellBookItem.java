@@ -25,10 +25,9 @@ public class SpellBookItem extends Item {
         if(hand != Hand.MAIN_HAND)return TypedActionResult.pass(itemStack);
 
         Optional<SpellType<?>> spell = getSpell(itemStack);
-        System.out.println(spell);
         AtomicBoolean wasSuccessful = new AtomicBoolean(false);
         spell.ifPresent(spellType -> {
-            NebulaPlayer.access(playerEntity).getSpellKnowledge().addCastableSpell(spellType);
+            NebulaPlayer.access(playerEntity).getSpellKnowledgeManager().addCastableSpell(spellType);
             wasSuccessful.set(true);
         });
         if(wasSuccessful.get()) {
@@ -43,7 +42,6 @@ public class SpellBookItem extends Item {
     public Optional<SpellType<?>> getSpell(ItemStack itemStack) {
         if(itemStack.getNbt() == null)return Optional.empty();
         if(!itemStack.getNbt().contains("spell"))return Optional.empty();
-        System.out.println(Identifier.tryParse(itemStack.getNbt().getString("spell")));
         return SpellType.get(Identifier.tryParse(itemStack.getNbt().getString("spell")));
     }
 

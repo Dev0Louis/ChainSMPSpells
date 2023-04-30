@@ -16,8 +16,7 @@ public abstract class TargetingSpell extends Spell {
 
     public TargetingSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
         super(spellType, caster);
-        ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
-        System.out.println(castedOn());
+        if(caster.getWorld().isClient)ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
     }
 
     @Override
