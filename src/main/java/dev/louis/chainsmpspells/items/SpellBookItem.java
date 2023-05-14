@@ -11,7 +11,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpellBookItem extends Item {
     public SpellBookItem(Settings settings) {
@@ -24,13 +23,9 @@ public class SpellBookItem extends Item {
         if(world.isClient())return TypedActionResult.pass(itemStack);
         if(hand != Hand.MAIN_HAND)return TypedActionResult.pass(itemStack);
 
-        Optional<SpellType<?>> spell = getSpell(itemStack);
-        AtomicBoolean wasSuccessful = new AtomicBoolean(false);
-        spell.ifPresent(spellType -> {
-            NebulaPlayer.access(playerEntity).getSpellKnowledgeManager().addCastableSpell(spellType);
-            wasSuccessful.set(true);
-        });
-        if(wasSuccessful.get()) {
+        Optional<SpellType<?>> spellType = getSpellType(itemStack);
+        if(spellType.isPresent()) {
+            NebulaPlayer.access(playerEntity).getSpellKnowledgeManager().addCastableSpell(spellType.get());
             itemStack.decrement(1);
             return TypedActionResult.consume(itemStack);
         }
@@ -39,7 +34,7 @@ public class SpellBookItem extends Item {
 
 
 
-    public Optional<SpellType<?>> getSpell(ItemStack itemStack) {
+    public Optional<SpellType<?>> getSpellType(ItemStack itemStack) {
         if(itemStack.getNbt() == null)return Optional.empty();
         if(!itemStack.getNbt().contains("spell"))return Optional.empty();
         return SpellType.get(Identifier.tryParse(itemStack.getNbt().getString("spell")));
@@ -47,7 +42,7 @@ public class SpellBookItem extends Item {
 
     public static ItemStack createSpellBook(SpellType<?> spellType) {
         ItemStack itemStack = new ItemStack(ChainSMPSpellsItems.SPELL_BOOK);
-        itemStack.getNbt().putString("spell", SpellType.getId(spellType).toString());
+        itemStack.getOrCreateNbt().putString("spell", SpellType.getId(spellType).toString());
         return itemStack;
     }
 }
