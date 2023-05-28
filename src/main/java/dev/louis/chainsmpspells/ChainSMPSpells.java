@@ -4,7 +4,7 @@ import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
 import dev.louis.chainsmpspells.command.LearnCommand;
 import dev.louis.chainsmpspells.items.ChainSMPSpellsItems;
 import dev.louis.chainsmpspells.mana.effect.ManaEffects;
-import dev.louis.chainsmpspells.scheduler.TaskExecutor;
+import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.*;
 import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.api.ModInitializer;
@@ -25,13 +25,13 @@ public class ChainSMPSpells implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, commandRegistryAccess, registrationEnvironment) -> {
             LearnCommand.register(dispatcher);
         });
+        ModRecipes.init();
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             ChainSMPSpells.server = server;
         });
         Spells.init();
         ChainSMPSpellsItems.init();
         ChainSMPSpellsBlocks.init();
-        TaskExecutor.init();
         ManaEffects.init();
     }
 

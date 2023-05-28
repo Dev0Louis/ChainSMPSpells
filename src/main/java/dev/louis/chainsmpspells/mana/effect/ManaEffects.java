@@ -32,10 +32,10 @@ public class ManaEffects {
     }
 
     private static void registerPotions() {
-        MANA_INSTANT = register("chainsmpspells:instant_mana", new Potion("Instant_Mana", new StatusEffectInstance(MANA_INSTANT_EFFECT, 1, 1)));
-        STRONG_MANA_INSTANT = register("chainsmpspells:strong_instant_mana", new Potion("Strong_Instant_Mana", new StatusEffectInstance(MANA_INSTANT_EFFECT, 1, 2)));
-        MANA_REGENERATION = register("chainsmpspells:mana_regeneration", new Potion("Mana_Regeneration", new StatusEffectInstance(MANA_REGENERATION_EFFECT, 5)));
-        STRONG_MANA_REGENERATION = register("chainsmpspells:strong_mana_regeneration", new Potion("Strong_Mana_Regeneration", new StatusEffectInstance(MANA_REGENERATION_EFFECT, 5, 1)));
+        MANA_INSTANT = register("chainsmpspells:instant_mana", new Potion("instant_mana", new StatusEffectInstance(MANA_INSTANT_EFFECT, 1)));
+        STRONG_MANA_INSTANT = register("chainsmpspells:strong_instant_mana", new Potion("strong_instant_mana", new StatusEffectInstance(MANA_INSTANT_EFFECT, 1, 1)));
+        MANA_REGENERATION = register("chainsmpspells:mana_regeneration", new Potion("mana_regeneration", new StatusEffectInstance(MANA_REGENERATION_EFFECT, 5)));
+        STRONG_MANA_REGENERATION = register("chainsmpspells:strong_mana_regeneration", new Potion("strong_mana_regeneration", new StatusEffectInstance(MANA_REGENERATION_EFFECT, 5, 1)));
 
     }
 

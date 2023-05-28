@@ -34,7 +34,7 @@ public class SpellBookItem extends Item {
 
 
 
-    public Optional<SpellType<?>> getSpellType(ItemStack itemStack) {
+    public static Optional<SpellType<?>> getSpellType(ItemStack itemStack) {
         if(itemStack.getOrCreateNbt() == null)return Optional.empty();
         if(!itemStack.getOrCreateNbt().contains("spell"))return Optional.empty();
         return SpellType.get(Identifier.tryParse(itemStack.getOrCreateNbt().getString("spell")));

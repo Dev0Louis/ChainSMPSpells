@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "chainsmpspells:block/spell_table_bottom",
+    "east": "chainsmpspells:block/spell_table_side",
+    "north": "chainsmpspells:block/spell_table_side",
+    "particle": "chainsmpspells:block/spell_table_side",
+    "south": "chainsmpspells:block/spell_table_side",
+    "up": "chainsmpspells:block/spell_table_top",
+    "west": "chainsmpspells:block/spell_table_side"
+  }
+}

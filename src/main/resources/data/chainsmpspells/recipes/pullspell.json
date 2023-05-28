@@ -1,0 +1,9 @@
+{
+  "type": "chainsmpspells:spell_recipe",
+  "input": {
+    "item": "minecraft:string"
+  },
+  "output": "minecraft:book",
+  "spell": "chainsmpspells:pull",
+  "count": 1
+}

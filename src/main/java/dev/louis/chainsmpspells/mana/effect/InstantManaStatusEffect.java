@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public class InstantManaStatusEffect extends InstantStatusEffect {
     public InstantManaStatusEffect() {
         super(StatusEffectCategory.BENEFICIAL,
-                0x98D982);
+                0x03ddfe);
     }
 
     @Override
