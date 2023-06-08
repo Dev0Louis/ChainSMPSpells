@@ -38,7 +38,7 @@ public class JuggernautSpell extends Spell {
 
     @Override
     public boolean isCastable() {
-        if(getCaster().world.isClient())return super.isCastable();
+        if(getCaster().getWorld().isClient())return super.isCastable();
         return ServerPlayerEntityJuggernautModeAccessor.access((ServerPlayerEntity) getCaster()).isNotInJuggernautMode() && super.isCastable();
     }
 

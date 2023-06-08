@@ -5,8 +5,10 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Items;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
@@ -17,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class SpellTableBlock extends Block {
     private static final Text TITLE = Text.translatable("container.spell_crafting");
@@ -49,6 +52,21 @@ public class SpellTableBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(CHARGE);
+    }
+
+    public static class CustomScreenHandlerFactory implements NamedScreenHandlerFactory {
+
+
+        @Override
+        public Text getDisplayName() {
+            return TITLE;
+        }
+
+        @Nullable
+        @Override
+        public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+            return null;
+        }
     }
 }
 

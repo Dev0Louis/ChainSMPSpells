@@ -2,7 +2,6 @@ package dev.louis.chainsmpspells.screen;
 
 import com.google.common.collect.Lists;
 import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
-import dev.louis.chainsmpspells.blocks.SpellTableBlock;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.recipe.SpellRecipe;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,16 +11,15 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.Property;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.*;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
 import java.util.List;
+
+import static dev.louis.chainsmpspells.blocks.SpellTableBlock.CHARGE;
 
 public class SpellTableScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;
@@ -52,7 +50,7 @@ public class SpellTableScreenHandler extends ScreenHandler {
         super(ModRecipes.SPELL_TABLE, syncId);
         int i;
         this.context = context;
-        this.world = playerInventory.player.world;
+        this.world = playerInventory.player.getWorld();
         this.inputSlot = this.addSlot(new Slot(this.input, 0, 20, 33));
         this.outputSlot = this.addSlot(new Slot(this.output, 1, 143, 33){
 
@@ -63,9 +61,10 @@ public class SpellTableScreenHandler extends ScreenHandler {
 
             @Override
             public void onTakeItem(PlayerEntity player, ItemStack stack) {
-                stack.onCraft(player.world, player, stack.getCount());
-                SpellTableScreenHandler.this.output.unlockLastRecipe(player);
+                stack.onCraft(player.getWorld(), player, stack.getCount());
+                SpellTableScreenHandler.this.output.unlockLastRecipe(player, this.getInputStacks());
                 ItemStack itemStack = SpellTableScreenHandler.this.inputSlot.takeStack(1);
+                modifyCharge(-1);
                 if (!itemStack.isEmpty()) {
                     SpellTableScreenHandler.this.populateResult();
                 }
@@ -77,6 +76,9 @@ public class SpellTableScreenHandler extends ScreenHandler {
                     }
                 });
                 super.onTakeItem(player, stack);
+            }
+            private List<ItemStack> getInputStacks() {
+                return List.of(SpellTableScreenHandler.this.inputSlot.getStack());
             }
         });
         for (i = 0; i < 3; ++i) {
@@ -103,14 +105,21 @@ public class SpellTableScreenHandler extends ScreenHandler {
     }
 
     public boolean canCraft() {
-        return (this.inputSlot.hasStack() && !this.availableRecipes.isEmpty()) && hasCharge();
+        return (this.inputSlot.hasStack() && !this.availableRecipes.isEmpty());
     }
 
     public boolean hasCharge() {
-        return context.get((world, pos) -> {
-            return world.getBlockState(pos).get(SpellTableBlock.CHARGE) > 0;
+        boolean b = context.get((world, pos) -> {
+            int charge = world.getBlockState(pos).get(CHARGE);
+            return charge > 0;
+        }, true);
+        return b;
+    }
 
-        }, false);
+    public void modifyCharge(int charge) {
+        context.run((world, pos) -> {
+            world.setBlockState(pos, world.getBlockState(pos).with(CHARGE, world.getBlockState(pos).get(CHARGE)+charge));
+        });
     }
 
     @Override
@@ -144,7 +153,8 @@ public class SpellTableScreenHandler extends ScreenHandler {
         this.availableRecipes.clear();
         this.selectedRecipe.set(-1);
         this.outputSlot.setStackNoCallbacks(ItemStack.EMPTY);
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty() && hasCharge()) {
+            System.out.println("A");
             this.availableRecipes = this.world.getRecipeManager().getAllMatches(ModRecipes.SPELL_RECIPE, input, this.world);
         }
     }
@@ -188,7 +198,7 @@ public class SpellTableScreenHandler extends ScreenHandler {
             Item item = itemStack2.getItem();
             itemStack = itemStack2.copy();
             if (slot == 1) {
-                item.onCraft(itemStack2, player.world, player);
+                item.onCraft(itemStack2, player.getWorld(), player);
                 if (!this.insertItem(itemStack2, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }

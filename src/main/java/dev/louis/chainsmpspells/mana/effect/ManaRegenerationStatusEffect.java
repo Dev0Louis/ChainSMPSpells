@@ -1,12 +1,11 @@
 package dev.louis.chainsmpspells.mana.effect;
 
-import dev.louis.nebula.Nebula;
-import dev.louis.nebula.manamanager.player.PlayerManaManager;
+import dev.louis.nebula.api.NebulaPlayer;
+import dev.louis.nebula.mana.manager.ManaManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
-import dev.louis.nebula.api.NebulaPlayer;
 
 public class ManaRegenerationStatusEffect extends StatusEffect {
     public ManaRegenerationStatusEffect() {
@@ -25,8 +24,8 @@ public class ManaRegenerationStatusEffect extends StatusEffect {
     // This method is called when it applies the status effect. We implement custom functionality here.
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-        if (!entity.world.isClient() && entity instanceof PlayerEntity player) {
-            PlayerManaManager playerManaManager = NebulaPlayer.access(player).getPlayerManaManager();
+        if (!entity.getWorld().isClient() && entity instanceof PlayerEntity player) {
+            ManaManager playerManaManager = NebulaPlayer.access(player).getManaManager();
             playerManaManager.addMana(1+amplifier);
         }
     }

@@ -15,7 +15,7 @@ public interface EntityRenderRGBACallback {
 
     void interact(LivingEntity livingEntity, RGBA rgba);
 
-    public static class RGBA {
+    class RGBA {
         private float red, green, blue, alpha;
         public RGBA(float red, float green, float blue, float alpha) {
             this.red = red;

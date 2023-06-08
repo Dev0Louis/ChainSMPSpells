@@ -29,6 +29,8 @@ public abstract class ServerPlayerEntityRewindSpellOnDeathRemoveMixin extends Pl
 
     @Shadow public abstract void playSound(SoundEvent event, SoundCategory category, float volume, float pitch);
 
+    @Shadow public abstract ServerWorld getServerWorld();
+
     World memorizedWorld;
     BlockPos memorizedPos;
     Vec3d memorizedVelocity;
@@ -53,10 +55,10 @@ public abstract class ServerPlayerEntityRewindSpellOnDeathRemoveMixin extends Pl
     }
 
     private void playPingSound() {
-        this.world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_NOTE_BLOCK_BANJO.value(), this.getSoundCategory(), 1, -1);
+        this.getServerWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_NOTE_BLOCK_BANJO.value(), this.getSoundCategory(), 1, -1);
     }
     private void playRewindSound() {
-        this.world.playSound(null, memorizedPos.getX(), memorizedPos.getY(), memorizedPos.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1, 1);
+        this.getServerWorld().playSound(null, memorizedPos.getX(), memorizedPos.getY(), memorizedPos.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1, 1);
     }
     @Inject(method = "onDeath", at = @At("RETURN"))
     public void forget(DamageSource damageSource, CallbackInfo ci) {

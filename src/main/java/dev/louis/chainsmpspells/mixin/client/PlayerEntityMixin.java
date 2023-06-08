@@ -19,7 +19,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Override
     public boolean isGlowing() {
-        if(this.world.isClient) {
+        if(this.getWorld().isClient) {
             AtomicBoolean shouldGlow = new AtomicBoolean();
             ChainSMPSpellsClient.getPlayerInView().ifPresent(player -> {
                 shouldGlow.set(me() == player);

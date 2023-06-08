@@ -16,7 +16,7 @@ public class InstantManaStatusEffect extends InstantStatusEffect {
     @Override
     public void applyInstantEffect(@Nullable Entity source, @Nullable Entity attacker, LivingEntity target, int amplifier, double proximity) {
         if (target instanceof NebulaPlayer) {
-            ((NebulaPlayer) target).getPlayerManaManager().addMana((amplifier+1)*5);
+            ((NebulaPlayer) target).getManaManager().addMana((amplifier+1)*5);
         }
     }
 }

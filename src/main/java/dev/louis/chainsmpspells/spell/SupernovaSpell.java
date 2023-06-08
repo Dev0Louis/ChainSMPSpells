@@ -29,7 +29,7 @@ public class SupernovaSpell extends Spell {
     public void syncPlayerCombustingStatus() {
         SupernovaS2CPacket packet = new SupernovaS2CPacket(getCaster().getUuid(), 40);
         ServerPlayerEntity player = ((ServerPlayerEntity)this.getCaster());
-        List<ServerPlayerEntity> players = player.getWorld().getPlayers();
+        List<ServerPlayerEntity> players = player.getServerWorld().getPlayers();;
 
         for (ServerPlayerEntity serverPlayerEntity : players) {
             sendToPlayerIfNearby(serverPlayerEntity, player.getX(), player.getY(), player.getZ(), packet);

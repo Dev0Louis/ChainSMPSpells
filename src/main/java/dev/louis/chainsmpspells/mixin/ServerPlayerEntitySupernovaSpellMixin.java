@@ -16,11 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntitySupernovaSpellMixin extends PlayerEntity implements SupernovaPlayer {
+    @Shadow public abstract ServerWorld getServerWorld();
+
     public ServerPlayerEntitySupernovaSpellMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
     }
 
-    @Shadow public abstract ServerWorld getWorld();
 
     int ticksTillSupernova = 0;
     boolean isCombusting = false;
@@ -41,7 +42,7 @@ public abstract class ServerPlayerEntitySupernovaSpellMixin extends PlayerEntity
     }
 
     public void combust() {
-        this.getWorld().createExplosion(null, this.getX(), this.getY()+0.4, this.getZ(), 16.0F, World.ExplosionSourceType.MOB);
+        this.getServerWorld().createExplosion(null, this.getX(), this.getY()+0.4, this.getZ(), 16.0F, World.ExplosionSourceType.MOB);
         this.setHealth(0f);
     }
 

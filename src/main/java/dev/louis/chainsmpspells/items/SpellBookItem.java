@@ -25,7 +25,7 @@ public class SpellBookItem extends Item {
 
         Optional<SpellType<?>> spellType = getSpellType(itemStack);
         if(spellType.isPresent()) {
-            NebulaPlayer.access(playerEntity).getSpellKnowledgeManager().addCastableSpell(spellType.get());
+            NebulaPlayer.access(playerEntity).getSpellManager().addSpell(spellType.get());
             itemStack.decrement(1);
             return TypedActionResult.consume(itemStack);
         }
