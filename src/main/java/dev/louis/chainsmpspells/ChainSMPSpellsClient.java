@@ -1,16 +1,13 @@
 package dev.louis.chainsmpspells;
 
 import dev.louis.chainsmpspells.accessor.SupernovaClientPlayer;
-import dev.louis.chainsmpspells.callback.EntityRenderRGBACallback;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.chainsmpspells.keybind.SpellKeybindManager;
 import dev.louis.chainsmpspells.network.SupernovaS2CPacket;
-import dev.louis.nebula.Nebula;
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.chainsmpspells.spell.TargetingSpell;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -20,16 +17,15 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ChainSMPSpellsClient implements ClientModInitializer {
     public static ChainSMPSpellsClient INSTANCE;
-    public static MinecraftClient client = MinecraftClient.getInstance();
+    public static final MinecraftClient client = MinecraftClient.getInstance();
     public ChainSMPSpellsConfig config;
     private SpellKeybindManager spellKeybindManager;
+    public TargetingSpell.TargetedPlayerSelector targetedPlayerSelector = TargetingSpell.TargetedPlayerSelector.INSTANCE;
+
 
     @Override
     public void onInitializeClient() {
@@ -41,7 +37,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
             config = new ChainSMPSpellsConfig();
             ChainSMPSpells.LOGGER.info("Autoconfig couldn't be registered.");
         }
-        registerTickCallbacks();
+        targetedPlayerSelector.init();
         setupSupernovaSpell();
         spellKeybindManager = getSpellKeybindManager();
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ARROW, createKeyBind("arrow"));
@@ -68,86 +64,13 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
     public static KeyBinding createKeyBind(String name){
         return createKeyBind(name, GLFW.GLFW_KEY_UNKNOWN);
     }
-
-    private static Collection<AbstractClientPlayerEntity> getPlayersWithoutSelf() {
-        var players = client.world.getPlayers();
-        players.remove(client.player);
-        return players;
-    }
-
     public  SpellKeybindManager getSpellKeybindManager() {
         if(spellKeybindManager != null)return spellKeybindManager;
         return (spellKeybindManager = new SpellKeybindManager());
     }
 
-    private static final Collection<SpellType> targetingSpells = List.of(ChainSMPSpells.Spells.PULL, ChainSMPSpells.Spells.PUSH, ChainSMPSpells.Spells.TELEPORT);
-    static int playerHasTargetingSpellCooldown = 0;
-    boolean hasTargetingSpell = false;
-    private static void registerTickCallbacks() {
-        ClientTickEvents.END_CLIENT_TICK.register(mcClient -> {
-            if(playerInViewScanTimeout > 0) {
-                playerInViewScanTimeout--;
-            }
-
-
-            calculatedPlayerInView = false;
-
-            if(playerHasTargetingSpellCooldown > 0) {
-                playerHasTargetingSpellCooldown = 100;
-                AtomicBoolean atomicHasTargetingSpell = new AtomicBoolean(false);
-
-                Nebula.NebulaRegistries.SPELL_TYPE.forEach((spellType -> {
-                    atomicHasTargetingSpell.set(targetingSpells.contains(spellType));
-                }));
-
-                INSTANCE.hasTargetingSpell = atomicHasTargetingSpell.get();
-                return;
-            }
-
-            playerHasTargetingSpellCooldown--;
-
-        });
-    }
-
-    static boolean calculatedPlayerInView = false;
-    static int playerInViewScanTimeout = 0;
-    static PlayerEntity playerInView;
-    public static PlayerEntity getPlayerInViewOrNull() {
-        if(!calculatedPlayerInView) {
-            INSTANCE.calculatePlayerInView();
-        }
-        return playerInView;
-    }
-    public static Optional<PlayerEntity> getPlayerInView() {
-        return Optional.ofNullable(getPlayerInViewOrNull());
-    }
-
-    private void calculatePlayerInView() {
-        if(hasTargetingSpell || playerInViewScanTimeout > 0)return;
-
-        var pos = client.getCameraEntity().getEyePos();
-        int divider = config.getRaycastScanPrecision();
-        double i = 1.0 / divider;
-        var x = client.getCameraEntity().getRotationVecClient().normalize().multiply(i);
-        calculatedPlayerInView = true;
-        for (int y = 0; y < 24*divider; ++y) {
-            for (AbstractClientPlayerEntity otherPlayer : getPlayersWithoutSelf()) {
-                if(otherPlayer.getBoundingBox().expand(0.5).contains(pos)) {
-                    if(client.player.canSee(otherPlayer)) {
-                        playerInView = otherPlayer;
-                        playerInViewScanTimeout = 20;
-                        return;
-                    }
-                }
-                pos = pos.add(x);
-            }
-        }
-        playerInView = null;
-    };
-
 
     private void setupSupernovaSpell() {
-
         ClientPlayNetworking.registerGlobalReceiver(SupernovaS2CPacket.TYPE, ((packet, player, responseSender) -> {
             PlayerEntity combustingPlayer = player.getWorld().getPlayerByUuid(packet.uuid());
             if(player.getUuid().equals(packet.uuid())) combustingPlayer = player;
@@ -155,15 +78,18 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
                 SupernovaClientPlayer.access(abstractClientPlayerEntity).setCombustion(packet.ticks());
             }
         }));
-        EntityRenderRGBACallback.EVENT.register(((livingEntity, rgba) -> {
+        /**EntityRenderRGBACallback.EVENT.register(((livingEntity, rgba) -> {
             if(livingEntity instanceof AbstractClientPlayerEntity combustingPlayer && isPlayerCombusting(combustingPlayer))rgba.setBlue(0);
-        }));
+        }));**/
+    }
 
 
+    public static Optional<PlayerEntity> getPlayerInView() {
+        return INSTANCE.targetedPlayerSelector.getPlayerInView();
     }
     public boolean isPlayerCombusting(AbstractClientPlayerEntity player) {
         int playerCombustionTimer = SupernovaClientPlayer.access(player).getCombustionTime();
-        return playerCombustionTimer > 0 && playerCombustionTimer % 10 < 3;
+        return playerCombustionTimer > 0;
     }
     
 }

@@ -5,8 +5,8 @@ import dev.louis.nebula.Nebula;
 import dev.louis.nebula.networking.SpellCastC2SPacket;
 import dev.louis.nebula.spell.Spell;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.RunArgs;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
     @Shadow @Nullable public ClientPlayerEntity player;
-    int spellCooldown = 10;
+    int spellCooldown;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void setSpellCooldown(RunArgs args, CallbackInfo ci) {
+        spellCooldown = getSpellCooldown();
+    }
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
     private void handelInputEventsForNebula(CallbackInfo ci) {
@@ -27,13 +32,11 @@ public abstract class MinecraftClientMixin {
         } else {
             Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
                 ChainSMPSpellsClient.INSTANCE.getSpellKeybindManager().getKey(spellType).ifPresent(keyBinding -> {
-                    if(keyBinding.wasPressed()) {
+                    if(keyBinding.isPressed()) {
                         resetSpellCooldown();
                         Spell spell = spellType.create(player);
                         if(!spell.isCastable())return;
-                        var buf = PacketByteBufs.create();
-                        new SpellCastC2SPacket(spell).write(buf);
-                        ClientPlayNetworking.send(SpellCastC2SPacket.getId(), buf);
+                        ClientPlayNetworking.send(new SpellCastC2SPacket(spell));
                     }
                 });
             });
@@ -41,6 +44,10 @@ public abstract class MinecraftClientMixin {
     }
 
     public void resetSpellCooldown() {
-        spellCooldown = ChainSMPSpellsClient.INSTANCE.config.getSpellCooldown();
+        spellCooldown = getSpellCooldown();
+    }
+
+    public int getSpellCooldown() {
+        return ChainSMPSpellsClient.INSTANCE.config.getSpellCooldown();
     }
 }

@@ -1,6 +1,7 @@
 package dev.louis.chainsmpspells.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.recipe.SpellRecipe;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -12,10 +13,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SpellTableScreen extends HandledScreen<SpellTableScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("textures/gui/container/stonecutter.png");
+    private static final Identifier TEXTURE = new Identifier(ChainSMPSpells.id,"textures/gui/container/spell_table.png");
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
     private static final int RECIPE_LIST_COLUMNS = 4;
@@ -29,6 +32,9 @@ public class SpellTableScreen extends HandledScreen<SpellTableScreenHandler> {
     private boolean mouseClicked;
     private int scrollOffset;
     private boolean canCraft;
+    private int selectedCharge;
+    private final Set<Integer> selectedCharges = new HashSet<>();
+    private int timeChargeIsSelected = 0;
 
     public SpellTableScreen(SpellTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -56,6 +62,35 @@ public class SpellTableScreen extends HandledScreen<SpellTableScreenHandler> {
         int n = this.scrollOffset + 12;
         this.renderRecipeBackground(context, mouseX, mouseY, l, m, n);
         this.renderRecipeIcons(context, l, m, n);
+        this.renderCharge(context, mouseX, mouseY, l, m);
+    }
+
+    private void renderCharge(DrawContext context, int mouseX, int mouseY, int x, int y) {
+        for (int i = this.handler.getCharge(); i > 0; i--) {
+            int i2 = i - 1;
+            int k = x + i2 % 4 * 16 + 124;
+            int l = i2 / 4;
+            int m = y + l * 18 - 10;
+            int n = this.backgroundHeight;
+            if (mouseX >= k && mouseY >= m && mouseX < k + 16 && mouseY < m + 18 ) {
+                if(selectedCharge == i) {
+                    timeChargeIsSelected++;
+                }else {
+                    selectedCharge = i;
+                    timeChargeIsSelected = 0;
+                }
+
+                if(timeChargeIsSelected > 20*5) {
+                    selectedCharges.add(selectedCharge);
+                }
+            }
+            if(selectedCharges.contains(i)) {
+                n += 18;
+            } else {
+                n += 36;
+            }
+            context.drawTexture(TEXTURE, k, m - 1, 16, n, 16, 18);
+        }
     }
 
     @Override

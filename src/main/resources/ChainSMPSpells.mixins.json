@@ -16,7 +16,6 @@
     "client.AbstractClientPlayerEntitySupernovaMixin",
     "client.InGameHudMixin",
     "client.ItemStackNameMixin",
-    "client.LivingEntityRendererRGBAMixin",
     "client.MinecraftClientMixin",
     "client.PlayerEntityMixin"
   ],

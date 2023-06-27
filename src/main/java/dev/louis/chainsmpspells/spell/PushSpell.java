@@ -13,13 +13,14 @@ public class PushSpell extends TargetingSpell {
 
     @Override
     public void cast() {
+        System.out.println("HIHI");
         if(isCastable()) {
-            drainMana();
             var pulledPlayer = castedOn();
             if(pulledPlayer == null)return;
             Vec3d velocity = getCaster().getPos().subtract(pulledPlayer.getPos()).normalize().negate();
             pulledPlayer.setVelocity(velocity);
             pulledPlayer.velocityModified = true;
+            drainMana();
         }
     }
 

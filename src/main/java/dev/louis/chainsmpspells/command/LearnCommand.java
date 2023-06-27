@@ -6,11 +6,8 @@ import dev.louis.nebula.api.NebulaPlayer;
 import dev.louis.nebula.spell.SpellType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 
 public class LearnCommand {
-    private static final Text TITLE = Text.translatable("container.spell_crafting");
-
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         var executer = CommandManager.literal("learn").executes(context -> 0);
         Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {

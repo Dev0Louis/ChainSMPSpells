@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 
+@Deprecated
 public interface EntityRenderRGBACallback {
     Event<EntityRenderRGBACallback> EVENT = EventFactory.createArrayBacked(EntityRenderRGBACallback.class, (listeners -> ((livingEntity, rgba) -> {
                 for (EntityRenderRGBACallback listener : listeners) {

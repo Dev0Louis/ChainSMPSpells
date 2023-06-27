@@ -43,7 +43,6 @@ public class SpellRecipe implements Recipe<Inventory> {
     @Override
     public boolean matches(Inventory inventory, World world) {
         return inventory.getStack(0).isOf(Items.BOOK);
-        //return input.test(inventory.getStack(0));
     }
 
     @Override
@@ -87,7 +86,6 @@ public class SpellRecipe implements Recipe<Inventory> {
 
             ItemStack input = new ItemStack(Items.BOOK);
             ItemStack output = SpellBookItem.createSpellBook(optionalSpellType.get());
-
             return new SpellRecipe(id, input, output);
         }
 
@@ -102,5 +100,12 @@ public class SpellRecipe implements Recipe<Inventory> {
         public void write(PacketByteBuf buf, SpellRecipe recipe) {
             buf.writeIdentifier(SpellType.getId(SpellBookItem.getSpellType(recipe.output).get()));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "SpellRecipe{" +
+                "id=" + id +
+                '}';
     }
 }

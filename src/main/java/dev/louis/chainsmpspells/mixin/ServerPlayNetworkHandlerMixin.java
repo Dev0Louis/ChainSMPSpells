@@ -1,6 +1,5 @@
 package dev.louis.chainsmpspells.mixin;
 
-import dev.louis.chainsmpspells.accessor.ItemStackJuggernautModeAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -10,6 +9,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static dev.louis.chainsmpspells.accessor.ItemStackJuggernautModeAccessor.access;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin {
@@ -28,11 +29,11 @@ public class ServerPlayNetworkHandlerMixin {
         boolean shouldCancel = false;
         if(size == 1) {
             ItemStack itemStack = modifiedStack.values().stream().toList().get(0);
-            shouldCancel = ItemStackJuggernautModeAccessor.access(itemStack).isJuggernautItem();
+            shouldCancel = access(itemStack).isJuggernautItem();
         }else if (size == 2) {
             ItemStack itemStack = modifiedStack.values().stream().toList().get(0);
             ItemStack itemStack2 = modifiedStack.values().stream().toList().get(1);
-            shouldCancel = ItemStackJuggernautModeAccessor.access(itemStack).isJuggernautItem() || ItemStackJuggernautModeAccessor.access(itemStack2).isJuggernautItem();
+            shouldCancel = access(itemStack).isJuggernautItem() || access(itemStack2).isJuggernautItem();
         }
 
         if(shouldCancel) {

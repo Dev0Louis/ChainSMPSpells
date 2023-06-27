@@ -10,6 +10,8 @@ import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
@@ -19,6 +21,7 @@ public class ChainSMPSpells implements ModInitializer {
 
     public static MinecraftServer server;
     public static Logger LOGGER = Logger.getLogger("ChainSMPSpells");
+    public static final String id = "chainsmpspells";
 
     @Override
     public void onInitialize() {
@@ -36,6 +39,9 @@ public class ChainSMPSpells implements ModInitializer {
     }
 
     public static class Spells {
+        public static final SpellType<?>[] targetingSpells = {ChainSMPSpells.Spells.PULL, ChainSMPSpells.Spells.PUSH, ChainSMPSpells.Spells.TELEPORT};
+
+
         public static SpellType<ArrowSpell> ARROW =
                 SpellType.register(new Identifier("chainsmpspells", "arrow"),SpellType.Builder.create(ArrowSpell::new, 2));
         public static SpellType<JuggernautSpell> JUGGERNAUT =
@@ -55,6 +61,14 @@ public class ChainSMPSpells implements ModInitializer {
         public static void init() {
 
         }
+    }
+
+    public static boolean isPlayerTargetable(PlayerEntity targetedPlayer) {
+        final var player = MinecraftClient.getInstance().player;
+        if(player == null)return false;
+        boolean is = player.canSee(targetedPlayer) && player.isAlive();
+        boolean isNot = targetedPlayer.isCreative() || targetedPlayer.isSpectator() || targetedPlayer.isInvisibleTo(targetedPlayer) || player.isSpectator();
+        return is && !isNot;
     }
 
 }

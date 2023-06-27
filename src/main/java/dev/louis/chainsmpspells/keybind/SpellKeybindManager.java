@@ -15,9 +15,9 @@ import java.util.Optional;
  The SpellKeybinds class stores a mapping between spell types and key bindings.
  It allows for easy retrieval of the key binding associated with a specific spell type.
  */
+@Environment(EnvType.CLIENT)
 public class SpellKeybindManager {
 
-    @Environment(EnvType.CLIENT)
     // HashMap that stores the mapping between spell types and key bindings
     public final HashMap<SpellType<? extends Spell>, KeyBinding> map = new HashMap<>();
 

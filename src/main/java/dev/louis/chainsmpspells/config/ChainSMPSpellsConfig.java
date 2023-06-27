@@ -18,10 +18,7 @@ public class ChainSMPSpellsConfig implements ConfigData {
         return manaDirection;
     }
 
-    public boolean isStandardManaDirection() {
-        return (getManaDirection() == ManaDirection.RIGHT);
-    }
-    enum ManaDirection {
+    public enum ManaDirection {
         LEFT,
         RIGHT
     }

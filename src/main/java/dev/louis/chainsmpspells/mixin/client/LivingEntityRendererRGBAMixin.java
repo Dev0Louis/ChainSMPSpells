@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
+@Deprecated
 @Mixin(LivingEntityRenderer.class)
 public abstract class LivingEntityRendererRGBAMixin<T extends LivingEntity> {
 
