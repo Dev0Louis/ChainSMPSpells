@@ -13,7 +13,6 @@ public class PushSpell extends TargetingSpell {
 
     @Override
     public void cast() {
-        System.out.println("HIHI");
         if(isCastable()) {
             var pulledPlayer = castedOn();
             if(pulledPlayer == null)return;
@@ -26,6 +25,7 @@ public class PushSpell extends TargetingSpell {
 
     @Override
     public boolean isCastable() {
-        return super.isCastable() && getCaster().distanceTo(castedOn()) < 25;
+        //System.out.println("AFAS: " + getCaster().distanceTo(castedOn()));
+        return super.isCastable()/* && getCaster().distanceTo(castedOn()) < 25*/;
     }
 }
