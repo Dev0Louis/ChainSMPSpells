@@ -8,6 +8,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.tag.FluidTags;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,29 +30,31 @@ public abstract class InGameHudMixin {
     @Shadow private int scaledWidth;
 
 
+    @Shadow @Final private MinecraftClient client;
+
     @Inject(at = @At("RETURN"), method = "renderStatusBars")
     public void renderStatusBar(DrawContext context, CallbackInfo ci){
         var playerEntity = this.getCameraPlayer();
-        int mana = NebulaPlayer.access(MinecraftClient.getInstance().player).getManaManager().getMana();
+        int mana = NebulaPlayer.access(client.player).getManaManager().getMana();
         if(isInWater(playerEntity) && mana <= 0) {
             return;
         }
         int mid = this.scaledWidth / 2 + 18;
         int n = this.scaledWidth / 2 + 91;
 
-        int s = (this.scaledHeight - 39 - 10);
         int x;
+        int y = (this.scaledHeight - 39 - 10);
 
         for(int w = 0; w < 10; ++w) {
             x = calculatePosition(mid, n, w);
-            ManaDrawer.renderMana(EMPTY, context, x, s);
+            ManaDrawer.renderMana(EMPTY, context, x, y);
 
             if((w * 2 + 1 < mana)) {
-                ManaDrawer.renderMana(FULL, context, x, s);
+                ManaDrawer.renderMana(FULL, context, x, y);
             }
 
             if (w * 2 + 1 == mana) {
-                ManaDrawer.renderMana(HALF, context, x, s);
+                ManaDrawer.renderMana(HALF, context, x, y);
             }
 
         }

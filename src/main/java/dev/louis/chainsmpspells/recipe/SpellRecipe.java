@@ -62,7 +62,7 @@ public class SpellRecipe implements Recipe<Inventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return null;
+        return SpellRecipeSerializer.INSTANCE;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class SpellRecipe implements Recipe<Inventory> {
 
         @Override
         public void write(PacketByteBuf buf, SpellRecipe recipe) {
-            buf.writeIdentifier(SpellType.getId(SpellBookItem.getSpellType(recipe.output).get()));
+            buf.writeIdentifier(SpellBookItem.getSpellType(recipe.output).get().getId());
         }
     }
 

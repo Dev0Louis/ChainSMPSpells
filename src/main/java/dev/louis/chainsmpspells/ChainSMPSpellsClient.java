@@ -4,6 +4,7 @@ import dev.louis.chainsmpspells.accessor.SupernovaClientPlayer;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.chainsmpspells.keybind.SpellKeybindManager;
 import dev.louis.chainsmpspells.network.SupernovaS2CPacket;
+import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.TargetingSpell;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
@@ -48,7 +49,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUICIDE, createKeyBind("suicide"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.TELEPORT, createKeyBind("teleport"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUPERNOVA, createKeyBind("supernova"));
-
+        ModRecipes.init_client();
     }
 
     public static KeyBinding createKeyBind(String name, int glfw){

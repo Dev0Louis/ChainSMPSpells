@@ -36,7 +36,7 @@ public class ArrowSpell extends Spell {
                         Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0 * 0.017453292F, vec3d.x, vec3d.y, vec3d.z);
                         Vec3d vec3d2 = caster.getRotationVec(1.0F);
                         Vector3f vector3f = vec3d2.toVector3f().rotate(quaternionf);
-                        ((ProjectileEntity)arrow).setVelocity((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z(), 1.7f, 10f);
+                        ((ProjectileEntity)arrow).setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), 1.7f, 10f);
                         arrow.setPosition(loc);
                         world.spawnEntity(arrow);
                     });

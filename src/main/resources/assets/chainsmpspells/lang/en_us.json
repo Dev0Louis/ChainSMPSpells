@@ -8,12 +8,31 @@
   "key.chainsmpspells.spell.suicide": "Suicide Spell",
   "key.chainsmpspells.spell.teleport": "Teleport Spell",
   "key.chainsmpspells.spell.supernova": "Supernova Spell",
+
   "item.chainsmpspells.supernova_spell_book": "Supernova Spellbook",
+  "item.chainsmpspells.juggernaut_spell_book": "Juggernaut Spellbook",
+  "item.chainsmpspells.arrow_spell_book": "Arrow Spellbook",
+  "item.chainsmpspells.pull_spell_book": "Pull Spellbook",
+  "item.chainsmpspells.push_spell_book": "Push Spellbook",
+  "item.chainsmpspells.rewind_spell_book": "Rewind Spellbook",
+  "item.chainsmpspells.suicide_spell_book": "Suicide Spellbook",
+  "item.chainsmpspells.teleport_spell_book": "Teleport Spellbook",
+
+  "container.spell_crafting": "Spell Table",
+
+  "block.chainsmpspells.spell_table": "Spell Table",
+
+
+  "item.minecraft.potion.effect.strong_instant_mana": "Potion of Mana",
+  "item.minecraft.potion.effect_instant_mana": "Potion of Mana",
+  "item.minecraft.splash_potion.effect.instant_mana": "Splash Potion of Mana",
+  "item.minecraft.splash_potion.effect.strong_instant_mana": "Splash Potion of Mana",
+  "effect.chainsmpspells.instant_mana": "Instant Mana",
+
 
   "message.chainsmpspells.mana.success": "You have %s Mana",
   "message.chainsmpspells.mana.fail": "You have %s Mana",
 
   "text.autoconfig.chainsmpspells.title": "ChainSMPClient Settings",
   "text.autoconfig.chainsmpspells.option.spellCooldown":"Spell cooldown"
-
 }

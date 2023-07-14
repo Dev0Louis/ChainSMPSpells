@@ -23,9 +23,9 @@ public class SpellBookItem extends Item {
         if(world.isClient())return TypedActionResult.pass(itemStack);
         if(hand != Hand.MAIN_HAND)return TypedActionResult.pass(itemStack);
 
-        Optional<SpellType<?>> spellType = getSpellType(itemStack);
-        if(spellType.isPresent()) {
-            NebulaPlayer.access(playerEntity).getSpellManager().addSpell(spellType.get());
+        Optional<SpellType<?>> optionalSpellType = getSpellType(itemStack);
+        if(optionalSpellType.isPresent()) {
+            NebulaPlayer.access(playerEntity).getSpellManager().addSpell(optionalSpellType.get());
             itemStack.decrement(1);
             return TypedActionResult.consume(itemStack);
         }
@@ -35,14 +35,14 @@ public class SpellBookItem extends Item {
 
 
     public static Optional<SpellType<?>> getSpellType(ItemStack itemStack) {
-        if(itemStack.getOrCreateNbt() == null)return Optional.empty();
-        if(!itemStack.getOrCreateNbt().contains("spell"))return Optional.empty();
-        return SpellType.get(Identifier.tryParse(itemStack.getOrCreateNbt().getString("spell")));
+        if(!itemStack.hasNbt() || itemStack.getNbt() == null)return Optional.empty();
+        String spell = itemStack.getNbt().getString("spell");
+        return SpellType.get(Identifier.tryParse(spell));
     }
 
     public static ItemStack createSpellBook(SpellType<?> spellType) {
         ItemStack itemStack = new ItemStack(ChainSMPSpellsItems.SPELL_BOOK);
-        itemStack.getOrCreateNbt().putString("spell", SpellType.getId(spellType).toString());
+        itemStack.getOrCreateNbt().putString("spell", spellType.getId().toString());
         return itemStack;
     }
 }

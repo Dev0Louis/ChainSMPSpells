@@ -30,7 +30,7 @@ public class JuggernautSpell extends Spell {
             drainMana();
             ServerPlayerEntityJuggernautModeAccessor accessor =
                     ServerPlayerEntityJuggernautModeAccessor.access((ServerPlayerEntity) getCaster());
-            accessor.makeJuggernaut(20*13);
+            accessor.makeJuggernaut(20*120);
 
 
         }

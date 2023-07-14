@@ -14,8 +14,11 @@ public class ModRecipes {
     public static final RecipeType<SpellRecipe> SPELL_RECIPE = RecipeType.register("chainsmpspells:spell_recipe");
     public static final ScreenHandlerType<SpellTableScreenHandler> SPELL_TABLE = register("chainsmpspells:spellcraft", SpellTableScreenHandler::new);
     public static void init() {
-        HandledScreens.register(SPELL_TABLE, SpellTableScreen::new);
         Registry.register(Registries.RECIPE_SERIALIZER, SpellRecipe.SpellRecipeSerializer.ID, SpellRecipe.SpellRecipeSerializer.INSTANCE);
+    }
+
+    public static void init_client() {
+        HandledScreens.register(SPELL_TABLE, SpellTableScreen::new);
     }
 
     private static <T extends ScreenHandler> ScreenHandlerType<T> register(String id, ScreenHandlerType.Factory<T> factory) {

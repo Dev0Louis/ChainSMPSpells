@@ -17,9 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
     @Shadow @Nullable public ClientPlayerEntity player;
-
-    @Shadow public abstract void tick();
-
     int spellCooldown = 0;
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
@@ -33,16 +30,6 @@ public abstract class MinecraftClientMixin {
                     if(keyBinding.isPressed()) {
                         resetSpellCooldown();
                         Spell spell = spellType.create(player);
-                        /*System.out.println(((TargetingSpell)spell).castedOn());
-                        ((NebulaSpellManagerAccessor) ((NebulaPlayer)player).getSpellManager()).getCastableSpells().forEach((spellType1 -> System.out.println(SpellType.getId(spellType1))));
-                        boolean b =  ((NebulaSpellManagerAccessor) ((NebulaPlayer)player).getSpellManager()).getCastableSpells().contains(spellType);
-                        System.out.println("ACABA: " + b);
-                        System.out.println(((NebulaPlayer)player).getManaManager().getMana());
-                        System.out.println("AAA: " + ((TargetingSpell)spell).castedOn() != null);
-                        boolean i = ((NebulaPlayer)player).getManaManager().getMana() - spellType.getManaCost() >= 0;
-                        System.out.println("BBB: " + i);
-                        System.out.println("I should cast: " + spell);
-                        System.out.println("Casting is " + spell.isCastable());*/
                         if(!spell.isCastable())return;
                         ClientPlayNetworking.send(new SpellCastC2SPacket(spell));
                     }

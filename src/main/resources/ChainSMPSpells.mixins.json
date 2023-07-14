@@ -10,7 +10,8 @@
     "ServerPlayerEntityRewindSpellOnDeathRemoveMixin",
     "ServerPlayerEntitySupernovaSpellMixin",
     "ServerPlayNetworkHandlerMixin",
-    "ServerWorldAccessor"
+    "ServerWorldAccessor",
+    "client.ServerWorldMixin",
   ],
   "client": [
     "client.AbstractClientPlayerEntitySupernovaMixin",

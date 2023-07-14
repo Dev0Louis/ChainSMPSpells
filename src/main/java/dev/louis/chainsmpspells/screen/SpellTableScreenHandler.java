@@ -26,6 +26,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static dev.louis.chainsmpspells.blocks.SpellTableBlock.MAX_CHARGE;
+import static dev.louis.chainsmpspells.blocks.SpellTableBlock.MIN_CHARGE;
+
 public class SpellTableScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;
     private final Property selectedRecipe = Property.create();
@@ -126,7 +129,7 @@ public class SpellTableScreenHandler extends ScreenHandler {
     }
 
     public boolean hasCharge() {
-        return charge.get() > 0;
+        return charge.get() > MIN_CHARGE;
     }
 
     public int getCharge() {
@@ -135,22 +138,22 @@ public class SpellTableScreenHandler extends ScreenHandler {
 
     public boolean modifyCharge(int charge) {
         int newCharge = this.charge.get() + charge;
-        if(newCharge < 0) {
-            this.charge.set(0);
+        if(newCharge < MIN_CHARGE) {
+            this.charge.set(MIN_CHARGE);
             return false;
         }
-        if(newCharge > 32) {
-            this.charge.set(32);
+        if(newCharge > MAX_CHARGE) {
+            this.charge.set(MAX_CHARGE);
             return false;
         }
-        if(newCharge <= 0) this.availableRecipes.clear();
+        if(newCharge == MIN_CHARGE) this.availableRecipes.clear();
 
         this.charge.set(newCharge);
         return true;
     }
 
     public boolean isChargeValid(int charge) {
-        return charge >= 0 && charge <= 32;
+        return charge >= MIN_CHARGE && charge <= MAX_CHARGE;
     }
 
     @Override

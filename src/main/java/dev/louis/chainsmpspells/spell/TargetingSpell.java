@@ -20,7 +20,7 @@ public abstract class TargetingSpell extends Spell {
 
     public TargetingSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
         super(spellType, caster);
-        if(caster.getWorld().isClient)ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
+        if (caster.getWorld().isClient) ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
     }
 
     @Override
@@ -32,6 +32,7 @@ public abstract class TargetingSpell extends Spell {
         this.castedOn = castedOn;
         return castedOn;
     }
+
     public Entity castedOn() {
         return castedOn;
     }
@@ -55,10 +56,12 @@ public abstract class TargetingSpell extends Spell {
 
     //Class to hold the logic to get the player, the player is looking at
     public static class TargetedPlayerSelector {
-        private TargetedPlayerSelector(){}
+        private TargetedPlayerSelector() {
+        }
+
         public static TargetedPlayerSelector INSTANCE = new TargetedPlayerSelector();
         private final MinecraftClient client = MinecraftClient.getInstance();
-        //boolean hasTargetingSpell = false;
+        boolean hasTargetingSpell = false;
         boolean hasRaycastRun = false;
         int playerInViewScanTimeout = 0;
         PlayerEntity playerInView;
@@ -69,37 +72,41 @@ public abstract class TargetingSpell extends Spell {
 
         private void registerTickCallbacks() {
             ClientTickEvents.END_WORLD_TICK.register(world -> {
-                if(playerInViewScanTimeout > 0)playerInViewScanTimeout--;
+                if (playerInViewScanTimeout > 0) playerInViewScanTimeout--;
                 hasRaycastRun = false;
-                //long tick = world.getTime();
+                INSTANCE.hasTargetingSpell = false;
+                long tick = world.getTime();
 
-                /**if(tick % 100 == 0) {
-                    for (SpellType<? extends Spell> spellType : Nebula.NebulaRegistries.SPELL_TYPE) {
-                        if (NebulaPlayer.access(client.player).getSpellManager().canCast()) {
+                if (tick % 100 == 0) {
+                    for (SpellType<? extends Spell> spellType : ChainSMPSpells.Spells.targetingSpells) {
+                        if (spellType.hasLearned(client.player)) {
                             INSTANCE.hasTargetingSpell = true;
                             break;
                         }
                     }
-                }**/
+                }
 
             });
         }
 
         private PlayerEntity getPlayerInViewOrNull() {
-            if(!hasRaycastRun) {
+            if (!hasRaycastRun) {
                 INSTANCE.calculatePlayerInView();
             }
             return playerInView;
         }
+
         public Optional<PlayerEntity> getPlayerInView() {
             return Optional.ofNullable(getPlayerInViewOrNull());
         }
 
         private void calculatePlayerInView() {
-            if(!shouldCalculatePlayerInView())return;
-
+            if (!shouldCalculatePlayerInView()) return;
+            System.out.println("Calculating Nerd!!!");
             playerInView = null;
             final ChainSMPSpellsConfig config = ChainSMPSpellsClient.INSTANCE.config;
+
+            if (client == null || client.getCameraEntity() == null) return;
 
             var pos = client.getCameraEntity().getEyePos();
             int divider = config.getRaycastScanPrecision();
@@ -107,10 +114,10 @@ public abstract class TargetingSpell extends Spell {
             var x = client.getCameraEntity().getRotationVecClient().normalize().multiply(i);
 
             searchForPlayerInView:
-            for (int y = 0; y < 24*divider; ++y) {
+            for (int y = 0; y < 24 * divider; ++y) {
                 for (PlayerEntity targetedPlayer : getPlayersWithoutSelf()) {
-                    if(targetedPlayer.getBoundingBox().expand(0.3).contains(pos)) {
-                        if(ChainSMPSpells.isPlayerTargetable(targetedPlayer)) {
+                    if (targetedPlayer.getBoundingBox().expand(0.3).contains(pos)) {
+                        if (ChainSMPSpells.isPlayerTargetable(targetedPlayer)) {
                             playerInView = targetedPlayer;
                             playerInViewScanTimeout = 10;
                             break searchForPlayerInView;
@@ -120,7 +127,9 @@ public abstract class TargetingSpell extends Spell {
                 }
             }
             hasRaycastRun = true;
-        };
+        }
+
+        ;
 
         private static Iterable<? extends PlayerEntity> getPlayersWithoutSelf() {
             final PlayerEntity clientPlayer = MinecraftClient.getInstance().player;
@@ -130,8 +139,8 @@ public abstract class TargetingSpell extends Spell {
         }
 
         public boolean shouldCalculatePlayerInView() {
-            return /*hasTargetingSpell &&*/ playerInViewScanTimeout == 0;
-        }
+            return hasTargetingSpell && playerInViewScanTimeout == 0;
 
+        }
     }
 }

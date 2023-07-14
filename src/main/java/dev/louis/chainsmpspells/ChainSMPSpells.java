@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ChainSMPSpells implements ModInitializer {
@@ -39,8 +40,7 @@ public class ChainSMPSpells implements ModInitializer {
     }
 
     public static class Spells {
-        public static final SpellType<?>[] targetingSpells = {ChainSMPSpells.Spells.PULL, ChainSMPSpells.Spells.PUSH, ChainSMPSpells.Spells.TELEPORT};
-
+        public static  List<SpellType<?>> targetingSpells;
 
         public static SpellType<ArrowSpell> ARROW =
                 SpellType.register(new Identifier("chainsmpspells", "arrow"),SpellType.Builder.create(ArrowSpell::new, 2));
@@ -59,6 +59,7 @@ public class ChainSMPSpells implements ModInitializer {
         public static SpellType<SupernovaSpell> SUPERNOVA =
                 SpellType.register(new Identifier("chainsmpspells", "supernova"), SpellType.Builder.create(SupernovaSpell::new, 20));
         public static void init() {
+            targetingSpells = List.of(ChainSMPSpells.Spells.PULL, ChainSMPSpells.Spells.PUSH, ChainSMPSpells.Spells.TELEPORT);
 
         }
     }
@@ -66,7 +67,7 @@ public class ChainSMPSpells implements ModInitializer {
     public static boolean isPlayerTargetable(PlayerEntity targetedPlayer) {
         final var player = MinecraftClient.getInstance().player;
         if(player == null)return false;
-        boolean is = player.canSee(targetedPlayer) && player.isAlive();
+        boolean is = player.canSee(targetedPlayer) && player.isPartOfGame();
         boolean isNot = targetedPlayer.isCreative() || targetedPlayer.isSpectator() || targetedPlayer.isInvisibleTo(targetedPlayer) || player.isSpectator();
         return is && !isNot;
     }

@@ -3,7 +3,7 @@
   "textures": {
     "particle": "chainsmpspells:block/spell_table_bottom",
     "bottom": "chainsmpspells:block/spell_table_bottom",
-    "top": "chainsmpspells:block/spell_table_top",
+    "top": "chainsmpspells:block/charged_spell_table_top",
     "side": "chainsmpspells:block/spell_table_side"
   },
   "elements": [
