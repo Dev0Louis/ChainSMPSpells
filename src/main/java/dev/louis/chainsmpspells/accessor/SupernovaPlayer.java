@@ -8,7 +8,7 @@ public interface SupernovaPlayer {
     public boolean isCombusting();
     public int getTicksTillSupernova();
 
-        public static SupernovaPlayer access(ServerPlayerEntity player) {
+    public static SupernovaPlayer access(ServerPlayerEntity player) {
         return ((SupernovaPlayer)player);
     }
 }

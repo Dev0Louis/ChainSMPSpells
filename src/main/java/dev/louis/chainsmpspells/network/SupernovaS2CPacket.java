@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
+@Deprecated(forRemoval = true)
 public record SupernovaS2CPacket(UUID uuid, int ticks) implements FabricPacket {
     public static final PacketType<SupernovaS2CPacket> TYPE = PacketType.create(new Identifier("chainsmpspells:supernova"), SupernovaS2CPacket::new);
     public SupernovaS2CPacket(PacketByteBuf buf) {

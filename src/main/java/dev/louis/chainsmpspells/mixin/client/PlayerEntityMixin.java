@@ -34,7 +34,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         var targetedPlayer = ChainSMPSpellsClient.getPlayerInView();
         if(targetedPlayer.isEmpty())return false;
         if(ChainSMPSpells.isPlayerTargetable(targetedPlayer.get())) {
-            return (Object) this == ChainSMPSpellsClient.getPlayerInView().get();
+            return (Object) this == targetedPlayer.get();
         }
         return false;
     }

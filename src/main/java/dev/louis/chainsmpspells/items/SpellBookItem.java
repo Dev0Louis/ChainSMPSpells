@@ -1,6 +1,5 @@
 package dev.louis.chainsmpspells.items;
 
-import dev.louis.nebula.api.NebulaPlayer;
 import dev.louis.nebula.spell.SpellType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -25,7 +24,7 @@ public class SpellBookItem extends Item {
 
         Optional<SpellType<?>> optionalSpellType = getSpellType(itemStack);
         if(optionalSpellType.isPresent()) {
-            NebulaPlayer.access(playerEntity).getSpellManager().addSpell(optionalSpellType.get());
+            playerEntity.getSpellManager().addSpell(optionalSpellType.get());
             itemStack.decrement(1);
             return TypedActionResult.consume(itemStack);
         }

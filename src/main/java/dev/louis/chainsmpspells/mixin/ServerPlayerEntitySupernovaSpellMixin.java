@@ -47,7 +47,7 @@ public abstract class ServerPlayerEntitySupernovaSpellMixin extends PlayerEntity
     }
 
     public void startCombustion() {
-        this.ticksTillSupernova = 40;
+        this.ticksTillSupernova = 10;
         this.isCombusting = true;
     }
 

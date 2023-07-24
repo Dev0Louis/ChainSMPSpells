@@ -2,7 +2,6 @@ package dev.louis.chainsmpspells.mixin.client;
 
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import dev.louis.chainsmpspells.gui.hud.ManaDrawer;
-import dev.louis.nebula.api.NebulaPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -35,7 +34,7 @@ public abstract class InGameHudMixin {
     @Inject(at = @At("RETURN"), method = "renderStatusBars")
     public void renderStatusBar(DrawContext context, CallbackInfo ci){
         var playerEntity = this.getCameraPlayer();
-        int mana = NebulaPlayer.access(client.player).getManaManager().getMana();
+        int mana = client.player.getManaManager().getMana();
         if(isInWater(playerEntity) && mana <= 0) {
             return;
         }
@@ -78,7 +77,7 @@ public abstract class InGameHudMixin {
 
     @ModifyArg(method = "renderStatusBars", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;getHeartRows(I)I"))
     public int modifyVariable(int heartCount) {
-        if(!((NebulaPlayer.access(MinecraftClient.getInstance().player)).getManaManager().getMana()<=0)) {
+        if(!(MinecraftClient.getInstance().player.getManaManager().getMana()<=0)) {
             heartCount = heartCount + 10;
         }
         return heartCount;

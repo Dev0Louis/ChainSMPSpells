@@ -1,18 +1,14 @@
 package dev.louis.chainsmpspells;
 
-import dev.louis.chainsmpspells.accessor.SupernovaClientPlayer;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.chainsmpspells.keybind.SpellKeybindManager;
-import dev.louis.chainsmpspells.network.SupernovaS2CPacket;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.TargetingSpell;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +21,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
     public static final MinecraftClient client = MinecraftClient.getInstance();
     public ChainSMPSpellsConfig config;
     private SpellKeybindManager spellKeybindManager;
-    public TargetingSpell.TargetedPlayerSelector targetedPlayerSelector = TargetingSpell.TargetedPlayerSelector.INSTANCE;
+    public final TargetingSpell.TargetedPlayerSelector targetedPlayerSelector = TargetingSpell.TargetedPlayerSelector.INSTANCE;
 
 
     @Override
@@ -39,7 +35,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
             ChainSMPSpells.LOGGER.info("Autoconfig couldn't be registered.");
         }
         targetedPlayerSelector.init();
-        setupSupernovaSpell();
+
         spellKeybindManager = getSpellKeybindManager();
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ARROW, createKeyBind("arrow"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.JUGGERNAUT, createKeyBind("juggernaut"));
@@ -70,27 +66,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         return (spellKeybindManager = new SpellKeybindManager());
     }
 
-
-    private void setupSupernovaSpell() {
-        ClientPlayNetworking.registerGlobalReceiver(SupernovaS2CPacket.TYPE, ((packet, player, responseSender) -> {
-            PlayerEntity combustingPlayer = player.getWorld().getPlayerByUuid(packet.uuid());
-            if(player.getUuid().equals(packet.uuid())) combustingPlayer = player;
-            if(combustingPlayer instanceof AbstractClientPlayerEntity abstractClientPlayerEntity) {
-                SupernovaClientPlayer.access(abstractClientPlayerEntity).setCombustion(packet.ticks());
-            }
-        }));
-        /**EntityRenderRGBACallback.EVENT.register(((livingEntity, rgba) -> {
-            if(livingEntity instanceof AbstractClientPlayerEntity combustingPlayer && isPlayerCombusting(combustingPlayer))rgba.setBlue(0);
-        }));**/
-    }
-
-
     public static Optional<PlayerEntity> getPlayerInView() {
         return INSTANCE.targetedPlayerSelector.getPlayerInView();
     }
-    public boolean isPlayerCombusting(AbstractClientPlayerEntity player) {
-        int playerCombustionTimer = SupernovaClientPlayer.access(player).getCombustionTime();
-        return playerCombustionTimer > 0;
-    }
-    
 }

@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.ArrayList;
@@ -40,11 +39,6 @@ public class JuggernautSpell extends Spell {
     public boolean isCastable() {
         if(getCaster().getWorld().isClient())return super.isCastable();
         return ServerPlayerEntityJuggernautModeAccessor.access((ServerPlayerEntity) getCaster()).isNotInJuggernautMode() && super.isCastable();
-    }
-
-
-    public void sendActionBarUpdate(int time) {
-        getCaster().sendMessage(Text.translatable("message.chainsmpspells.cooldown", time), true);
     }
 
     public static void generateJuggernautItemAndSetToSlot(ServerPlayerEntity player, int slot, Item item, long tick) {

@@ -4,6 +4,7 @@ import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.nebula.spell.Spell;
+import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
@@ -102,7 +103,6 @@ public abstract class TargetingSpell extends Spell {
 
         private void calculatePlayerInView() {
             if (!shouldCalculatePlayerInView()) return;
-            System.out.println("Calculating Nerd!!!");
             playerInView = null;
             final ChainSMPSpellsConfig config = ChainSMPSpellsClient.INSTANCE.config;
 

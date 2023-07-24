@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import dev.louis.chainsmpspells.accessor.RewindPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -31,12 +32,19 @@ public abstract class ServerPlayerEntityRewindSpellOnDeathRemoveMixin extends Pl
 
     @Shadow public abstract ServerWorld getServerWorld();
 
-    World memorizedWorld;
+    @Unique
+    ServerWorld memorizedWorld;
+    @Unique
     BlockPos memorizedPos;
+    @Unique
     Vec3d memorizedVelocity;
+    @Unique
     float memorizedYaw;
+    @Unique
     float memorizedPitch;
+    @Unique
     int ticksTillMemory;
+    @Unique
     boolean isRemembering = false;
 
     @Inject(method = "tick", at = @At("RETURN"))
@@ -47,31 +55,33 @@ public abstract class ServerPlayerEntityRewindSpellOnDeathRemoveMixin extends Pl
             ticksTillMemory--;
         } else if (isRemembering){
             isRemembering = false;
-            ((ServerWorld) memorizedWorld).spawnParticles(ParticleTypes.REVERSE_PORTAL, memorizedPos.getX(),memorizedPos.getY(),memorizedPos.getZ(), 2,0,0,0, 0);
-            this.teleport((ServerWorld) memorizedWorld, memorizedPos.getX(), memorizedPos.getY(), memorizedPos.getZ(), memorizedYaw, memorizedPitch);
+            memorizedWorld.spawnParticles(ParticleTypes.REVERSE_PORTAL, memorizedPos.getX(),memorizedPos.getY(),memorizedPos.getZ(), 2,0,0,0, 0);
+            this.teleport(memorizedWorld, memorizedPos.getX(), memorizedPos.getY(), memorizedPos.getZ(), memorizedYaw, memorizedPitch);
             playRewindSound();
             this.setVelocity(memorizedVelocity.negate());
         }
     }
 
+    @Unique
     private void playPingSound() {
         this.getServerWorld().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_NOTE_BLOCK_BANJO.value(), this.getSoundCategory(), 1, -1);
     }
+    @Unique
     private void playRewindSound() {
         this.getServerWorld().playSound(null, memorizedPos.getX(), memorizedPos.getY(), memorizedPos.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1, 1);
     }
     @Inject(method = "onDeath", at = @At("RETURN"))
     public void forget(DamageSource damageSource, CallbackInfo ci) {
-        clearMemory();
+        chainsmpspells$clearMemory();
     }
 
-    public void clearMemory() {
+    public void chainsmpspells$clearMemory() {
         memorizedWorld = null;
         memorizedPos = null;
         ticksTillMemory = 0;
         isRemembering = false;
     }
-    public void addMemory(World memorizedWorld, BlockPos memorizedPos, Vec3d memorizedVelocity, float memorizedYaw, float memorizedPitch, int ticksTillMemory) {
+    public void chainsmpspells$addMemory(ServerWorld memorizedWorld, BlockPos memorizedPos, Vec3d memorizedVelocity, float memorizedYaw, float memorizedPitch, int ticksTillMemory) {
         this.memorizedWorld = memorizedWorld;
         this.memorizedPos = memorizedPos;
         this.memorizedVelocity = memorizedVelocity;

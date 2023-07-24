@@ -7,7 +7,6 @@ import dev.louis.nebula.spell.SpellType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -46,11 +45,4 @@ public class ArrowSpell extends Spell {
             }
         }
     }
-
-    @Override
-    public Identifier getID() {
-        return new Identifier("chainsmpspells", "arrow");
-    }
-
-
 }

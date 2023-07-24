@@ -40,7 +40,7 @@ public class ChainSMPSpells implements ModInitializer {
     }
 
     public static class Spells {
-        public static  List<SpellType<?>> targetingSpells;
+        public static List<SpellType<?>> targetingSpells;
 
         public static SpellType<ArrowSpell> ARROW =
                 SpellType.register(new Identifier("chainsmpspells", "arrow"),SpellType.Builder.create(ArrowSpell::new, 2));
