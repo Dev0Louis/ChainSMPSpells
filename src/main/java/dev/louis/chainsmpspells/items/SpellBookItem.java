@@ -1,17 +1,26 @@
 package dev.louis.chainsmpspells.items;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.nebula.spell.SpellType;
+import eu.pb4.polymer.core.api.item.PolymerItem;
+import eu.pb4.polymer.core.api.item.PolymerItemUtils;
+import eu.pb4.polymer.core.api.utils.PolymerClientDecoded;
+import eu.pb4.polymer.core.api.utils.PolymerKeepModel;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class SpellBookItem extends Item {
+public class SpellBookItem extends Item implements PolymerItem, PolymerKeepModel, PolymerClientDecoded {
     public SpellBookItem(Settings settings) {
         super(settings);
     }
@@ -42,6 +51,18 @@ public class SpellBookItem extends Item {
     public static ItemStack createSpellBook(SpellType<?> spellType) {
         ItemStack itemStack = new ItemStack(ChainSMPSpellsItems.SPELL_BOOK);
         itemStack.getOrCreateNbt().putString("spell", spellType.getId().toString());
+        return itemStack;
+    }
+
+    @Override
+    public Item getPolymerItem(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
+        if(ChainSMPSpells.isClientVanilla(player))return Items.BOOK;
+        return itemStack.getItem();
+    }
+
+    @Override
+    public ItemStack getPolymerItemStack(ItemStack itemStack, TooltipContext context, @Nullable ServerPlayerEntity player) {
+        if(ChainSMPSpells.isClientVanilla(player))return PolymerItemUtils.createItemStack(itemStack, context, player);
         return itemStack;
     }
 }

@@ -7,13 +7,16 @@ import dev.louis.chainsmpspells.mana.effect.ManaEffects;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.*;
 import dev.louis.nebula.spell.SpellType;
+import eu.pb4.polymer.networking.api.PolymerServerNetworking;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -23,6 +26,9 @@ public class ChainSMPSpells implements ModInitializer {
     public static MinecraftServer server;
     public static Logger LOGGER = Logger.getLogger("ChainSMPSpells");
     public static final String id = "chainsmpspells";
+
+    public static final Identifier HAS_SPELL_TABLE = new Identifier("chainsmpspells", "has_spell_table");
+
 
     @Override
     public void onInitialize() {
@@ -70,6 +76,18 @@ public class ChainSMPSpells implements ModInitializer {
         boolean is = player.canSee(targetedPlayer) && player.isPartOfGame();
         boolean isNot = targetedPlayer.isCreative() || targetedPlayer.isSpectator() || targetedPlayer.isInvisibleTo(targetedPlayer) || player.isSpectator();
         return is && !isNot;
+    }
+
+    public static boolean isClientVanilla(@Nullable ServerPlayerEntity player) {
+        var playerNotNull = player != null;
+        if(playerNotNull) {
+            var networkNotNull = player.networkHandler != null;
+            if(networkNotNull) {
+                var version = PolymerServerNetworking.getSupportedVersion(player.networkHandler, ChainSMPSpells.HAS_SPELL_TABLE);
+                return version == -1;
+            }
+        }
+        return false;
     }
 
 }

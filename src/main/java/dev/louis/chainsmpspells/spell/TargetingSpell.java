@@ -2,8 +2,6 @@ package dev.louis.chainsmpspells.spell;
 
 import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
-import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
-import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -62,32 +60,22 @@ public abstract class TargetingSpell extends Spell {
 
         public static TargetedPlayerSelector INSTANCE = new TargetedPlayerSelector();
         private final MinecraftClient client = MinecraftClient.getInstance();
-        boolean hasTargetingSpell = false;
         boolean hasRaycastRun = false;
-        int playerInViewScanTimeout = 0;
+        //int playerInViewScanTimeout = 0;
         PlayerEntity playerInView;
 
         public void init() {
-            registerTickCallbacks();
+            ClientTickEvents.END_WORLD_TICK.register(client -> {
+                this.hasRaycastRun = false;
+            });
         }
 
-        private void registerTickCallbacks() {
-            ClientTickEvents.END_WORLD_TICK.register(world -> {
-                if (playerInViewScanTimeout > 0) playerInViewScanTimeout--;
-                hasRaycastRun = false;
-                INSTANCE.hasTargetingSpell = false;
-                long tick = world.getTime();
-
-                if (tick % 100 == 0) {
-                    for (SpellType<? extends Spell> spellType : ChainSMPSpells.Spells.targetingSpells) {
-                        if (spellType.hasLearned(client.player)) {
-                            INSTANCE.hasTargetingSpell = true;
-                            break;
-                        }
-                    }
-                }
-
-            });
+        private boolean hasTargetingSpell() {
+            if(client.player == null) return false;
+            for (SpellType<? extends Spell> spellType : ChainSMPSpells.Spells.targetingSpells) {
+                if (spellType.hasLearned(client.player))return true;
+            }
+            return false;
         }
 
         private PlayerEntity getPlayerInViewOrNull() {
@@ -103,13 +91,12 @@ public abstract class TargetingSpell extends Spell {
 
         private void calculatePlayerInView() {
             if (!shouldCalculatePlayerInView()) return;
-            playerInView = null;
-            final ChainSMPSpellsConfig config = ChainSMPSpellsClient.INSTANCE.config;
+            this.playerInView = null;
 
             if (client == null || client.getCameraEntity() == null) return;
 
             var pos = client.getCameraEntity().getEyePos();
-            int divider = config.getRaycastScanPrecision();
+            int divider = ChainSMPSpellsClient.config.getRaycastScanPrecision();
             double i = 1.0 / divider;
             var x = client.getCameraEntity().getRotationVecClient().normalize().multiply(i);
 
@@ -118,8 +105,8 @@ public abstract class TargetingSpell extends Spell {
                 for (PlayerEntity targetedPlayer : getPlayersWithoutSelf()) {
                     if (targetedPlayer.getBoundingBox().expand(0.3).contains(pos)) {
                         if (ChainSMPSpells.isPlayerTargetable(targetedPlayer)) {
-                            playerInView = targetedPlayer;
-                            playerInViewScanTimeout = 10;
+                            this.playerInView = targetedPlayer;
+                            //this.playerInViewScanTimeout = 10;
                             break searchForPlayerInView;
                         }
                     }
@@ -139,7 +126,7 @@ public abstract class TargetingSpell extends Spell {
         }
 
         public boolean shouldCalculatePlayerInView() {
-            return hasTargetingSpell && playerInViewScanTimeout == 0;
+            return hasTargetingSpell() /*&& playerInViewScanTimeout == 0*/;
 
         }
     }

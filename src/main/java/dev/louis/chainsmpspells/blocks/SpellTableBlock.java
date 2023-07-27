@@ -1,13 +1,20 @@
 package dev.louis.chainsmpspells.blocks;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.screen.SpellTableScreenHandler;
+import eu.pb4.polymer.core.api.block.PolymerBlock;
+import eu.pb4.polymer.core.api.utils.PolymerClientDecoded;
+import eu.pb4.polymer.core.api.utils.PolymerKeepModel;
+import eu.pb4.polymer.networking.api.PolymerServerNetworking;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.Property;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.Text;
@@ -20,7 +27,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class SpellTableBlock extends Block {
+import static dev.louis.chainsmpspells.ChainSMPSpells.isClientVanilla;
+
+public class SpellTableBlock extends Block implements PolymerBlock, PolymerClientDecoded, PolymerKeepModel {
     private static final Text TITLE = Text.translatable("container.spell_crafting");
     public static final int MAX_CHARGE = 32;
     public static final int MIN_CHARGE = 0;
@@ -33,6 +42,9 @@ public class SpellTableBlock extends Block {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient)return ActionResult.SUCCESS;
+        var playNetworkHandler = ((ServerPlayerEntity)player).networkHandler;
+        var version = PolymerServerNetworking.getSupportedVersion(playNetworkHandler, ChainSMPSpells.HAS_SPELL_TABLE);
+        if(version == -1)return ActionResult.CONSUME;
         player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
         //player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
         return ActionResult.CONSUME;
@@ -44,7 +56,8 @@ public class SpellTableBlock extends Block {
 
             @Override
             public int get() {
-                return world.getBlockState(pos).get(CHARGE);
+                var optional = world.getBlockState(pos).getOrEmpty(CHARGE);
+                return optional.orElse(MIN_CHARGE);
             }
 
             @Override
@@ -88,6 +101,29 @@ public class SpellTableBlock extends Block {
 
     public static int getLightLevel(BlockState state) {
         return state.get(CHARGE) / 3 + 4;
+    }
+
+
+    @Override
+    public Block getPolymerBlock(BlockState state) {
+        return Blocks.ENCHANTING_TABLE;
+    }
+
+    @Override
+    public BlockState getPolymerBlockState(BlockState state, ServerPlayerEntity player) {
+        if(isClientVanilla(player))return this.getPolymerBlockState(state);
+        return state;
+    }
+
+    @Override
+    public Block getPolymerBlock(BlockState state, ServerPlayerEntity player) {
+        if(isClientVanilla(player))return this.getPolymerBlock(state);
+        return this;
+    }
+
+
+    public boolean handleMiningOnServer(ItemStack tool, BlockState state, BlockPos pos, ServerPlayerEntity player) {
+        return false;
     }
 }
 

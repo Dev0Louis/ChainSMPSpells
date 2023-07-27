@@ -1,4 +1,4 @@
-package dev.louis.chainsmpspells.mixin.client;
+package dev.louis.chainsmpspells.mixin;
 
 import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
 import net.minecraft.block.BlockState;

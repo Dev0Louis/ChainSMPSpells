@@ -1,8 +1,10 @@
 package dev.louis.chainsmpspells.recipe;
 
 import com.google.gson.JsonObject;
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.items.SpellBookItem;
 import dev.louis.nebula.spell.SpellType;
+import eu.pb4.polymer.core.api.item.PolymerRecipe;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -11,13 +13,14 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class SpellRecipe implements Recipe<Inventory> {
+public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
     private final Identifier id;
     private final ItemStack input;
     private final ItemStack output;
@@ -101,6 +104,12 @@ public class SpellRecipe implements Recipe<Inventory> {
             buf.writeIdentifier(SpellBookItem.getSpellType(recipe.output).get().getId());
         }
     }
+
+    public Recipe<?> getPolymerReplacement(ServerPlayerEntity player) {
+        if(ChainSMPSpells.isClientVanilla(player))return PolymerRecipe.createStonecuttingRecipe(this);
+        return this;
+    }
+
 
     @Override
     public String toString() {

@@ -60,7 +60,7 @@ public abstract class InGameHudMixin {
     }
 
     private int calculatePosition(int mid, int n, int w) {
-        if(ChainSMPSpellsClient.INSTANCE.config.getManaDirection() == RIGHT) {
+        if(ChainSMPSpellsClient.config.getManaDirection() == RIGHT) {
             return mid + w * 8 - 9;
         }else {
             return n - w * 8 - 9;

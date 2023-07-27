@@ -25,7 +25,7 @@ public abstract class MinecraftClientMixin {
             spellCooldown--;
         } else {
             Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
-                ChainSMPSpellsClient.INSTANCE.getSpellKeybindManager().getKey(spellType).ifPresent(keyBinding -> {
+                ChainSMPSpellsClient.getSpellKeybindManager().getKey(spellType).ifPresent(keyBinding -> {
                     //System.out.println(SpellType.getId(spellType).toString() +" | "+ keyBinding.getBoundKeyTranslationKey());
                     if(keyBinding.isPressed()) {
                         resetSpellCooldown();
@@ -43,6 +43,6 @@ public abstract class MinecraftClientMixin {
     }
 
     public int getSpellCooldown() {
-        return ChainSMPSpellsClient.INSTANCE.config.getSpellCooldown();
+        return ChainSMPSpellsClient.config.getSpellCooldown();
     }
 }

@@ -1,13 +1,17 @@
 package dev.louis.chainsmpspells.mana.effect;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
+import dev.louis.nebula.api.NebulaPlayer;
+import eu.pb4.polymer.core.api.other.PolymerStatusEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.InstantStatusEffect;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import dev.louis.nebula.api.NebulaPlayer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class InstantManaStatusEffect extends InstantStatusEffect {
+public class InstantManaStatusEffect extends InstantStatusEffect implements PolymerStatusEffect {
     public InstantManaStatusEffect() {
         super(StatusEffectCategory.BENEFICIAL,
                 0x03ddfe);
@@ -18,5 +22,10 @@ public class InstantManaStatusEffect extends InstantStatusEffect {
         if (target instanceof NebulaPlayer nebulaPlayer) {
             nebulaPlayer.getManaManager().addMana((amplifier+1)*5);
         }
+    }
+    @Override
+    public StatusEffect getPolymerReplacement(ServerPlayerEntity player) {
+        if(ChainSMPSpells.isClientVanilla(player))return null;
+        return this;
     }
 }

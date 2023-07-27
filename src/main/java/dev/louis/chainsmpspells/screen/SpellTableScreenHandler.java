@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 import static dev.louis.chainsmpspells.blocks.SpellTableBlock.MAX_CHARGE;
 import static dev.louis.chainsmpspells.blocks.SpellTableBlock.MIN_CHARGE;
 
-public class SpellTableScreenHandler extends ScreenHandler {
+public class SpellTableScreenHandler extends ScreenHandler{
     private final ScreenHandlerContext context;
     private final Property selectedRecipe = Property.create();
     private final World world;
@@ -191,7 +191,8 @@ public class SpellTableScreenHandler extends ScreenHandler {
             this.availableRecipes = this.world.getRecipeManager().listAllOfType(ModRecipes.SPELL_RECIPE).stream()
                     .filter(recipe -> recipe.matches(input, world))
                     .sorted(Comparator.comparing(SpellRecipe::getId))
-                    .collect(Collectors.toList());;
+                    .collect(Collectors.toList());
+            System.out.println(this.world.getRecipeManager().listAllOfType(ModRecipes.SPELL_RECIPE));
         }
     }
 

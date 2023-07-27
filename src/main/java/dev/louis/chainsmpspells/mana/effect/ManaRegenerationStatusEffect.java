@@ -1,12 +1,15 @@
 package dev.louis.chainsmpspells.mana.effect;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.nebula.mana.manager.ManaManager;
+import eu.pb4.polymer.core.api.other.PolymerStatusEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 
-public class ManaRegenerationStatusEffect extends StatusEffect {
+public class ManaRegenerationStatusEffect extends StatusEffect implements PolymerStatusEffect {
     public ManaRegenerationStatusEffect() {
         super(StatusEffectCategory.BENEFICIAL,
                 0x98D982);
@@ -29,4 +32,9 @@ public class ManaRegenerationStatusEffect extends StatusEffect {
         }
     }
 
+    @Override
+    public StatusEffect getPolymerReplacement(ServerPlayerEntity player) {
+        if(ChainSMPSpells.isClientVanilla(player))return null;
+        return this;
+    }
 }

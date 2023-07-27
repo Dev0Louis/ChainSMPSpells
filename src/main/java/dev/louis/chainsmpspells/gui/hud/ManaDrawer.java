@@ -13,6 +13,7 @@ public class ManaDrawer {
     }
 
     private static void render(Identifier texture, DrawContext context, int x, int y) {
+        //if(ChainSMPSpellsClient.config.getManaDirection() == ChainSMPSpellsConfig.ManaDirection.LEFT)context.getMatrices().translate(-1.0, 0, 0);
         context.drawTexture(texture, x, y, 9, 9, 9, 9, 9, 9);
     }
 

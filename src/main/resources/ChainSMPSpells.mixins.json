@@ -11,10 +11,9 @@
     "ServerPlayerEntitySupernovaSpellMixin",
     "ServerPlayNetworkHandlerMixin",
     "ServerWorldAccessor",
-    "client.ServerWorldMixin",
+    "ServerWorldMixin"
   ],
   "client": [
-    "client.AbstractClientPlayerEntitySupernovaMixin",
     "client.InGameHudMixin",
     "client.ItemStackNameMixin",
     "client.MinecraftClientMixin",
