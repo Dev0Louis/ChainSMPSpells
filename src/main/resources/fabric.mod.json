@@ -29,7 +29,7 @@
     "fabric": "*",
     "minecraft": ">=1.20",
     "cloth-config": "*",
-    "polymer": "*"
+    "polymer-bundled": "*"
   },
   "accessWidener": "chainsmpspells.accesswidener"
 }
