@@ -14,16 +14,12 @@ public class TeleportSpell extends TargetingSpell {
 
     @Override
     public void cast() {
-        if(isCastable()) {
-            drainMana();
-            double x = castedOn().getX();
-            double y = castedOn().getY();
-            double z = castedOn().getZ();
-            getCaster().getWorld().playSound(null, BlockPos.ofFloored(getCaster().getX(),getCaster().getY(),getCaster().getZ()), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
-            getCaster().teleport(x, y, z, true);
-            getCaster().getWorld().playSound(null, BlockPos.ofFloored(x,y,z), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
-
-        }
+        double x = castedOn().getX();
+        double y = castedOn().getY();
+        double z = castedOn().getZ();
+        getCaster().getWorld().playSound(null, BlockPos.ofFloored(getCaster().getX(),getCaster().getY(),getCaster().getZ()), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
+        getCaster().teleport(x, y, z, true);
+        getCaster().getWorld().playSound(null, BlockPos.ofFloored(x,y,z), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
     }
 
     @Override

@@ -11,9 +11,6 @@ public class SuicideSpell extends Spell {
 
     @Override
     public void cast() {
-        if(this.isCastable()) {
-            drainMana();
-            getCaster().kill();
-        }
+        getCaster().kill();
     }
 }

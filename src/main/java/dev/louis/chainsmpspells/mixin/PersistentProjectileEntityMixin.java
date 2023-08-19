@@ -28,8 +28,8 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity i
     }
 
     @Override
-    public void shouldDamageOwner(boolean b) {
-        this.damageOwner = b;
+    public void shouldDamageOwner(boolean damageOwner) {
+        this.damageOwner = damageOwner;
     }
 
     @Inject(method = "onEntityHit", at = @At("HEAD"), cancellable = true)

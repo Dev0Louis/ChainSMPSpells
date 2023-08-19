@@ -6,9 +6,6 @@
   "mixins": [
     "ItemStackMixin",
     "PersistentProjectileEntityMixin",
-    "ServerPlayerEntityJuggernautSpellMixin",
-    "ServerPlayerEntityRewindSpellOnDeathRemoveMixin",
-    "ServerPlayerEntitySupernovaSpellMixin",
     "ServerPlayNetworkHandlerMixin",
     "ServerWorldAccessor",
     "ServerWorldMixin"

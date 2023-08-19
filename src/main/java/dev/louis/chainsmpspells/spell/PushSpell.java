@@ -13,19 +13,15 @@ public class PushSpell extends TargetingSpell {
 
     @Override
     public void cast() {
-        if(isCastable()) {
-            var pulledPlayer = castedOn();
-            if(pulledPlayer == null)return;
-            Vec3d velocity = getCaster().getPos().subtract(pulledPlayer.getPos()).normalize().negate();
-            pulledPlayer.setVelocity(velocity);
-            pulledPlayer.velocityModified = true;
-            drainMana();
-        }
+        var pulledPlayer = castedOn();
+        if(pulledPlayer == null)return;
+        Vec3d velocity = getCaster().getPos().subtract(pulledPlayer.getPos()).normalize().negate();
+        pulledPlayer.setVelocity(velocity);
+        pulledPlayer.velocityModified = true;
     }
 
     @Override
     public boolean isCastable() {
-        //System.out.println("AFAS: " + getCaster().distanceTo(castedOn()));
-        return super.isCastable()/* && getCaster().distanceTo(castedOn()) < 25*/;
+        return super.isCastable() && getCaster().distanceTo(castedOn()) < 25;
     }
 }

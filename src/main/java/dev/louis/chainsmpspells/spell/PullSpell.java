@@ -12,14 +12,11 @@ public class PullSpell extends TargetingSpell {
 
     @Override
     public void cast() {
-        if(isCastable()) {
-            drainMana();
-            var pulledPlayer = castedOn();
-            if(pulledPlayer == null)return;
-            Vec3d velocity = getCaster().getPos().subtract(pulledPlayer.getPos()).normalize();
-            pulledPlayer.setVelocity(velocity);
-            pulledPlayer.velocityModified = true;
-        }
+        var pulledPlayer = castedOn();
+        if(pulledPlayer == null)return;
+        Vec3d velocity = getCaster().getPos().subtract(pulledPlayer.getPos()).normalize();
+        pulledPlayer.setVelocity(velocity);
+        pulledPlayer.velocityModified = true;
     }
 
     @Override

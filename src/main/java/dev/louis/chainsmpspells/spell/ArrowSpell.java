@@ -20,29 +20,27 @@ public class ArrowSpell extends Spell {
 
     @Override
     public void cast() {
-        if(isCastable()) {
-            drainMana();
-            var caster = getCaster();
-            var world = caster.getWorld();
-            var loc = caster.getEyePos();
-            for (int x = -5; x < 5; x++) {
-                for (int z = -5; z < 5; z++) {
-                    ChainSMPSpells.server.executeSync(() -> {
-                        ArrowEntity arrow = new ArrowEntity(world, caster);
-                        ((ArrowEntityAccessor) arrow).shouldDamageOwner(false);
+        var caster = getCaster();
+        var world = caster.getWorld();
+        var loc = caster.getEyePos();
+        for (int x = -5; x < 5; x++) {
+            for (int z = -5; z < 5; z++) {
+                ChainSMPSpells.server.executeSync(() -> {
+                    ArrowEntity arrow = new ArrowEntity(world, caster);
+                    ((ArrowEntityAccessor) arrow).shouldDamageOwner(false);
 
-                        Vec3d vec3d = caster.getOppositeRotationVector(1.0F);
-                        Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0 * 0.017453292F, vec3d.x, vec3d.y, vec3d.z);
-                        Vec3d vec3d2 = caster.getRotationVec(1.0F);
-                        Vector3f vector3f = vec3d2.toVector3f().rotate(quaternionf);
-                        ((ProjectileEntity)arrow).setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), 1.7f, 10f);
-                        arrow.setPosition(loc);
-                        world.spawnEntity(arrow);
-                    });
+                    Vec3d vec3d = caster.getOppositeRotationVector(1.0F);
+                    Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0 * 0.017453292F, vec3d.x, vec3d.y, vec3d.z);
+                    Vec3d vec3d2 = caster.getRotationVec(1.0F);
+                    Vector3f vector3f = vec3d2.toVector3f().rotate(quaternionf);
+                    ((ProjectileEntity)arrow).setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), 1.7f, 10f);
+                    arrow.setPosition(loc);
+                    world.spawnEntity(arrow);
+                });
 
 
-                }
             }
         }
     }
+
 }
