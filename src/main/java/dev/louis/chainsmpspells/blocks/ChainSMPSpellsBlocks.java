@@ -29,6 +29,6 @@ public class ChainSMPSpellsBlocks {
             )
     );
     public static void init() {
-        PolymerServerNetworking.registerSendPacket(ChainSMPSpells.HAS_SPELL_TABLE, 0);
+        PolymerServerNetworking.registerSendPacket(ChainSMPSpells.HAS_CLIENT_MODS, 0);
     }
 }

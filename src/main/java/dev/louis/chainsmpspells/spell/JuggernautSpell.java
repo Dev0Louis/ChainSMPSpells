@@ -61,11 +61,14 @@ public class JuggernautSpell extends MultiTickSpell {
     public void tick() {
         super.tick();
         if(spellAge > 20*120){
-            stop(true);
+            this.stop();
             return;
         }
-        if(spellAge > 2200) {
-            if(spellAge % 40 == 0) {
+        if(spellAge % 10 == 0) {
+            this.getCaster().getManaManager().addMana(1);
+        }
+        if(spellAge % 40 == 0) {
+            if(spellAge > 2200) {
                 playWarningSound();
             }
         }

@@ -43,7 +43,7 @@ public class SpellTableBlock extends Block implements PolymerBlock, PolymerClien
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient)return ActionResult.SUCCESS;
         var playNetworkHandler = ((ServerPlayerEntity)player).networkHandler;
-        var version = PolymerServerNetworking.getSupportedVersion(playNetworkHandler, ChainSMPSpells.HAS_SPELL_TABLE);
+        var version = PolymerServerNetworking.getSupportedVersion(playNetworkHandler, ChainSMPSpells.HAS_CLIENT_MODS);
         if(version == -1)return ActionResult.CONSUME;
         player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
         //player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);

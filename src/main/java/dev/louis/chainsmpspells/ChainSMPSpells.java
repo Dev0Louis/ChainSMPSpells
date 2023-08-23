@@ -27,7 +27,7 @@ public class ChainSMPSpells implements ModInitializer {
     public static Logger LOGGER = Logger.getLogger("ChainSMPSpells");
     public static final String id = "chainsmpspells";
 
-    public static final Identifier HAS_SPELL_TABLE = new Identifier("chainsmpspells", "has_spell_table");
+    public static final Identifier HAS_CLIENT_MODS = new Identifier("chainsmpspells", "has_spell_table");
 
 
     @Override
@@ -83,7 +83,7 @@ public class ChainSMPSpells implements ModInitializer {
         if(playerNotNull) {
             var networkNotNull = player.networkHandler != null;
             if(networkNotNull) {
-                var version = PolymerServerNetworking.getSupportedVersion(player.networkHandler, ChainSMPSpells.HAS_SPELL_TABLE);
+                var version = PolymerServerNetworking.getSupportedVersion(player.networkHandler, ChainSMPSpells.HAS_CLIENT_MODS);
                 return version == -1;
             }
         }
