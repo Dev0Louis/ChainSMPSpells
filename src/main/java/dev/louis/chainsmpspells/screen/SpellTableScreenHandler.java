@@ -192,7 +192,6 @@ public class SpellTableScreenHandler extends ScreenHandler{
                     .filter(recipe -> recipe.matches(input, world))
                     .sorted(Comparator.comparing(SpellRecipe::getId))
                     .collect(Collectors.toList());
-            System.out.println(this.world.getRecipeManager().listAllOfType(ModRecipes.SPELL_RECIPE));
         }
     }
 

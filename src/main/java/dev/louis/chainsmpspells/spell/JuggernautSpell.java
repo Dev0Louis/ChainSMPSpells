@@ -141,10 +141,7 @@ public class JuggernautSpell extends MultiTickSpell {
 
     private boolean isCasterJuggernaut() {
         if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
-            System.out.println(serverPlayer.getMultiTickSpells());
-            boolean b = serverPlayer.getMultiTickSpells().stream().anyMatch(JuggernautSpell.class::isInstance);
-            System.out.println("b: " + b);
-            return b;
+            return serverPlayer.getMultiTickSpells().stream().anyMatch(JuggernautSpell.class::isInstance);
         }
         return false;
     }

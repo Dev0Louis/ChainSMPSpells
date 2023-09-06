@@ -26,7 +26,6 @@ public abstract class MinecraftClientMixin {
         } else {
             Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
                 ChainSMPSpellsClient.getSpellKeybindManager().getKey(spellType).ifPresent(keyBinding -> {
-                    //System.out.println(SpellType.getId(spellType).toString() +" | "+ keyBinding.getBoundKeyTranslationKey());
                     if(keyBinding.isPressed()) {
                         resetSpellCooldown();
                         Spell spell = spellType.create(player);

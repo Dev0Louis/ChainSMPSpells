@@ -79,7 +79,6 @@ public class SpellTableBlock extends Block implements PolymerBlock, PolymerClien
         final int charge = state.get(CHARGE);
         if(charge == MIN_CHARGE)return;
         final int r = random.nextInt(MAX_CHARGE);
-        //System.out.println(r + " <= " + charge + " = " + (r <= charge));
         if(r <= charge) {
             spawnRandomParticle(random, world, pos);
             spawnRandomParticle(random, world, pos);

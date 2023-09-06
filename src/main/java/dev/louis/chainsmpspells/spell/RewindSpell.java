@@ -1,8 +1,10 @@
 package dev.louis.chainsmpspells.spell;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.nebula.spell.MultiTickSpell;
 import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
+import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,10 +22,9 @@ public class RewindSpell extends MultiTickSpell {
     @Override
     public void cast() {
         super.cast();
-        //RewindPlayer player = RewindPlayer.access((ServerPlayerEntity) getCaster());
-        //player.chainsmpspells$addMemory((ServerWorld) getCaster().getWorld(), getCaster().getBlockPos(), getCaster().getVelocity(), getCaster().getYaw(), getCaster().getPitch(), 6*20);
         rewindWorld = (ServerWorld) getCaster().getWorld();
         rewindTarget = new TeleportTarget(getCaster().getPos(), getCaster().getVelocity(), getCaster().getYaw(), getCaster().getPitch());
+        ChainSMPSpells.LOGGER.debug("Player setting rewindTarget to " + rewindTarget.position + " and rewindWorld to " + rewindWorld.getRegistryKey().getValue());
     }
 
     @Override
@@ -35,8 +36,6 @@ public class RewindSpell extends MultiTickSpell {
             double x = rewindTarget.position.getX();
             double y = rewindTarget.position.getY();
             double z = rewindTarget.position.getY();
-            float yaw = rewindTarget.yaw;
-            float pitch = rewindTarget.pitch;
 
             rewindWorld.spawnParticles(
                     ParticleTypes.REVERSE_PORTAL,
@@ -49,9 +48,9 @@ public class RewindSpell extends MultiTickSpell {
                     0,
                     0
             );
-            serverPlayer.teleport(rewindWorld, x, y, z, yaw, pitch);
-            playRewindSound(serverPlayer);
-            serverPlayer.setVelocity(rewindTarget.velocity);
+            ChainSMPSpells.LOGGER.debug("Player is rewinding to " + rewindTarget.position + " in " + rewindWorld.getRegistryKey().getValue());
+            FabricDimensions.teleport(serverPlayer, rewindWorld, rewindTarget);
+
             stop();
         }
     }
@@ -66,7 +65,7 @@ public class RewindSpell extends MultiTickSpell {
         if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
             return serverPlayer.getMultiTickSpells().stream().anyMatch(RewindSpell.class::isInstance);
         }
-        return true;
+        return false;
     }
 
     private void playPingSound(ServerPlayerEntity player) {

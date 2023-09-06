@@ -1,5 +1,6 @@
 package dev.louis.chainsmpspells;
 
+import com.mojang.logging.LogUtils;
 import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
 import dev.louis.chainsmpspells.command.LearnCommand;
 import dev.louis.chainsmpspells.items.ChainSMPSpellsItems;
@@ -17,14 +18,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ChainSMPSpells implements ModInitializer {
 
     public static MinecraftServer server;
-    public static Logger LOGGER = Logger.getLogger("ChainSMPSpells");
+    public static final Logger LOGGER = LogUtils.getLogger();
     public static final String id = "chainsmpspells";
 
     public static final Identifier HAS_CLIENT_MODS = new Identifier("chainsmpspells", "has_spell_table");
