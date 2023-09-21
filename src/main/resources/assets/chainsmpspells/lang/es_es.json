@@ -13,6 +13,6 @@
 
   "key.chainsmpspells.spell.supernova": "Hechizo  de la Supernova",
 
-  "text.autoconfig.chainsmpspells.title": "Ajustes de ChainSMPClient ",
-  "text.autoconfig.chainsmpspells.option.spellCooldown":"El tiempo de la reutilización de los hechizos"
+  "chainsmpspells.midnightconfig.title": "Ajustes de ChainSMPClient ",
+  "chainsmpspells.midnightconfig.spellCooldown":"El tiempo de la reutilización de los hechizos"
 }

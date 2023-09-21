@@ -12,7 +12,7 @@
   "message.chainsmpspells.mana.success": "Yu hav %s mawgic Powah (ENUGH!!!))",
   "message.chainsmpspells.mana.fail": "Yu hafe %s mawgic Powah (NOt eNUGH!}",
 
-  "text.autoconfig.chainsmpspells.title": "ChEinZMPClient Zedings (for Nertz)",
-  "text.autoconfig.chainsmpspells.option.spellCooldown": "Sppel culduwn"
+  "chainsmpspells.midnightconfig.title": "ChEinZMPClient Zedings (for Nertz)",
+  "chainsmpspells.midnightconfig.spellCooldown": "Sppel culduwn"
 
 }

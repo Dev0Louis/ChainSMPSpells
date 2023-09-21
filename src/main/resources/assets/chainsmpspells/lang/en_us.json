@@ -33,6 +33,10 @@
   "message.chainsmpspells.mana.success": "You have %s Mana",
   "message.chainsmpspells.mana.fail": "You have %s Mana",
 
-  "text.autoconfig.chainsmpspells.title": "ChainSMPClient Settings",
-  "text.autoconfig.chainsmpspells.option.spellCooldown":"Spell cooldown"
+  "chainsmpspells.midnightconfig.title": "ChainSMPClient Settings",
+  "chainsmpspells.midnightconfig.manaDirection":"Mana Direction",
+  "chainsmpspells.midnightconfig.enum.ManaDirection.RIGHT":"RIGHT",
+  "chainsmpspells.midnightconfig.enum.ManaDirection.LEFT":"LEFT",
+  "chainsmpspells.midnightconfig.spellCooldown":"Spell cooldown",
+  "chainsmpspells.midnightconfig.raycastScanPrecision":"Raycast Scan Precision"
 }

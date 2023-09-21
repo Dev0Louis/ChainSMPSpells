@@ -4,17 +4,16 @@ import eu.midnightdust.lib.config.MidnightConfig;
 
 public class ChainSMPSpellsConfig extends MidnightConfig {
 
-    @Comment(category = "chainsmpspells") public static Comment title;
+    //@Comment(category = "chainsmpspells") public static Comment title;
 
-
-    ManaDirection manaDirection = ManaDirection.RIGHT;
-    @Comment(category = "chainsmpspells")
-    @Entry(min = 1L, max = 100L, isSlider = true)
-    int spellCooldown = 10;
+    @Entry
+    public static ManaDirection manaDirection = ManaDirection.RIGHT;
+    //@Comment(category = "chainsmpspells")
+    @Entry(min = 1L, max = 100L)
+    public static int spellCooldown = 10;
     //@Comment("Higher Values might Result in Lag")
-    @Comment(category = "chainsmpspells")
     @Entry(min = 2, max = 20)
-    int raycastScanPrecision = 2;
+    public static int raycastScanPrecision = 2;
     public ManaDirection getManaDirection() {
         return manaDirection;
     }

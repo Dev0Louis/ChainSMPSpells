@@ -42,7 +42,6 @@ dependencies {
 
     modImplementation "maven.modrinth:nebula:${project.nebula_version}"
 
-    //modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}")
     include(modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}"))
 
     include(modImplementation "eu.pb4:polymer-core:${project.polymer_version}")

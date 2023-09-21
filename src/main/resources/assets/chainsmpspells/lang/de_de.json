@@ -14,6 +14,6 @@
   "message.chainsmpspells.mana.success": "Du hast %s Mana",
   "message.chainsmpspells.mana.fail": "Du hast %s Mana",
 
-  "text.autoconfig.chainsmpspells.title": "ChainSMPClient Einstellungen",
-  "text.autoconfig.chainsmpspells.option.spellCooldown":"Zauber abklingzeit"
+  "chainsmpspells.midnightconfig.title": "ChainSMPClient Einstellungen",
+  "chainsmpspells.midnightconfig.spellCooldown":"Zauber abklingzeit"
 }
