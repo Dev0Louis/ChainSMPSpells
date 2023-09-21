@@ -5,10 +5,12 @@ import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
 import dev.louis.chainsmpspells.command.LearnCommand;
 import dev.louis.chainsmpspells.items.ChainSMPSpellsItems;
 import dev.louis.chainsmpspells.mana.effect.ManaEffects;
+import dev.louis.chainsmpspells.networking.ICanHasChainSMPSpellsPayload;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.*;
 import dev.louis.nebula.spell.SpellType;
-import eu.pb4.polymer.networking.api.PolymerServerNetworking;
+import eu.pb4.polymer.networking.api.PolymerNetworking;
+import eu.pb4.polymer.networking.api.server.PolymerServerNetworking;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -40,6 +42,8 @@ public class ChainSMPSpells implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> {
             ChainSMPSpells.server = server;
         });
+        PolymerNetworking.registerCommonPayload(ChainSMPSpells.HAS_CLIENT_MODS, 0, ICanHasChainSMPSpellsPayload::read);
+
         Spells.init();
         ChainSMPSpellsItems.init();
         ChainSMPSpellsBlocks.init();

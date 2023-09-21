@@ -4,8 +4,7 @@ import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.chainsmpspells.keybind.SpellKeybindManager;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.TargetingSpell;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -24,11 +23,10 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         try {
-            AutoConfig.register(ChainSMPSpellsConfig.class, JanksonConfigSerializer::new);
-            config = AutoConfig.getConfigHolder(ChainSMPSpellsConfig.class).getConfig();
+            MidnightConfig.init("chainsmpspells", ChainSMPSpellsConfig.class);
         } catch (Exception e) {
             config = new ChainSMPSpellsConfig();
-            ChainSMPSpells.LOGGER.info("Autoconfig couldn't be registered.");
+            ChainSMPSpells.LOGGER.warn("Something went wrong during Config init.");
         }
         TargetingSpell.TargetedPlayerSelector.INSTANCE.init();
 

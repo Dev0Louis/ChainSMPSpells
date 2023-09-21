@@ -11,6 +11,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.screen.Property;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -34,7 +35,7 @@ public class SpellTableScreenHandler extends ScreenHandler{
     private final Property selectedRecipe = Property.create();
     private final World world;
     private final Property charge;
-    private List<SpellRecipe> availableRecipes = Lists.newArrayList();
+    private List<RecipeEntry<SpellRecipe>> availableRecipes = Lists.newArrayList();
     private ItemStack inputStack = ItemStack.EMPTY;
     long lastTakeTime;
     final Slot inputSlot;
@@ -116,7 +117,7 @@ public class SpellTableScreenHandler extends ScreenHandler{
         return this.selectedRecipe.get();
     }
 
-    public List<SpellRecipe> getAvailableRecipes() {
+    public List<RecipeEntry<SpellRecipe>> getAvailableRecipes() {
         return this.availableRecipes;
     }
 
@@ -189,16 +190,16 @@ public class SpellTableScreenHandler extends ScreenHandler{
         this.outputSlot.setStackNoCallbacks(ItemStack.EMPTY);
         if (!stack.isEmpty() && hasCharge()) {
             this.availableRecipes = this.world.getRecipeManager().listAllOfType(ModRecipes.SPELL_RECIPE).stream()
-                    .filter(recipe -> recipe.matches(input, world))
-                    .sorted(Comparator.comparing(SpellRecipe::getId))
+                    .filter(recipe -> recipe.value().matches(input, world))
+                    .sorted(Comparator.comparing(RecipeEntry::id))
                     .collect(Collectors.toList());
         }
     }
 
     void populateResult() {
         if (!this.availableRecipes.isEmpty() && this.isInBounds(this.selectedRecipe.get())) {
-            SpellRecipe spellRecipe = this.availableRecipes.get(this.selectedRecipe.get());
-            ItemStack itemStack = spellRecipe.craft(this.input, this.world.getRegistryManager());
+            RecipeEntry<SpellRecipe> spellRecipe = this.availableRecipes.get(this.selectedRecipe.get());
+            ItemStack itemStack = spellRecipe.value().craft(this.input, this.world.getRegistryManager());
             if (itemStack.isItemEnabled(this.world.getEnabledFeatures())) {
                 this.output.setLastRecipe(spellRecipe);
                 this.outputSlot.setStackNoCallbacks(itemStack);

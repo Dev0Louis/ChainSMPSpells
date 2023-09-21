@@ -1,6 +1,7 @@
 package dev.louis.chainsmpspells.recipe;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.items.SpellBookItem;
 import dev.louis.nebula.spell.SpellType;
@@ -9,38 +10,39 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.world.World;
 
-import java.util.Optional;
-
 public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
-    private final Identifier id;
-    private final ItemStack input;
-    private final ItemStack output;
-    public SpellRecipe(Identifier id, ItemStack input, ItemStack output) {
-        this.id = id;
-        this.input = input;
-        this.output = output;
+    private final Ingredient ingredient;
+    private final ItemStack result;
+    public SpellRecipe(ItemStack result) {
+        this.ingredient = Ingredient.ofItems(Items.BOOK);
+        this.result = result;
     }
 
-    public ItemStack getInput() {
-        return input;
+    public Ingredient getIngredient() {
+        return ingredient;
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return getOutput();
+    public ItemStack getResult(DynamicRegistryManager registryManager) {
+        return getResult();
     }
 
-    public ItemStack getOutput() {
-        return output;
+    public ItemStack getResult() {
+        return result;
+    }
+
+    public Identifier getSpellIdentifier() {
+        return Registries.ITEM.getId(getResult().getItem());
     }
 
     @Override
@@ -50,17 +52,12 @@ public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
 
     @Override
     public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
-        return this.getOutput(registryManager).copy();
+        return this.getResult(registryManager).copy();
     }
 
     @Override
     public boolean fits(int width, int height) {
         return true;
-    }
-
-    @Override
-    public Identifier getId() {
-        return this.id;
     }
 
     @Override
@@ -76,45 +73,38 @@ public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
     public static class SpellRecipeSerializer implements RecipeSerializer<SpellRecipe> {
         public static final Identifier ID = new Identifier("chainsmpspells:spell_recipe");
         public static final SpellRecipeSerializer INSTANCE = new SpellRecipeSerializer();
+        private final Codec<SpellRecipe> codec;
 
-        private SpellRecipeSerializer() {}
 
-        @Override
-        public SpellRecipe read(Identifier id, JsonObject json) {
-            String spell = json.get("spell").getAsString();
-
-            if(!Identifier.isValid(spell)) throw new InvalidIdentifierException(spell + " is not a valid identifier!");
-            Optional<SpellType<?>> optionalSpellType = SpellType.get(new Identifier(spell));
-            if(optionalSpellType.isEmpty())throw new InvalidIdentifierException(spell + " is not a valid spell!");
-
-            ItemStack input = new ItemStack(Items.BOOK);
-            ItemStack output = SpellBookItem.createSpellBook(optionalSpellType.get());
-            return new SpellRecipe(id, input, output);
+        private SpellRecipeSerializer() {
+            this.codec = RecordCodecBuilder.create(
+                    instance -> instance.group(Identifier.CODEC.fieldOf("spell").forGetter(SpellRecipe::getSpellIdentifier))
+                            .apply(
+                                    instance,
+                                    identifier -> new SpellRecipe(SpellBookItem.createSpellBook(SpellType.get(identifier).get()))
+                            )
+            );
         }
 
         @Override
-        public SpellRecipe read(Identifier id, PacketByteBuf buf) {
-            ItemStack input = new ItemStack(Items.BOOK);
+        public Codec<SpellRecipe> codec() {
+            return codec;
+        }
+
+        @Override
+        public SpellRecipe read(PacketByteBuf buf) {
             ItemStack output = SpellBookItem.createSpellBook(SpellType.get(buf.readIdentifier()).get());
-            return new SpellRecipe(id, input, output);
+            return new SpellRecipe(output);
         }
 
         @Override
         public void write(PacketByteBuf buf, SpellRecipe recipe) {
-            buf.writeIdentifier(SpellBookItem.getSpellType(recipe.output).get().getId());
+            buf.writeIdentifier(SpellBookItem.getSpellType(recipe.result).get().getId());
         }
     }
 
     public Recipe<?> getPolymerReplacement(ServerPlayerEntity player) {
         if(ChainSMPSpells.isClientVanilla(player))return PolymerRecipe.createStonecuttingRecipe(this);
         return this;
-    }
-
-
-    @Override
-    public String toString() {
-        return "SpellRecipe{" +
-                "id=" + id +
-                '}';
     }
 }

@@ -5,7 +5,6 @@ import dev.louis.chainsmpspells.screen.SpellTableScreenHandler;
 import eu.pb4.polymer.core.api.block.PolymerBlock;
 import eu.pb4.polymer.core.api.utils.PolymerClientDecoded;
 import eu.pb4.polymer.core.api.utils.PolymerKeepModel;
-import eu.pb4.polymer.networking.api.PolymerServerNetworking;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -42,9 +41,8 @@ public class SpellTableBlock extends Block implements PolymerBlock, PolymerClien
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (world.isClient)return ActionResult.SUCCESS;
-        var playNetworkHandler = ((ServerPlayerEntity)player).networkHandler;
-        var version = PolymerServerNetworking.getSupportedVersion(playNetworkHandler, ChainSMPSpells.HAS_CLIENT_MODS);
-        if(version == -1)return ActionResult.CONSUME;
+        boolean isVanilla = ChainSMPSpells.isClientVanilla((ServerPlayerEntity) player);
+        if(isVanilla)return ActionResult.CONSUME;
         player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
         //player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
         return ActionResult.CONSUME;

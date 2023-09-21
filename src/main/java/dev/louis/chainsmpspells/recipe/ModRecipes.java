@@ -16,6 +16,7 @@ public class ModRecipes {
     public static final RecipeType<SpellRecipe> SPELL_RECIPE = RecipeType.register("chainsmpspells:spell_recipe");
     public static final ScreenHandlerType<SpellTableScreenHandler> SPELL_TABLE = register(new Identifier("chainsmpspells","spellcraft"), SpellTableScreenHandler::new);
     public static void init() {
+        System.out.println("INIT REGISTRY");
         Registry.register(Registries.RECIPE_SERIALIZER, SpellRecipe.SpellRecipeSerializer.ID, SpellRecipe.SpellRecipeSerializer.INSTANCE);
     }
 

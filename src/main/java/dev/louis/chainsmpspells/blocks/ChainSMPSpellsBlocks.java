@@ -1,7 +1,5 @@
 package dev.louis.chainsmpspells.blocks;
 
-import dev.louis.chainsmpspells.ChainSMPSpells;
-import eu.pb4.polymer.networking.api.PolymerServerNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -29,6 +27,5 @@ public class ChainSMPSpellsBlocks {
             )
     );
     public static void init() {
-        PolymerServerNetworking.registerSendPacket(ChainSMPSpells.HAS_CLIENT_MODS, 0);
     }
 }

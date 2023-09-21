@@ -27,9 +27,7 @@
   "depends": {
     "fabricloader": ">=0.14.9",
     "fabric": "*",
-    "minecraft": ">=1.20",
-    "cloth-config": "*",
-    "polymer-bundled": "*"
+    "minecraft": ">=1.20"
   },
   "accessWidener": "chainsmpspells.accesswidener"
 }
