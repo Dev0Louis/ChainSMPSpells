@@ -1,5 +1,6 @@
 plugins {
-    id 'fabric-loom' version '0.13-SNAPSHOT'
+    id 'fabric-loom' version '1.3-SNAPSHOT'
+    id 'io.github.juuxel.loom-quiltflower' version '1.10.0'
     id 'maven-publish'
 }
 
@@ -12,7 +13,22 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
-    flatDir {dirs "${project.projectDir}/libs"}
+    maven { url "https://maven.shedaniel.me/" }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+    maven { url 'https://maven.nucleoid.xyz' } // You should have it
+
+    maven {url "https://maven.terraformersmc.com/releases/"}
+    maven {url "https://oss.sonatype.org/content/repositories/snapshots/"}
 }
 
 dependencies {
@@ -24,8 +40,15 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation('org.d1p4k:Nebula:1.7.2')
+    modImplementation "maven.modrinth:nebula:${project.nebula_version}"
 
+    include(modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}"))
+
+    include(modImplementation "eu.pb4:polymer-core:${project.polymer_version}")
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/chainsmpspells.accesswidener")
 }
 
 processResources {
