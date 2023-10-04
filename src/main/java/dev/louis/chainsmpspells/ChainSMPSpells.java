@@ -69,6 +69,10 @@ public class ChainSMPSpells implements ModInitializer {
                 SpellType.register(new Identifier("chainsmpspells", "teleport"), SpellType.Builder.create(TeleportSpell::new, 5));
         public static SpellType<SupernovaSpell> SUPERNOVA =
                 SpellType.register(new Identifier("chainsmpspells", "supernova"), SpellType.Builder.create(SupernovaSpell::new, 20));
+        public static SpellType<FireSpell> FIRE =
+                SpellType.register(new Identifier("chainsmpspells", "fire"), SpellType.Builder.create(FireSpell::new, 2));
+        public static SpellType<IceSpell> ICE =
+                SpellType.register(new Identifier("chainsmpspells", "ice"), SpellType.Builder.create(IceSpell::new, 2));
         public static void init() {
             targetingSpells = List.of(ChainSMPSpells.Spells.PULL, ChainSMPSpells.Spells.PUSH, ChainSMPSpells.Spells.TELEPORT);
 

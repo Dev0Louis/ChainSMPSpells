@@ -2,6 +2,7 @@ package dev.louis.chainsmpspells.spell;
 
 import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
+import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -96,7 +97,7 @@ public abstract class TargetingSpell extends Spell {
             if (client == null || client.getCameraEntity() == null) return;
 
             var pos = client.getCameraEntity().getEyePos();
-            int divider = ChainSMPSpellsClient.config.getRaycastScanPrecision();
+            int divider = ChainSMPSpellsConfig.getRaycastScanPrecision();
             double i = 1.0 / divider;
             var x = client.getCameraEntity().getRotationVecClient().normalize().multiply(i);
 
@@ -126,7 +127,7 @@ public abstract class TargetingSpell extends Spell {
         }
 
         public boolean shouldCalculatePlayerInView() {
-            return hasTargetingSpell() /*&& playerInViewScanTimeout == 0*/;
+            return hasTargetingSpell();
 
         }
     }
