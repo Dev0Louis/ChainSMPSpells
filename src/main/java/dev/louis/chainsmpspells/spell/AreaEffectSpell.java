@@ -72,15 +72,15 @@ public abstract class AreaEffectSpell extends MultiTickSpell {
         }
         Vec3d adjustedRotation = new Vec3d(x, 0, z);
         final double multiplier = 3;
-        final double yOffset = -0.3;
+        final double yOffset = -0.35;
 
         return player.getBoundingBox().stretch(adjustedRotation).expand(1.0, -0.5, 1.0).offset(adjustedRotation.multiply(multiplier).add(0, yOffset, 0));
     }
 
     private void spawnParticles(ServerWorld world) {
-        for (double x = spellCastingBox.minX; x < spellCastingBox.maxX; x = x + 0.5) {
-            for (double y = spellCastingBox.minY; y < spellCastingBox.maxY; y = y + 0.5) {
-                for (double z = spellCastingBox.minZ; z < spellCastingBox.maxZ; z = z + 0.5) {
+        for (double x = spellCastingBox.minX; x < spellCastingBox.maxX; x = x + 0.7) {
+            for (double y = spellCastingBox.minY; y < spellCastingBox.maxY; y = y + 0.7) {
+                for (double z = spellCastingBox.minZ; z < spellCastingBox.maxZ; z = z + 0.7) {
                     world.spawnParticles(particle, x, y, z, 1, 0.1, 0.1, 0.1, 0.01);
                 }
             }

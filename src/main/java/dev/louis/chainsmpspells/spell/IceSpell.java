@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class IceSpell extends AreaEffectSpell {
     public IceSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
-        super(spellType, caster, ParticleTypes.SNOWFLAKE, caster.getWorld().getDamageSources().playerAttack(caster), 10);
+        super(spellType, caster, ParticleTypes.SNOWFLAKE, caster.getWorld().getDamageSources().playerAttack(caster), 20);
     }
 
     @Override

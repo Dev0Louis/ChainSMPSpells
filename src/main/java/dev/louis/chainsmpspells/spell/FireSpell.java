@@ -8,7 +8,7 @@ import net.minecraft.particle.ParticleTypes;
 
 public class FireSpell extends AreaEffectSpell {
     public FireSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
-        super(spellType, caster, ParticleTypes.FLAME, caster.getWorld().getDamageSources().playerAttack(caster), 10);
+        super(spellType, caster, ParticleTypes.FLAME, caster.getWorld().getDamageSources().playerAttack(caster), 20);
     }
 
     @Override
