@@ -14,7 +14,7 @@ public class ChainSMPSpellsConfig extends MidnightConfig {
     //@Comment("Higher Values might Result in Lag")
     @Entry(min = 2, max = 20)
     public static int raycastScanPrecision = 2;
-    public ManaDirection getManaDirection() {
+    public static ManaDirection getManaDirection() {
         return manaDirection;
     }
 
@@ -24,11 +24,11 @@ public class ChainSMPSpellsConfig extends MidnightConfig {
     }
 
 
-    public int getSpellCooldown() {
+    public static int getSpellCooldown() {
         return spellCooldown;
     }
 
-    public int getRaycastScanPrecision() {
+    public static int getRaycastScanPrecision() {
         return raycastScanPrecision;
     }
 }

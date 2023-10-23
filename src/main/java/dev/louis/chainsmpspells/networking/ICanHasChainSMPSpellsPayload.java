@@ -10,7 +10,6 @@ public record ICanHasChainSMPSpellsPayload() implements VersionedPayload {
 
     @Override
     public void write(PacketContext context, int version, PacketByteBuf buf) {
-        System.out.println("HEHE Write write action");
     }
 
     @Override
@@ -19,7 +18,6 @@ public record ICanHasChainSMPSpellsPayload() implements VersionedPayload {
     }
 
     public static ICanHasChainSMPSpellsPayload read(PacketContext context, Identifier identifier, int version, PacketByteBuf buf) {
-        System.out.println("HEHE read read action");
         return new ICanHasChainSMPSpellsPayload();
     }
 }

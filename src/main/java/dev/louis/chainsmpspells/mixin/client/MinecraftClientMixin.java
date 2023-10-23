@@ -1,6 +1,7 @@
 package dev.louis.chainsmpspells.mixin.client;
 
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
+import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.nebula.Nebula;
 import dev.louis.nebula.networking.SpellCastC2SPacket;
 import dev.louis.nebula.spell.Spell;
@@ -42,6 +43,6 @@ public abstract class MinecraftClientMixin {
     }
 
     public int getSpellCooldown() {
-        return ChainSMPSpellsClient.config.getSpellCooldown();
+        return ChainSMPSpellsConfig.getSpellCooldown();
     }
 }

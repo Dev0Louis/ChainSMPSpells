@@ -1,6 +1,6 @@
 package dev.louis.chainsmpspells.mixin.client;
 
-import dev.louis.chainsmpspells.ChainSMPSpellsClient;
+import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.chainsmpspells.gui.hud.ManaDrawer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -60,7 +60,7 @@ public abstract class InGameHudMixin {
     }
 
     private int calculatePosition(int mid, int n, int w) {
-        if(ChainSMPSpellsClient.config.getManaDirection() == RIGHT) {
+        if(ChainSMPSpellsConfig.getManaDirection() == RIGHT) {
             return mid + w * 8 - 9;
         }else {
             return n - w * 8 - 9;
