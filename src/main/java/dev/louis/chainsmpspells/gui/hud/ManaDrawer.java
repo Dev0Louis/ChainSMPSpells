@@ -1,5 +1,6 @@
 package dev.louis.chainsmpspells.gui.hud;
 
+import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
@@ -13,8 +14,11 @@ public class ManaDrawer {
     }
 
     private static void render(Identifier texture, DrawContext context, int x, int y) {
-        //if(ChainSMPSpellsClient.config.getManaDirection() == ChainSMPSpellsConfig.ManaDirection.LEFT)context.getMatrices().translate(-1.0, 0, 0);
-        context.drawTexture(texture, x, y, 9, 9, 9, 9, 9, 9);
+        context.getMatrices().push();
+        boolean invert = ChainSMPSpellsConfig.getManaDirection() == ChainSMPSpellsConfig.ManaDirection.LEFT;
+
+        context.drawTexture(texture, x, y, 9, 9, 9, 9, invert ? -9 : 9, 9);
+        context.getMatrices().pop();
     }
 
     public enum Mana{

@@ -3,9 +3,8 @@ package dev.louis.chainsmpspells.spell;
 import com.google.common.collect.ImmutableList;
 import dev.louis.chainsmpspells.accessor.ItemStackJuggernautModeAccessor;
 import dev.louis.chainsmpspells.mixin.ServerWorldAccessor;
-import dev.louis.nebula.spell.MultiTickSpell;
-import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.spell.TickingSpell;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,9 +20,9 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JuggernautSpell extends MultiTickSpell {
+public class JuggernautSpell extends TickingSpell {
 
-    public JuggernautSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
+    public JuggernautSpell(SpellType<? extends TickingSpell> spellType, PlayerEntity caster) {
         super(spellType, caster);
     }
 
@@ -91,7 +90,7 @@ public class JuggernautSpell extends MultiTickSpell {
     @Override
     public boolean isCastable() {
         if(getCaster().getWorld().isClient())return super.isCastable();
-        return !isCasterJuggernaut() && super.isCastable();
+        return !this.getCaster().getSpellManager().isSpellTicking(this) && super.isCastable();
     }
 
     public static void generateJuggernautItemAndSetToSlot(ServerPlayerEntity player, int slot, Item item, long tick) {
@@ -138,12 +137,4 @@ public class JuggernautSpell extends MultiTickSpell {
             }
         }
     }
-
-    private boolean isCasterJuggernaut() {
-        if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
-            return serverPlayer.getMultiTickSpells().stream().anyMatch(JuggernautSpell.class::isInstance);
-        }
-        return false;
-    }
-
 }

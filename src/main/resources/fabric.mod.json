@@ -27,7 +27,11 @@
   "depends": {
     "fabricloader": ">=0.14.9",
     "fabric": "*",
-    "minecraft": ">=1.20"
+    "minecraft": ">=1.20.2",
+    "nebula": ">=3.2.2"
+  },
+  "suggests": {
+
   },
   "accessWidener": "chainsmpspells.accesswidener"
 }

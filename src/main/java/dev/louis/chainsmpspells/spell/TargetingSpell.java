@@ -128,7 +128,6 @@ public abstract class TargetingSpell extends Spell {
 
         public boolean shouldCalculatePlayerInView() {
             return hasTargetingSpell();
-
         }
     }
 }

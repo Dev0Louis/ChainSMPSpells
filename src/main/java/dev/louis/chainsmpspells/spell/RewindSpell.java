@@ -1,9 +1,8 @@
 package dev.louis.chainsmpspells.spell;
 
 import dev.louis.chainsmpspells.ChainSMPSpells;
-import dev.louis.nebula.spell.MultiTickSpell;
-import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.spell.TickingSpell;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
@@ -12,9 +11,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.TeleportTarget;
 
-//TODO: Completely Rework!!! Manacost: 7
-public class RewindSpell extends MultiTickSpell {
-    public RewindSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
+public class RewindSpell extends TickingSpell {
+    public RewindSpell(SpellType<? extends TickingSpell> spellType, PlayerEntity caster) {
         super(spellType, caster);
     }
     private ServerWorld rewindWorld;
@@ -63,7 +61,7 @@ public class RewindSpell extends MultiTickSpell {
 
     private boolean isCasterRemembering() {
         if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
-            return serverPlayer.getMultiTickSpells().stream().anyMatch(RewindSpell.class::isInstance);
+            return serverPlayer.getSpellManager().isSpellTicking(this);
         }
         return false;
     }
