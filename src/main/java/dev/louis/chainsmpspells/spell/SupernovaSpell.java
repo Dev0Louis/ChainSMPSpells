@@ -15,6 +15,7 @@ public class SupernovaSpell extends Spell {
     public void cast() {
         combust();
     }
+
     public void combust() {
         ((ServerPlayerEntity)getCaster()).getServerWorld().createExplosion(null, getCaster().getX(), getCaster().getY()+0.4, this.getCaster().getZ(), 16.0F, World.ExplosionSourceType.MOB);
         getCaster().setHealth(0f);

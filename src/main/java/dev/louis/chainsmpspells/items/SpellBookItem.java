@@ -33,7 +33,7 @@ public class SpellBookItem extends Item implements PolymerItem, PolymerKeepModel
 
         Optional<SpellType<?>> optionalSpellType = getSpellType(itemStack);
         if(optionalSpellType.isPresent()) {
-            playerEntity.getSpellManager().addSpell(optionalSpellType.get());
+            playerEntity.getSpellManager().learnSpell(optionalSpellType.get());
             itemStack.decrement(1);
             return TypedActionResult.consume(itemStack);
         }

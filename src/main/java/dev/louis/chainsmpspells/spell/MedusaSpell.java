@@ -1,13 +1,12 @@
 package dev.louis.chainsmpspells.spell;
 
-import dev.louis.nebula.spell.MultiTickSpell;
-import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.spell.TickingSpell;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class MedusaSpell extends MultiTickSpell {
-    public MedusaSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
+public class MedusaSpell extends TickingSpell {
+    public MedusaSpell(SpellType<? extends TickingSpell> spellType, PlayerEntity caster) {
         super(spellType, caster);
     }
 
@@ -16,9 +15,14 @@ public class MedusaSpell extends MultiTickSpell {
         super.cast();
     }
 
+    @Override
+    public boolean isCastable() {
+        return !isCasterMedusa() && super.isCastable();
+    }
+
     private boolean isCasterMedusa() {
         if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
-            return serverPlayer.getMultiTickSpells().stream().anyMatch(MedusaSpell.class::isInstance);
+            return serverPlayer.getSpellManager().isSpellTicking(this);
         }
         return false;
     }

@@ -1,8 +1,7 @@
 package dev.louis.chainsmpspells.spell;
 
-import dev.louis.nebula.spell.MultiTickSpell;
-import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.spell.TickingSpell;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +13,7 @@ import net.minecraft.util.math.Vec3d;
 
 import static java.lang.Math.*;
 
-public abstract class AreaEffectSpell extends MultiTickSpell {
+public abstract class AreaEffectSpell extends TickingSpell {
     private final ParticleEffect particle;
     private final DamageSource damageSource;
     private final int duration;
@@ -22,7 +21,7 @@ public abstract class AreaEffectSpell extends MultiTickSpell {
     private final Box spellCastingBox;
 
     public AreaEffectSpell(
-            SpellType<? extends Spell> spellType,
+            SpellType<? extends AreaEffectSpell> spellType,
             PlayerEntity caster,
             ParticleEffect particle,
             DamageSource damageSource,

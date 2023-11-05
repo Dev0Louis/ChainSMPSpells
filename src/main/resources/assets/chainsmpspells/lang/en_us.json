@@ -17,6 +17,8 @@
   "item.chainsmpspells.rewind_spell_book": "Rewind Spellbook",
   "item.chainsmpspells.suicide_spell_book": "Suicide Spellbook",
   "item.chainsmpspells.teleport_spell_book": "Teleport Spellbook",
+  "item.chainsmpspells.ice_spell_book": "Ice Spellbook",
+  "item.chainsmpspells.fire_spell_book": "Fire Spellbook",
 
   "container.spell_crafting": "Spell Table",
 
@@ -28,7 +30,6 @@
   "item.minecraft.splash_potion.effect.instant_mana": "Splash Potion of Mana",
   "item.minecraft.splash_potion.effect.strong_instant_mana": "Splash Potion of Mana",
   "effect.chainsmpspells.instant_mana": "Instant Mana",
-
 
   "message.chainsmpspells.mana.success": "You have %s Mana",
   "message.chainsmpspells.mana.fail": "You have %s Mana",

@@ -11,7 +11,7 @@ public class LearnCommand {
         Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
             executer.then(CommandManager.literal(spellType.getId().toString()).executes(context -> {
                 if(context.getSource().isExecutedByPlayer()) {
-                    context.getSource().getPlayer().getSpellManager().addSpell(spellType);
+                    context.getSource().getPlayer().getSpellManager().learnSpell(spellType);
                 }
                 return 0;
             }));
@@ -19,7 +19,7 @@ public class LearnCommand {
         executer.then(CommandManager.literal("all").executes(context -> {
             if(context.getSource().isExecutedByPlayer()) {
                 Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
-                    context.getSource().getPlayer().getSpellManager().addSpell(spellType);
+                    context.getSource().getPlayer().getSpellManager().learnSpell(spellType);
                 });
             }
             return 0;
