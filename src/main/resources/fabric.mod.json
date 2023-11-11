@@ -31,7 +31,7 @@
     "nebula": ">=3.2.2"
   },
   "suggests": {
-
+    "midnightlib": ">=1.5.0"
   },
   "accessWidener": "chainsmpspells.accesswidener"
 }
