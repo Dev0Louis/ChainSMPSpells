@@ -20,7 +20,7 @@ public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor 
     @Shadow public abstract NbtCompound getOrCreateNbt();
 
     @Inject(method = "inventoryTick", at = @At("TAIL"))
-    public void removeAfterExperation(World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
+    public void removeAfterExpiration(World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
         if(world instanceof ServerWorld serverWorld) {
             if(isJuggernautItem() && isInValid(serverWorld)) {
                 this.setCount(0);
