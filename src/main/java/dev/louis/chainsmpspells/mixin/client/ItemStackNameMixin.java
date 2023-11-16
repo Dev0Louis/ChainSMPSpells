@@ -19,9 +19,9 @@ public abstract class ItemStackNameMixin {
     public void nameMixin(CallbackInfoReturnable<Text> cir) {
         if(this.getNbt() != null) {
             if (this.getNbt().contains("spell")) {
-                var a = this.getNbt().getString("spell").split(":");
-                if(a.length < 2)return;
-                cir.setReturnValue(Text.translatable("item."+ a[0] + "." + a[1] + "_spell_book"));
+                var splitId = this.getNbt().getString("spell").split(":");
+                if(splitId.length < 2)return;
+                cir.setReturnValue(Text.translatable("item."+ splitId[0] + "." + splitId[1] + "_spell_book"));
             }
         }
     }
