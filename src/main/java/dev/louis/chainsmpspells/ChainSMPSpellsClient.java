@@ -37,6 +37,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUPERNOVA, createKeyBind("supernova"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.FIRE, createKeyBind("fire"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ICE, createKeyBind("ice"));
+        spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.HAILSTONE, createKeyBind("hailstone"));
         ModRecipes.init_client();
     }
 

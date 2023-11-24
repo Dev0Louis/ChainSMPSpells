@@ -3,6 +3,7 @@ package dev.louis.chainsmpspells;
 import com.mojang.logging.LogUtils;
 import dev.louis.chainsmpspells.blocks.ChainSMPSpellsBlocks;
 import dev.louis.chainsmpspells.command.LearnCommand;
+import dev.louis.chainsmpspells.entity.HailstoneEntity;
 import dev.louis.chainsmpspells.items.ChainSMPSpellsItems;
 import dev.louis.chainsmpspells.mana.effect.ManaEffects;
 import dev.louis.chainsmpspells.networking.ICanHasChainSMPSpellsPayload;
@@ -16,6 +17,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -48,6 +51,7 @@ public class ChainSMPSpells implements ModInitializer {
         ChainSMPSpellsItems.init();
         ChainSMPSpellsBlocks.init();
         ManaEffects.init();
+        HailstoneEntity.HAILSTONE = Registry.register(Registries.ENTITY_TYPE, Identifier.tryParse("chainsmpspells:hailstone"), HailstoneEntity.HAILSTONE);
     }
 
     public static class Spells {
@@ -73,6 +77,8 @@ public class ChainSMPSpells implements ModInitializer {
                 SpellType.register(new Identifier("chainsmpspells", "fire"), SpellType.Builder.create(FireSpell::new, 2));
         public static SpellType<IceSpell> ICE =
                 SpellType.register(new Identifier("chainsmpspells", "ice"), SpellType.Builder.create(IceSpell::new, 2));
+        public static SpellType<HailstoneSpell> HAILSTONE =
+                SpellType.register(new Identifier("chainsmpspells", "hailstone"), SpellType.Builder.create(HailstoneSpell::new, 2));
 
         public static void init() {
             targetingSpells = List.of(ChainSMPSpells.Spells.PULL, ChainSMPSpells.Spells.PUSH, ChainSMPSpells.Spells.TELEPORT);
