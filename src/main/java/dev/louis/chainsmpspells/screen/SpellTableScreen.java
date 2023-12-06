@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 public class SpellTableScreen extends HandledScreen<SpellTableScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier(ChainSMPSpells.id,"textures/gui/container/spell_table.png");
+    private static final Identifier TEXTURE = new Identifier(ChainSMPSpells.MOD_ID,"textures/gui/container/spell_table.png");
     private static final int SCROLLBAR_WIDTH = 12;
     private static final int SCROLLBAR_HEIGHT = 15;
     private static final int RECIPE_LIST_COLUMNS = 4;

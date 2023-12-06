@@ -82,7 +82,7 @@ public class SpellTableScreenHandler extends ScreenHandler{
                     return;
                 }
 
-                stack.onCraft(player.getWorld(), player, stack.getCount());
+                stack.onCraftByPlayer(player.getWorld(), player, stack.getCount());
                 SpellTableScreenHandler.this.output.unlockLastRecipe(player, this.getInputStacks());
                 ItemStack itemStack = SpellTableScreenHandler.this.inputSlot.takeStack(1);
                 if (!itemStack.isEmpty()) {
@@ -236,7 +236,7 @@ public class SpellTableScreenHandler extends ScreenHandler{
             itemStack = itemStack2.copy();
             if (slot == 1) {
                 if(!isChargeValid(this.charge.get()-itemStack2.getCount()))return ItemStack.EMPTY;
-                item.onCraft(itemStack2, player.getWorld(), player);
+                item.onCraftByPlayer(itemStack2, player.getWorld(), player);
                 if (!this.insertItem(itemStack2, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }

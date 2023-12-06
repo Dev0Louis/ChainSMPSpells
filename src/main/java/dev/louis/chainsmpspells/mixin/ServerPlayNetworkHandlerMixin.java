@@ -17,7 +17,7 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Shadow public ServerPlayerEntity player;
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandler;onSlotClick(IILnet/minecraft/screen/slot/SlotActionType;Lnet/minecraft/entity/player/PlayerEntity;)V", shift = At.Shift.BEFORE),
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/ScreenHandler;disableSyncing()V"),
             method = "onClickSlot", cancellable = true)
     public void onClickSlot(ClickSlotC2SPacket packet, CallbackInfo ci) {
         if(packet.getSlot() < -1 && packet.getSlot() == -999) return;
@@ -29,11 +29,11 @@ public class ServerPlayNetworkHandlerMixin {
         boolean shouldCancel = false;
         if(size == 1) {
             ItemStack itemStack = modifiedStack.values().stream().toList().get(0);
-            shouldCancel = access(itemStack).isJuggernautItem();
+            shouldCancel = access(itemStack).chainSMPSpells$isJuggernautItem();
         }else if (size == 2) {
             ItemStack itemStack = modifiedStack.values().stream().toList().get(0);
             ItemStack itemStack2 = modifiedStack.values().stream().toList().get(1);
-            shouldCancel = access(itemStack).isJuggernautItem() || access(itemStack2).isJuggernautItem();
+            shouldCancel = access(itemStack).chainSMPSpells$isJuggernautItem() || access(itemStack2).chainSMPSpells$isJuggernautItem();
         }
 
         if(shouldCancel) {

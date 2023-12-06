@@ -22,37 +22,38 @@ public abstract class ItemStackMixin implements ItemStackJuggernautModeAccessor 
     @Inject(method = "inventoryTick", at = @At("TAIL"))
     public void removeAfterExpiration(World world, Entity entity, int slot, boolean selected, CallbackInfo ci) {
         if(world instanceof ServerWorld serverWorld) {
-            if(isJuggernautItem() && isInValid(serverWorld)) {
+            if(chainSMPSpells$isJuggernautItem() && chainSMPSpells$isInValid(serverWorld)) {
                 this.setCount(0);
             }
         }
     }
     @Override
-    public void setJuggernautModeTick(long ticks) {
+    public void chainSMPSpells$setJuggernautModeTick(long ticks) {
         NbtCompound nbt = this.getOrCreateNbt();
         if(nbt == null)return;
         nbt.putLong("JuggernautTicks", ticks);
     }
 
     @Override
-    public long getJuggernautTick() {
+    public long chainSMPSpells$getJuggernautTick() {
         if(this.getNbt() == null)return 0L;
         return this.getNbt().getLong("JuggernautTicks");
     }
 
     @Override
-    public boolean isJuggernautItem() {
+    public boolean chainSMPSpells$isJuggernautItem() {
         if(this.getNbt() == null)return false;
         return this.getNbt().contains("JuggernautTicks");
     }
 
-    public boolean isInValid(ServerWorld world) {
-        return !isValid(world);
+    public boolean chainSMPSpells$isInValid(ServerWorld world) {
+        return !chainSMPSpells$isValid(world);
     }
-    public boolean isValid(ServerWorld world) {
-        long juggernautTicks = getJuggernautTick();
+
+    public boolean chainSMPSpells$isValid(ServerWorld world) {
+        long juggernautTicks = chainSMPSpells$getJuggernautTick();
         if(juggernautTicks == 0L)return false;
-        return (((ServerWorldAccessor) world).getWorldProperties().getTime()-getJuggernautTick())<20*90;
+        return (((ServerWorldAccessor) world).getWorldProperties().getTime()- chainSMPSpells$getJuggernautTick())<20*90;
     }
 
 

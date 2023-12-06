@@ -1,12 +1,13 @@
 package dev.louis.chainsmpspells.networking;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import eu.pb4.polymer.networking.api.payload.VersionedPayload;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import xyz.nucleoid.packettweaker.PacketContext;
 
 public record ICanHasChainSMPSpellsPayload() implements VersionedPayload {
-    public static final Identifier ID = new Identifier("chainsmpspells", "icanhas");
+    public static final Identifier ID = new Identifier(ChainSMPSpells.MOD_ID, "icanhas");
 
     @Override
     public void write(PacketContext context, int version, PacketByteBuf buf) {

@@ -44,7 +44,6 @@ public class SpellTableBlock extends Block implements PolymerBlock, PolymerClien
         boolean isVanilla = ChainSMPSpells.isClientVanilla((ServerPlayerEntity) player);
         if(isVanilla)return ActionResult.CONSUME;
         player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
-        //player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
         return ActionResult.CONSUME;
     }
 

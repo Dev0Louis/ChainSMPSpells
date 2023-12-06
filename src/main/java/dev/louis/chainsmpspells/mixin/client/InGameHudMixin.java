@@ -20,8 +20,6 @@ import static dev.louis.chainsmpspells.gui.hud.ManaDrawer.Mana.*;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
-
-
     @Shadow protected abstract PlayerEntity getCameraPlayer();
 
     @Shadow private int scaledHeight;

@@ -1,5 +1,6 @@
 package dev.louis.chainsmpspells.gui.hud;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
@@ -7,9 +8,9 @@ import net.minecraft.util.Identifier;
 public class ManaDrawer {
     public static void renderMana(Mana mana, DrawContext context, int x, int y) {
         switch (mana) {
-            case FULL -> render(new Identifier("chainsmpspells","textures/gui/mana.png"), context, x, y);
-            case HALF -> render(new Identifier("chainsmpspells","textures/gui/half_mana.png"), context, x, y);
-            case EMPTY -> render(new Identifier("chainsmpspells","textures/gui/empty_mana.png"), context, x, y);
+            case FULL -> render(new Identifier(ChainSMPSpells.MOD_ID,"textures/gui/mana.png"), context, x, y);
+            case HALF -> render(new Identifier(ChainSMPSpells.MOD_ID,"textures/gui/half_mana.png"), context, x, y);
+            case EMPTY -> render(new Identifier(ChainSMPSpells.MOD_ID,"textures/gui/empty_mana.png"), context, x, y);
         }
     }
 

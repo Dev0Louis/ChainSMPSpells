@@ -18,7 +18,6 @@ public abstract class AreaEffectSpell extends TickingSpell {
     private final ParticleEffect particle;
     private final DamageSource damageSource;
     private final int duration;
-
     private final Box spellCastingBox;
 
     public AreaEffectSpell(

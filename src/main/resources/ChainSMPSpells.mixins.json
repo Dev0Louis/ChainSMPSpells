@@ -4,6 +4,7 @@
   "package": "dev.louis.chainsmpspells.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockDisplayEntityAccessor",
     "ItemStackMixin",
     "PersistentProjectileEntityMixin",
     "ServerPlayNetworkHandlerMixin",

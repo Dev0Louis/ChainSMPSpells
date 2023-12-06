@@ -1,5 +1,6 @@
 package dev.louis.chainsmpspells.blocks;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -12,7 +13,7 @@ import net.minecraft.util.Identifier;
 public class ChainSMPSpellsBlocks {
 
     public static final Block SPELL_TABLE = Registry.register(
-            Registries.BLOCK, new Identifier("chainsmpspells", "spell_table"),
+            Registries.BLOCK, new Identifier(ChainSMPSpells.MOD_ID, "spell_table"),
 
             new SpellTableBlock(
                     FabricBlockSettings.create()

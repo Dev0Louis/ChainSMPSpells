@@ -8,6 +8,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,15 +21,16 @@ public abstract class PersistentProjectileEntityMixin extends ProjectileEntity i
         super(entityType, world);
     }
 
+    @Unique
     public boolean damageOwner = true;
 
     @Override
-    public boolean shouldDamageOwner() {
+    public boolean chainSMPSpells$shouldDamageOwner() {
         return damageOwner;
     }
 
     @Override
-    public void shouldDamageOwner(boolean damageOwner) {
+    public void chainSMPSpells$shouldDamageOwner(boolean damageOwner) {
         this.damageOwner = damageOwner;
     }
 

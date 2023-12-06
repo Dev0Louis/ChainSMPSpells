@@ -1,5 +1,6 @@
 package dev.louis.chainsmpspells.recipe;
 
+import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.screen.PolymerScreenHandlerType;
 import dev.louis.chainsmpspells.screen.SpellTableScreen;
 import dev.louis.chainsmpspells.screen.SpellTableScreenHandler;
@@ -14,12 +15,12 @@ import net.minecraft.util.Identifier;
 
 public class ModRecipes {
     public static final RecipeType<SpellRecipe> SPELL_RECIPE = RecipeType.register("chainsmpspells:spell_recipe");
-    public static final ScreenHandlerType<SpellTableScreenHandler> SPELL_TABLE = register(new Identifier("chainsmpspells","spellcraft"), SpellTableScreenHandler::new);
+    public static final ScreenHandlerType<SpellTableScreenHandler> SPELL_TABLE = register(new Identifier(ChainSMPSpells.MOD_ID,"spellcraft"), SpellTableScreenHandler::new);
     public static void init() {
         Registry.register(Registries.RECIPE_SERIALIZER, SpellRecipe.SpellRecipeSerializer.ID, SpellRecipe.SpellRecipeSerializer.INSTANCE);
     }
 
-    public static void init_client() {
+    public static void initClient() {
         HandledScreens.register(SPELL_TABLE, SpellTableScreen::new);
     }
 
