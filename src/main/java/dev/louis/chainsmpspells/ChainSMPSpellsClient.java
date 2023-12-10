@@ -7,6 +7,7 @@ import dev.louis.chainsmpspells.spell.TargetingSpell;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +21,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         try {
-            MidnightConfig.init("chainsmpspells", ChainSMPSpellsConfig.class);
+            MidnightConfig.init(ChainSMPSpells.MOD_ID, ChainSMPSpellsConfig.class);
         } catch (Exception e) {
             ChainSMPSpells.LOGGER.warn("Something went wrong during Config init.");
         }
@@ -37,7 +38,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.SUPERNOVA, createKeyBind("supernova"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.FIRE, createKeyBind("fire"));
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ICE, createKeyBind("ice"));
-        ModRecipes.init_client();
+        ModRecipes.initClient();
     }
 
     public static KeyBinding createKeyBind(String name, int glfw){
@@ -48,6 +49,11 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
                         "category.chainsmpspells.spells"
                 )
         );
+    }
+
+    public static boolean isPlayerTargetable(PlayerEntity targetedPlayer) {
+        final var player = MinecraftClient.getInstance().player;
+        return player != null && player.canSee(targetedPlayer) && player.isPartOfGame() && !(targetedPlayer.isCreative() || targetedPlayer.isSpectator() || targetedPlayer.isInvisibleTo(targetedPlayer) || player.isSpectator());
     }
 
     public static KeyBinding createKeyBind(String name){

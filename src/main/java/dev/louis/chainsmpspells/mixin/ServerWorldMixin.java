@@ -33,7 +33,7 @@ public class ServerWorldMixin {
         BlockPos blockPos1 = blockPos.add(0, -1, 0);
 
 
-        Box box = new Box(blockPos1.subtract(vec3i), blockPos1.add(vec3i));
+        Box box = new Box(blockPos1.subtract(vec3i).toCenterPos(), blockPos1.add(vec3i).toCenterPos());
         AtomicReference<Collection<BlockPos>> spellTableList = new AtomicReference<>(new ArrayList<>());
         final World world = chunk.getWorld();
         BlockPos.stream(box).forEach(pos -> {

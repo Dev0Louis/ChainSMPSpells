@@ -10,7 +10,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
@@ -20,29 +19,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
-    private final Ingredient ingredient;
-    private final ItemStack result;
-    public SpellRecipe(ItemStack result) {
-        this.ingredient = Ingredient.ofItems(Items.BOOK);
-        this.result = result;
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
-    }
+public record SpellRecipe(ItemStack result) implements Recipe<Inventory>, PolymerRecipe {
+    public static final SpellRecipe EMPTY = new SpellRecipe(new ItemStack(Items.AIR));
 
     @Override
     public ItemStack getResult(DynamicRegistryManager registryManager) {
-        return getResult();
+        return result();
     }
 
-    public ItemStack getResult() {
-        return result;
-    }
-
-    public Identifier getSpellIdentifier() {
-        return Registries.ITEM.getId(getResult().getItem());
+    public Identifier getSpellId() {
+        return Registries.ITEM.getId(result().getItem());
     }
 
     @Override
@@ -71,17 +57,17 @@ public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
     }
 
     public static class SpellRecipeSerializer implements RecipeSerializer<SpellRecipe> {
-        public static final Identifier ID = new Identifier("chainsmpspells:spell_recipe");
+        public static final Identifier ID = new Identifier(ChainSMPSpells.MOD_ID,"spell_recipe");
         public static final SpellRecipeSerializer INSTANCE = new SpellRecipeSerializer();
         private final Codec<SpellRecipe> codec;
 
 
         private SpellRecipeSerializer() {
             this.codec = RecordCodecBuilder.create(
-                    instance -> instance.group(Identifier.CODEC.fieldOf("spell").forGetter(SpellRecipe::getSpellIdentifier))
+                    instance -> instance.group(Identifier.CODEC.fieldOf("spell").forGetter(SpellRecipe::getSpellId))
                             .apply(
                                     instance,
-                                    identifier -> new SpellRecipe(SpellBookItem.createSpellBook(SpellType.get(identifier).get()))
+                                    identifier -> SpellType.get(identifier).map(type -> new SpellRecipe(SpellBookItem.createSpellBook(type))).orElse(SpellRecipe.EMPTY)
                             )
             );
         }
@@ -93,18 +79,21 @@ public class SpellRecipe implements Recipe<Inventory>, PolymerRecipe {
 
         @Override
         public SpellRecipe read(PacketByteBuf buf) {
-            ItemStack output = SpellBookItem.createSpellBook(SpellType.get(buf.readIdentifier()).get());
-            return new SpellRecipe(output);
+            if(buf.readBoolean())return SpellRecipe.EMPTY;
+            var spellType = SpellType.get(buf.readIdentifier());
+            return spellType.map(type -> new SpellRecipe(SpellBookItem.createSpellBook(type))).orElse(SpellRecipe.EMPTY);
         }
 
         @Override
         public void write(PacketByteBuf buf, SpellRecipe recipe) {
-            buf.writeIdentifier(SpellBookItem.getSpellType(recipe.result).get().getId());
+            var spellTypeOptional = SpellBookItem.getSpellType(recipe.result);
+            buf.writeBoolean(spellTypeOptional.isPresent());
+            spellTypeOptional.ifPresent(spellType -> buf.writeIdentifier(spellType.getId()));
         }
     }
 
     public Recipe<?> getPolymerReplacement(ServerPlayerEntity player) {
-        if(ChainSMPSpells.isClientVanilla(player))return PolymerRecipe.createStonecuttingRecipe(this);
+        if (ChainSMPSpells.isClientVanilla(player)) return PolymerRecipe.createStonecuttingRecipe(this);
         return this;
     }
 }

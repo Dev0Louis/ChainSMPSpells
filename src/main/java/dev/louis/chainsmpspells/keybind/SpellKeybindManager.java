@@ -19,7 +19,7 @@ import java.util.Optional;
 public class SpellKeybindManager {
 
     // HashMap that stores the mapping between spell types and key bindings
-    public final HashMap<SpellType<? extends Spell>, KeyBinding> map = new HashMap<>();
+    public final HashMap<SpellType<? extends Spell>, KeyBinding> keyBindings = new HashMap<>();
 
     /**
      * Sets the key binding associated with a specific spell type.
@@ -28,7 +28,7 @@ public class SpellKeybindManager {
      * @param keyBinding the key binding to associate with the spell type
      */
     public void setSpellKeyBinding(SpellType<? extends Spell> spellType, KeyBinding keyBinding) {
-        map.put(spellType, keyBinding);
+        keyBindings.put(spellType, keyBinding);
     }
 
     /**
@@ -39,7 +39,7 @@ public class SpellKeybindManager {
      * @return an Optional containing the key binding associated with the spell type, or an empty Optional
      */
     public Optional<KeyBinding> getKey(@NotNull SpellType<? extends Spell> spellType){
-        KeyBinding keyBinding = map.get(spellType);
+        KeyBinding keyBinding = keyBindings.get(spellType);
         if(keyBinding==null)return Optional.empty();
         return Optional.of(keyBinding);
     }

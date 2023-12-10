@@ -106,7 +106,7 @@ public class JuggernautSpell extends TickingSpell {
         if(itemStack.isEnchantable()) {
             enchantMax(itemStack);
         }
-        ItemStackJuggernautModeAccessor.access(itemStack).setJuggernautModeTick(tickWorldtime);
+        ItemStackJuggernautModeAccessor.access(itemStack).chainSMPSpells$setJuggernautModeTick(tickWorldtime);
         return itemStack;
     }
 
@@ -132,7 +132,7 @@ public class JuggernautSpell extends TickingSpell {
                 ItemStack itemStack = list.get(i);
 
                 if (itemStack.isEmpty()) continue;
-                if (ItemStackJuggernautModeAccessor.access(itemStack).getJuggernautTick() <= 0L)continue;
+                if (ItemStackJuggernautModeAccessor.access(itemStack).chainSMPSpells$getJuggernautTick() <= 0L)continue;
                 list.set(i, ItemStack.EMPTY);
             }
         }

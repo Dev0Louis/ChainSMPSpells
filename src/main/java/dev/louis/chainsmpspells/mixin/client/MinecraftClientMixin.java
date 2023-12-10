@@ -3,21 +3,21 @@ package dev.louis.chainsmpspells.mixin.client;
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.nebula.Nebula;
-import dev.louis.nebula.networking.SpellCastC2SPacket;
 import dev.louis.nebula.spell.Spell;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MinecraftClient.class)
+@Mixin(value = MinecraftClient.class, remap = false)
 public abstract class MinecraftClientMixin {
     @Shadow @Nullable public ClientPlayerEntity player;
+    @Unique
     int spellCooldown = 0;
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
@@ -25,13 +25,13 @@ public abstract class MinecraftClientMixin {
         if(spellCooldown > 0) {
             spellCooldown--;
         } else {
-            Nebula.NebulaRegistries.SPELL_TYPE.forEach(spellType -> {
+            Nebula.SPELL_REGISTRY.forEach(spellType -> {
                 ChainSMPSpellsClient.getSpellKeybindManager().getKey(spellType).ifPresent(keyBinding -> {
                     if(keyBinding.isPressed()) {
                         resetSpellCooldown();
                         Spell spell = spellType.create(player);
                         if(!spell.isCastable())return;
-                        ClientPlayNetworking.send(new SpellCastC2SPacket(spell));
+                        this.player.getSpellManager().cast(spell);
                     }
                 });
             });

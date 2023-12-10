@@ -7,6 +7,8 @@ import dev.louis.nebula.spell.SpellType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -26,8 +28,8 @@ public class ArrowSpell extends Spell {
         for (int x = -5; x < 5; x++) {
             for (int z = -5; z < 5; z++) {
                 ChainSMPSpells.server.executeSync(() -> {
-                    ArrowEntity arrow = new ArrowEntity(world, caster);
-                    ((ArrowEntityAccessor) arrow).shouldDamageOwner(false);
+                    ArrowEntity arrow = new ArrowEntity(world, caster, new ItemStack(Items.ARROW));
+                    ((ArrowEntityAccessor) arrow).chainSMPSpells$shouldDamageOwner(false);
 
                     Vec3d vec3d = caster.getOppositeRotationVector(1.0F);
                     Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0 * 0.017453292F, vec3d.x, vec3d.y, vec3d.z);

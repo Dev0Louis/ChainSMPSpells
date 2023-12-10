@@ -3,6 +3,7 @@ package dev.louis.chainsmpspells.spell;
 import dev.louis.nebula.spell.SpellType;
 import dev.louis.nebula.spell.TickingSpell;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleEffect;
@@ -17,7 +18,6 @@ public abstract class AreaEffectSpell extends TickingSpell {
     private final ParticleEffect particle;
     private final DamageSource damageSource;
     private final int duration;
-
     private final Box spellCastingBox;
 
     public AreaEffectSpell(
@@ -51,7 +51,7 @@ public abstract class AreaEffectSpell extends TickingSpell {
      * This method can be overridden to run something when a Entity is affected by the spell.
      */
     protected void affect(Entity entity) {
-        entity.damage(damageSource, 1);
+        if(entity instanceof LivingEntity livingEntity && livingEntity.isMobOrPlayer())entity.damage(damageSource, 1);
     };
 
     private static Box getSpellCastingBox(PlayerEntity player) {

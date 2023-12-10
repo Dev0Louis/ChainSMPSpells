@@ -20,7 +20,7 @@ public abstract class TargetingSpell extends Spell {
 
     public TargetingSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
         super(spellType, caster);
-        if (caster.getWorld().isClient) ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
+        if (caster.getWorld().isClient()) ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
     }
 
     @Override
@@ -105,7 +105,7 @@ public abstract class TargetingSpell extends Spell {
             for (int y = 0; y < 24 * divider; ++y) {
                 for (PlayerEntity targetedPlayer : getPlayersWithoutSelf()) {
                     if (targetedPlayer.getBoundingBox().expand(0.3).contains(pos)) {
-                        if (ChainSMPSpells.isPlayerTargetable(targetedPlayer)) {
+                        if (ChainSMPSpellsClient.isPlayerTargetable(targetedPlayer)) {
                             this.playerInView = targetedPlayer;
                             //this.playerInViewScanTimeout = 10;
                             break searchForPlayerInView;

@@ -1,6 +1,5 @@
 package dev.louis.chainsmpspells.mixin.client;
 
-import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -20,20 +19,20 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Override
     public boolean isGlowing() {
-        if(this.getWorld().isClient && this.isTargetedPlayer()) return true;
+        if(this.getWorld().isClient() && this.isTargetedPlayer()) return true;
         return super.isGlowing();
     }
 
     @Override
     public int getTeamColorValue() {
-        if(this.getWorld().isClient && this.isTargetedPlayer())return 0xFFFF005A;
+        if(this.getWorld().isClient() && this.isTargetedPlayer())return 0xFFFF005A;
         return super.getTeamColorValue();
     }
 
     private boolean isTargetedPlayer() {
         var targetedPlayer = ChainSMPSpellsClient.getPlayerInView();
         if(targetedPlayer.isEmpty())return false;
-        if(ChainSMPSpells.isPlayerTargetable(targetedPlayer.get())) {
+        if(ChainSMPSpellsClient.isPlayerTargetable(targetedPlayer.get())) {
             return (Object) this == targetedPlayer.get();
         }
         return false;
