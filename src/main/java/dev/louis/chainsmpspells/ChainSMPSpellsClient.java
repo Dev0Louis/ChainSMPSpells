@@ -25,7 +25,7 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         } catch (Exception e) {
             ChainSMPSpells.LOGGER.warn("Something went wrong during Config init.");
         }
-        TargetingSpell.TargetedPlayerSelector.INSTANCE.init();
+        TargetingSpell.TargetedPlayerSelector.init();
 
         spellKeybindManager = getSpellKeybindManager();
         spellKeybindManager.setSpellKeyBinding(ChainSMPSpells.Spells.ARROW, createKeyBind("arrow"));
@@ -65,6 +65,6 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
     }
 
     public static Optional<PlayerEntity> getPlayerInView() {
-        return TargetingSpell.TargetedPlayerSelector.INSTANCE.getPlayerInView();
+        return TargetingSpell.TargetedPlayerSelector.getPlayerInView();
     }
 }

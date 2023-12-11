@@ -5,6 +5,8 @@ import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
 import dev.louis.nebula.spell.Spell;
 import dev.louis.nebula.spell.SpellType;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public abstract class TargetingSpell extends Spell {
@@ -54,24 +57,27 @@ public abstract class TargetingSpell extends Spell {
     }
 
 
-    //Class to hold the logic to get the player, the player is looking at
+    @Environment(EnvType.CLIENT)
     public static class TargetedPlayerSelector {
-        private TargetedPlayerSelector() {
-        }
+        private TargetedPlayerSelector() {}
 
-        public static TargetedPlayerSelector INSTANCE = new TargetedPlayerSelector();
-        private final MinecraftClient client = MinecraftClient.getInstance();
-        boolean hasRaycastRun = false;
-        //int playerInViewScanTimeout = 0;
-        PlayerEntity playerInView;
+        private static final MinecraftClient client = MinecraftClient.getInstance();
+        static boolean hasRaycastRun = false;
+        static PlayerEntity playerInView;
 
-        public void init() {
+        public static void init() {
             ClientTickEvents.END_WORLD_TICK.register(client -> {
-                this.hasRaycastRun = false;
+                TargetedPlayerSelector.calculatePlayerInView();
+                TargetedPlayerSelector.hasRaycastRun = false;
             });
         }
 
-        private boolean hasTargetingSpell() {
+        public static Optional<PlayerEntity> getPlayerInView() {
+            if (!hasRaycastRun) TargetedPlayerSelector.calculatePlayerInView();
+            return Optional.ofNullable(playerInView);
+        }
+
+        private static boolean shouldTargetingRun() {
             if(client.player == null) return false;
             for (SpellType<? extends Spell> spellType : ChainSMPSpells.Spells.targetingSpells) {
                 if (spellType.hasLearned(client.player))return true;
@@ -79,20 +85,9 @@ public abstract class TargetingSpell extends Spell {
             return false;
         }
 
-        private PlayerEntity getPlayerInViewOrNull() {
-            if (!hasRaycastRun) {
-                INSTANCE.calculatePlayerInView();
-            }
-            return playerInView;
-        }
-
-        public Optional<PlayerEntity> getPlayerInView() {
-            return Optional.ofNullable(getPlayerInViewOrNull());
-        }
-
-        private void calculatePlayerInView() {
-            if (!shouldCalculatePlayerInView()) return;
-            this.playerInView = null;
+        private static void calculatePlayerInView() {
+            if (!shouldTargetingRun()) return;
+            TargetedPlayerSelector.playerInView = null;
 
             if (client == null || client.getCameraEntity() == null) return;
 
@@ -106,28 +101,21 @@ public abstract class TargetingSpell extends Spell {
                 for (PlayerEntity targetedPlayer : getPlayersWithoutSelf()) {
                     if (targetedPlayer.getBoundingBox().expand(0.3).contains(pos)) {
                         if (ChainSMPSpellsClient.isPlayerTargetable(targetedPlayer)) {
-                            this.playerInView = targetedPlayer;
-                            //this.playerInViewScanTimeout = 10;
+                            TargetedPlayerSelector.playerInView = targetedPlayer;
                             break searchForPlayerInView;
                         }
                     }
                     pos = pos.add(x);
                 }
             }
-            hasRaycastRun = true;
+            TargetedPlayerSelector.hasRaycastRun = true;
         }
-
-        ;
 
         private static Iterable<? extends PlayerEntity> getPlayersWithoutSelf() {
             final PlayerEntity clientPlayer = MinecraftClient.getInstance().player;
-            var players = clientPlayer.getWorld().getPlayers();
+            var players = new ArrayList<>(clientPlayer.getWorld().getPlayers());
             players.remove(clientPlayer);
             return players;
-        }
-
-        public boolean shouldCalculatePlayerInView() {
-            return hasTargetingSpell();
         }
     }
 }
