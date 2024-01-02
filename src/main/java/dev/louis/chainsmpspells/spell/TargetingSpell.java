@@ -96,6 +96,8 @@ public abstract class TargetingSpell extends Spell {
             double i = 1.0 / divider;
             var x = client.getCameraEntity().getRotationVecClient().normalize().multiply(i);
 
+
+            int count = 4;
             searchForPlayerInView:
             for (int y = 0; y < 24 * divider; ++y) {
                 for (PlayerEntity targetedPlayer : getPlayersWithoutSelf()) {
