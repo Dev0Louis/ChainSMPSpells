@@ -40,9 +40,6 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
     }
 
     public static void createSpellKeyBind(SpellType<?> spellType, boolean hides){
-        System.out.println(spellType);
-        System.out.println(spellType.getId().getPath());
-        System.out.println("LLLLLLLLLL\n");
         var keybind = KeyBindingHelper.registerKeyBinding(new SpellKeyBinding(spellType, hides));
 
         getSpellKeybindManager().setSpellKeyBinding(spellType, keybind);
