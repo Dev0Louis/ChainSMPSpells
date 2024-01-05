@@ -57,7 +57,7 @@ public record SpellRecipe(ItemStack result) implements Recipe<Inventory>, Polyme
     }
 
     public static class SpellRecipeSerializer implements RecipeSerializer<SpellRecipe> {
-        public static final Identifier ID = new Identifier(ChainSMPSpells.MOD_ID,"spell_recipe");
+        public static final Identifier ID = new Identifier(ChainSMPSpells.MOD_ID, "spell_recipe");
         public static final SpellRecipeSerializer INSTANCE = new SpellRecipeSerializer();
         private final Codec<SpellRecipe> codec;
 
@@ -79,7 +79,7 @@ public record SpellRecipe(ItemStack result) implements Recipe<Inventory>, Polyme
 
         @Override
         public SpellRecipe read(PacketByteBuf buf) {
-            if(buf.readBoolean())return SpellRecipe.EMPTY;
+            if(!buf.readBoolean())return SpellRecipe.EMPTY;
             var spellType = SpellType.get(buf.readIdentifier());
             return spellType.map(type -> new SpellRecipe(SpellBookItem.createSpellBook(type))).orElse(SpellRecipe.EMPTY);
         }
@@ -92,6 +92,7 @@ public record SpellRecipe(ItemStack result) implements Recipe<Inventory>, Polyme
         }
     }
 
+    @Override
     public Recipe<?> getPolymerReplacement(ServerPlayerEntity player) {
         if (ChainSMPSpells.isClientVanilla(player)) return PolymerRecipe.createStonecuttingRecipe(this);
         return this;

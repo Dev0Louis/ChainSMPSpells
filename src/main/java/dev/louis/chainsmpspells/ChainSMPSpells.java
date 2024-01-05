@@ -7,12 +7,10 @@ import dev.louis.chainsmpspells.mana.effect.ManaEffects;
 import dev.louis.chainsmpspells.networking.ICanHasChainSMPSpellsPayload;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.*;
-import dev.louis.chainsmpspells.spell.rendering.SpellEffectRenderer;
 import dev.louis.nebula.spell.SpellType;
 import eu.pb4.polymer.networking.api.PolymerNetworking;
 import eu.pb4.polymer.networking.api.server.PolymerServerNetworking;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,7 +40,6 @@ public class ChainSMPSpells implements ModInitializer {
         ChainSMPSpellsItems.init();
         ChainSMPSpellsBlocks.init();
         ManaEffects.init();
-        WorldRenderEvents.END.register(SpellEffectRenderer::render);
     }
 
     public static class Spells {
