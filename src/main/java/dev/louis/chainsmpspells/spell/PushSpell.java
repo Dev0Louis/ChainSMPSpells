@@ -1,14 +1,12 @@
 package dev.louis.chainsmpspells.spell;
 
-import dev.louis.nebula.spell.Spell;
-import dev.louis.nebula.spell.SpellType;
-import net.minecraft.entity.player.PlayerEntity;
+import dev.louis.nebula.api.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;
 import net.minecraft.util.math.Vec3d;
 
-//3
 public class PushSpell extends TargetingSpell {
-    public PushSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
-        super(spellType, caster);
+    public PushSpell(SpellType<? extends Spell> spellType) {
+        super(spellType);
     }
 
     @Override
@@ -18,10 +16,5 @@ public class PushSpell extends TargetingSpell {
         Vec3d velocity = getCaster().getPos().subtract(pulledPlayer.getPos()).normalize().negate();
         pulledPlayer.setVelocity(velocity);
         pulledPlayer.velocityModified = true;
-    }
-
-    @Override
-    public boolean isCastable() {
-        return super.isCastable() && getCaster().distanceTo(castedOn()) < 25;
     }
 }

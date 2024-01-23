@@ -1,8 +1,9 @@
 
 package dev.louis.chainsmpspells.keybind;
 
-import dev.louis.nebula.spell.Spell;
-import dev.louis.nebula.spell.SpellType;
+
+import dev.louis.nebula.api.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.option.KeyBinding;

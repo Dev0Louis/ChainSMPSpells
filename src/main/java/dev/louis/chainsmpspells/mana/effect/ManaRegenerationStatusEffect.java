@@ -1,7 +1,7 @@
 package dev.louis.chainsmpspells.mana.effect;
 
 import dev.louis.chainsmpspells.ChainSMPSpells;
-import dev.louis.nebula.mana.manager.ManaManager;
+import dev.louis.nebula.api.manager.mana.ManaManager;
 import eu.pb4.polymer.core.api.other.PolymerStatusEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;

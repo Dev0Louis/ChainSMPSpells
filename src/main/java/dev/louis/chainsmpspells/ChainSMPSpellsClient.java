@@ -5,7 +5,7 @@ import dev.louis.chainsmpspells.keybind.SpellKeyBinding;
 import dev.louis.chainsmpspells.keybind.SpellKeybindManager;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.TargetingSpell;
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType;;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -36,13 +36,12 @@ public class ChainSMPSpellsClient implements ClientModInitializer {
         createSpellKeyBind(ChainSMPSpells.Spells.ICE, false);
         createSpellKeyBind(ChainSMPSpells.Spells.SUPERNOVA, true);
         createSpellKeyBind(ChainSMPSpells.Spells.JUGGERNAUT, true);
+        createSpellKeyBind(ChainSMPSpells.Spells.WIND_JUMP, false);
+        createSpellKeyBind(ChainSMPSpells.Spells.GREEN_THUMB, false);
         ModRecipes.initClient();
     }
 
     public static void createSpellKeyBind(SpellType<?> spellType, boolean hides){
-        System.out.println(spellType);
-        System.out.println(spellType.getId().getPath());
-        System.out.println("LLLLLLLLLL\n");
         var keybind = KeyBindingHelper.registerKeyBinding(new SpellKeyBinding(spellType, hides));
 
         getSpellKeybindManager().setSpellKeyBinding(spellType, keybind);

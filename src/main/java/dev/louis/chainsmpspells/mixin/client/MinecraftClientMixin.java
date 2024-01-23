@@ -2,8 +2,7 @@ package dev.louis.chainsmpspells.mixin.client;
 
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
-import dev.louis.nebula.Nebula;
-import dev.louis.nebula.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;
@@ -22,19 +21,21 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
     private void handelInputEventsForNebula(CallbackInfo ci) {
-        if(spellCooldown > 0) {
+        if (spellCooldown > 0) {
             spellCooldown--;
-        } else {
-            Nebula.SPELL_REGISTRY.forEach(spellType -> {
-                ChainSMPSpellsClient.getSpellKeybindManager().getKey(spellType).ifPresent(keyBinding -> {
-                    if(keyBinding.isPressed()) {
-                        resetSpellCooldown();
-                        Spell spell = spellType.create(player);
-                        if(!spell.isCastable())return;
-                        this.player.getSpellManager().cast(spell);
-                    }
-                });
-            });
+            return;
+        }
+
+        for (SpellType<?> spellType : SpellType.REGISTRY) {
+            var optionalKey = ChainSMPSpellsClient.getSpellKeybindManager().getKey(spellType);
+            if(optionalKey.isPresent()) {
+                var key = optionalKey.get();
+                if(key.isPressed()) {
+                    this.player.getSpellManager().cast(spellType);
+                    this.resetSpellCooldown();
+                    return;
+                }
+            }
         }
     }
 

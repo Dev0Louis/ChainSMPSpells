@@ -1,13 +1,12 @@
 package dev.louis.chainsmpspells.spell;
 
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 
 public class FireSpell extends AreaEffectSpell {
-    public FireSpell(SpellType<? extends AreaEffectSpell> spellType, PlayerEntity caster) {
-        super(spellType, caster, ParticleTypes.FLAME, caster.getWorld().getDamageSources().playerAttack(caster), 20);
+    public FireSpell(SpellType<? extends AreaEffectSpell> spellType) {
+        super(spellType, ParticleTypes.FLAME, 20);
     }
 
     @Override

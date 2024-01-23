@@ -3,11 +3,10 @@ package dev.louis.chainsmpspells.spell;
 import com.google.common.collect.ImmutableList;
 import dev.louis.chainsmpspells.accessor.ItemStackJuggernautModeAccessor;
 import dev.louis.chainsmpspells.mixin.ServerWorldAccessor;
-import dev.louis.nebula.spell.SpellType;
-import dev.louis.nebula.spell.TickingSpell;
+import dev.louis.nebula.api.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -20,15 +19,14 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JuggernautSpell extends TickingSpell {
+public class JuggernautSpell extends Spell {
 
-    public JuggernautSpell(SpellType<? extends TickingSpell> spellType, PlayerEntity caster) {
-        super(spellType, caster);
+    public JuggernautSpell(SpellType<? extends Spell> spellType) {
+        super(spellType);
     }
 
     @Override
     public void cast() {
-        super.cast();
         getCaster().getInventory().dropAll();
 
         var tick = ((ServerWorldAccessor)getCaster().getWorld()).getWorldProperties().getTime();
@@ -58,11 +56,6 @@ public class JuggernautSpell extends TickingSpell {
 
     @Override
     public void tick() {
-        super.tick();
-        if(spellAge > 20*120){
-            this.stop();
-            return;
-        }
         if(spellAge % 10 == 0) {
             this.getCaster().getManaManager().addMana(1);
         }
@@ -79,18 +72,17 @@ public class JuggernautSpell extends TickingSpell {
     }
 
     @Override
-    public void stop(boolean fromDeath) {
-        JuggernautSpell.clearJuggernautItems((ServerPlayerEntity) getCaster());
-        if(!fromDeath) {
-            getCaster().damage(getCaster().getDamageSources().magic(), 100f);
-            getCaster().setHealth(0);
-        }
+    public int getDuration() {
+        return 20*120;
     }
 
     @Override
-    public boolean isCastable() {
-        if(getCaster().getWorld().isClient())return super.isCastable();
-        return !this.getCaster().getSpellManager().isSpellTicking(this) && super.isCastable();
+    public void onEnd() {
+        JuggernautSpell.clearJuggernautItems((ServerPlayerEntity) getCaster());
+        if(getCaster().isAlive()) {
+            getCaster().damage(getCaster().getDamageSources().magic(), 100f);
+            getCaster().setHealth(0);
+        }
     }
 
     public static void generateJuggernautItemAndSetToSlot(ServerPlayerEntity player, int slot, Item item, long tick) {

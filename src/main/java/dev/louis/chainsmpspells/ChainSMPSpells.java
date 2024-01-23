@@ -7,12 +7,11 @@ import dev.louis.chainsmpspells.mana.effect.ManaEffects;
 import dev.louis.chainsmpspells.networking.ICanHasChainSMPSpellsPayload;
 import dev.louis.chainsmpspells.recipe.ModRecipes;
 import dev.louis.chainsmpspells.spell.*;
-import dev.louis.chainsmpspells.spell.rendering.SpellEffectRenderer;
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType.Castability;
 import eu.pb4.polymer.networking.api.PolymerNetworking;
 import eu.pb4.polymer.networking.api.server.PolymerServerNetworking;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,32 +41,40 @@ public class ChainSMPSpells implements ModInitializer {
         ChainSMPSpellsItems.init();
         ChainSMPSpellsBlocks.init();
         ManaEffects.init();
-        WorldRenderEvents.END.register(SpellEffectRenderer::render);
     }
 
     public static class Spells {
         public static List<SpellType<?>> targetingSpells;
+        public static final Castability TARGETING =
+                Castability.DEFAULT.and((spellType, caster) -> {
+                    var playerInView = ChainSMPSpellsClient.getPlayerInView();
+                    return playerInView.isPresent() && caster.distanceTo(playerInView.get()) < 25;
+                });
 
         public static SpellType<ArrowSpell> ARROW =
                 SpellType.register(new Identifier(MOD_ID, "arrow"),SpellType.Builder.create(ArrowSpell::new, 2));
         public static SpellType<JuggernautSpell> JUGGERNAUT =
                 SpellType.register(new Identifier(MOD_ID, "juggernaut"), SpellType.Builder.create(JuggernautSpell::new, 20));
         public static SpellType<PullSpell> PULL =
-                SpellType.register(new Identifier(MOD_ID, "pull"), SpellType.Builder.create(PullSpell::new, 3));
+                SpellType.register(new Identifier(MOD_ID, "pull"), SpellType.Builder.create(PullSpell::new, 3).castability(TARGETING));
         public static SpellType<PushSpell> PUSH =
-                SpellType.register(new Identifier(MOD_ID, "push"), SpellType.Builder.create(PushSpell::new, 3));
+                SpellType.register(new Identifier(MOD_ID, "push"), SpellType.Builder.create(PushSpell::new, 3).castability(TARGETING));
         public static SpellType<RewindSpell> REWIND =
                 SpellType.register(new Identifier(MOD_ID, "rewind"), SpellType.Builder.create(RewindSpell::new, 7));
         public static SpellType<SuicideSpell> SUICIDE =
                 SpellType.register(new Identifier(MOD_ID, "suicide"), SpellType.Builder.create(SuicideSpell::new, 1));
         public static SpellType<TeleportSpell> TELEPORT =
-                SpellType.register(new Identifier(MOD_ID, "teleport"), SpellType.Builder.create(TeleportSpell::new, 5));
+                SpellType.register(new Identifier(MOD_ID, "teleport"), SpellType.Builder.create(TeleportSpell::new, 5).castability(TARGETING));
         public static SpellType<SupernovaSpell> SUPERNOVA =
                 SpellType.register(new Identifier(MOD_ID, "supernova"), SpellType.Builder.create(SupernovaSpell::new, 20));
         public static SpellType<FireSpell> FIRE =
                 SpellType.register(new Identifier(MOD_ID, "fire"), SpellType.Builder.create(FireSpell::new, 2));
         public static SpellType<IceSpell> ICE =
                 SpellType.register(new Identifier(MOD_ID, "ice"), SpellType.Builder.create(IceSpell::new, 2));
+        public static SpellType<WindJumpSpell> WIND_JUMP =
+                SpellType.register(new Identifier(MOD_ID, "wind_jump"), SpellType.Builder.create(WindJumpSpell::new, 4));
+        public static SpellType<GreenThumbSpell> GREEN_THUMB =
+                SpellType.register(new Identifier(MOD_ID, "green_thumb"), SpellType.Builder.create(GreenThumbSpell::new, 1));
 
 
         public static void init() {

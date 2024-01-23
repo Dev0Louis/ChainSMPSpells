@@ -1,7 +1,7 @@
 package dev.louis.chainsmpspells.spell;
 
-import dev.louis.nebula.spell.SpellType;
-import dev.louis.nebula.spell.TickingSpell;
+import dev.louis.nebula.api.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -14,44 +14,49 @@ import net.minecraft.util.math.Vec3d;
 
 import static java.lang.Math.*;
 
-public abstract class AreaEffectSpell extends TickingSpell {
+;
+
+public abstract class AreaEffectSpell extends Spell {
     private final ParticleEffect particle;
-    private final DamageSource damageSource;
     private final int duration;
-    private final Box spellCastingBox;
+    private Box spellCastingBox;
 
     public AreaEffectSpell(
             SpellType<? extends AreaEffectSpell> spellType,
-            PlayerEntity caster,
             ParticleEffect particle,
-            DamageSource damageSource,
             int duration
     ) {
-        super(spellType, caster);
+        super(spellType);
         this.particle = particle;
-        this.damageSource = damageSource;
         this.duration = duration;
-        this.spellCastingBox = getSpellCastingBox(caster);
+    }
+
+    @Override
+    public void cast() {
+        this.spellCastingBox = getSpellCastingBox(this.getCaster());
     }
 
     @Override
     public void tick() {
         super.tick();
-        if(getCaster() instanceof ServerPlayerEntity serverPlayer && spellAge < duration) {
+        if(getCaster() instanceof ServerPlayerEntity serverPlayer) {
             spawnParticles(serverPlayer.getServerWorld());
             for (Entity entity : getCaster().getWorld().getOtherEntities(getCaster(), spellCastingBox)) {
                 affect(entity);
             }
-        }else {
-            stop();
         }
     }
 
+    @Override
+    public int getDuration() {
+        return duration;
+    }
+
     /**
-     * This method can be overridden to run something when a Entity is affected by the spell.
+     * This method can be overridden to run something when an Entity is affected by the spell.
      */
     protected void affect(Entity entity) {
-        if(entity instanceof LivingEntity livingEntity && livingEntity.isMobOrPlayer())entity.damage(damageSource, 1);
+        if(entity instanceof LivingEntity livingEntity && livingEntity.isMobOrPlayer()) entity.damage(getDamageSource(), 1);
     };
 
     private static Box getSpellCastingBox(PlayerEntity player) {
@@ -84,5 +89,9 @@ public abstract class AreaEffectSpell extends TickingSpell {
                 }
             }
         }
+    }
+
+    public DamageSource getDamageSource() {
+        return this.getCaster().getWorld().getDamageSources().playerAttack(this.getCaster());
     }
 }

@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.items.SpellBookItem;
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType;;
 import eu.pb4.polymer.core.api.item.PolymerRecipe;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

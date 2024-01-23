@@ -2,9 +2,8 @@ package dev.louis.chainsmpspells.spell;
 
 import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.accessor.ArrowEntityAccessor;
-import dev.louis.nebula.spell.Spell;
-import dev.louis.nebula.spell.SpellType;
-import net.minecraft.entity.player.PlayerEntity;
+import dev.louis.nebula.api.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -16,8 +15,8 @@ import org.joml.Vector3f;
 public class ArrowSpell extends Spell {
 
 
-    public ArrowSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
-        super(spellType, caster);
+    public ArrowSpell(SpellType<? extends Spell> spellType) {
+        super(spellType);
     }
 
     @Override

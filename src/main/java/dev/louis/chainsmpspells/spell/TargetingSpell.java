@@ -3,8 +3,8 @@ package dev.louis.chainsmpspells.spell;
 import dev.louis.chainsmpspells.ChainSMPSpells;
 import dev.louis.chainsmpspells.ChainSMPSpellsClient;
 import dev.louis.chainsmpspells.config.ChainSMPSpellsConfig;
-import dev.louis.nebula.spell.Spell;
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.Spell;
+import dev.louis.nebula.api.spell.SpellType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -21,14 +21,14 @@ public abstract class TargetingSpell extends Spell {
     @Nullable
     private Entity castedOn;
 
-    public TargetingSpell(SpellType<? extends Spell> spellType, PlayerEntity caster) {
-        super(spellType, caster);
-        if (caster.getWorld().isClient()) ChainSMPSpellsClient.getPlayerInView().ifPresent(this::castedOn);
+    public TargetingSpell(SpellType<? extends Spell> spellType) {
+        super(spellType);
     }
 
     @Override
-    public boolean isCastable() {
-        return castedOn() != null && super.isCastable();
+    public void cast() {
+        if(ChainSMPSpellsClient.getPlayerInView().isPresent()) throw new IllegalStateException("Player in view is not present, even though it should be.");
+        castedOn(ChainSMPSpellsClient.getPlayerInView().get());
     }
 
     public Entity castedOn(Entity castedOn) {
@@ -44,7 +44,7 @@ public abstract class TargetingSpell extends Spell {
     public PacketByteBuf writeBuf(PacketByteBuf buf) {
         super.writeBuf(buf);
         Optional<Integer> optionalInteger = castedOn() != null ? Optional.of(castedOn().getId()) : Optional.empty();
-        buf.writeOptional(optionalInteger, (PacketByteBuf::writeVarInt));
+        buf.writeOptional(optionalInteger, PacketByteBuf::writeVarInt);
         return buf;
     }
 
@@ -52,7 +52,7 @@ public abstract class TargetingSpell extends Spell {
     public PacketByteBuf readBuf(PacketByteBuf buf) {
         super.readBuf(buf);
         Optional<Integer> o = buf.readOptional(PacketByteBuf::readVarInt);
-        o.ifPresent((integer -> castedOn(getCaster().getWorld().getEntityById(integer))));
+        o.ifPresent(integer -> castedOn(getCaster().getWorld().getEntityById(integer)));
         return buf;
     }
 
@@ -97,7 +97,6 @@ public abstract class TargetingSpell extends Spell {
             var x = client.getCameraEntity().getRotationVecClient().normalize().multiply(i);
 
 
-            int count = 4;
             searchForPlayerInView:
             for (int y = 0; y < 24 * divider; ++y) {
                 for (PlayerEntity targetedPlayer : getPlayersWithoutSelf()) {

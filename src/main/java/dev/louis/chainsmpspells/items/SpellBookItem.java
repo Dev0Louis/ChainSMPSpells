@@ -1,7 +1,7 @@
 package dev.louis.chainsmpspells.items;
 
 import dev.louis.chainsmpspells.ChainSMPSpells;
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType;;
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import eu.pb4.polymer.core.api.item.PolymerItemUtils;
 import eu.pb4.polymer.core.api.utils.PolymerClientDecoded;

@@ -1,6 +1,6 @@
 package dev.louis.chainsmpspells.keybind;
 
-import dev.louis.nebula.spell.SpellType;
+import dev.louis.nebula.api.spell.SpellType;;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
